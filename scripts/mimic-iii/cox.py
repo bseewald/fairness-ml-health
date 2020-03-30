@@ -69,7 +69,14 @@ def main():
     print("init: " + time_string)
 
     # Training model
-    cx = cox_regression(cohort_df, 'los_hospital', 'hospital_expire_flag', penalizer=0)
+    # cx = cox_regression(cohort_df, 'los_hospital', 'hospital_expire_flag', penalizer=0)
+
+    # Training ML model
+    for p in [1e+04, 1e+03, 100, 10, 1, 0.1, 0.01, 1e-03, 1e-04, 1e-05, 1e-06, 0]:
+        cx = CoxPHFitter(penalizer=p)
+        scores = k_fold_cross_validation(cx, cohort_df, duration_col='los_hospital',
+                                         event_col='hospital_expire_flag', k=10)
+        print(scores)
 
     named_tuple = time.localtime() # get struct_time
     time_string = time.strftime("%m/%d/%Y, %H:%M:%S", named_tuple)
@@ -77,23 +84,9 @@ def main():
 
     # C-Index score
     cindex = concordance_index(cohort_df['los_hospital'],
-                     -cx.predict_partial_hazard(cohort_df),
-                     cohort_df['hospital_expire_flag'])
+                               -cx.predict_partial_hazard(cohort_df),
+                               cohort_df['hospital_expire_flag'])
     print(cindex)
-
-    # TO-DO: ML
-    # scores = k_fold_cross_validation(model, dataset, 'T', event_col='E', k=10)
-    # print(np.mean(scores))
-
-    # def mae(Y_true, Y_pred):
-    #     return np.abs(np.subtract(Y_true, Y_pred)).mean()
-
-    # for p in [0, 0.0001, 0.001, 0.01, 0.1, 1, 10, 100, 1000]:
-    #     print(p)
-    #     cx = CoxPHFitter(penalizer=p)
-    #     scores = k_fold_cross_validation(cx, df_model, duration_col='los_hospital',
-    #                                      event_col='hospital_expire_flag', evaluation_measure=mae)
-    #     print(np.mean(scores))
 
 if __name__ == "__main__":
     main()
