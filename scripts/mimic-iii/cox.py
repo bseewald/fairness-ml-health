@@ -10,48 +10,46 @@ import pandas as pd
 import numpy as np
 import psycopg2
 import time
-from time import gmtime, strftime
+from cohort import get_cohort as gh
 
 import lifelines
 from lifelines import CoxPHFitter
 from lifelines.utils import concordance_index
-from lifelines.utils import k_fold_cross_validation
-
-
-# Classical Cox
-def cox_regression(df, duration, event, penalizer, strata_df=None):
-    cph = CoxPHFitter(penalizer=penalizer)
-    cph.fit(df, duration_col=duration, event_col=event, strata=strata_df, show_progress=True, step_size=0.50)
-    return cph
+from lifelines.utils.sklearn_adapter import sklearn_adapter
+from sklearn.model_selection import GridSearchCV, KFold
+from sklearn.model_selection import train_test_split
 
 
 def main():
 
-    #######################
-    # POSTGRESQL Connection
-    #######################
-    host = '/tmp'
-    user='postgres'
-    passwd='postgres'
-    con = psycopg2.connect(dbname ='mimic', user=user, password=passwd, host=host)
-    cur = con.cursor()
-
-    # Cohort Table
-    cohort_query = 'SELECT * FROM mimiciii.cohort_survival'
-    cohort = pd.read_sql_query(cohort_query, con)
+    # Get data
+    cohort = gh.get_cohort()
 
     # Binning
     cohort['age_st'] = pd.cut(cohort['age'], np.arange(15, 91, 15))
 
     # Select features
-    drop = ['index', 'subject_id', 'hadm_id', 'icustay_id', 'dod', 'admittime', 'dischtime', 'ethnicity',
-            'hospstay_seq', 'first_hosp_stay', 'intime', 'outtime', 'los_icu', 'icustay_seq', 'first_icu_stay', 'row_id',
-            'seq_num', 'icd9_code', 'age']
-    cohort_class = cohort.drop(drop, axis=1)
+    # drop = ['first_hosp_stay', 'first_icu_stay']
+    drop = ['index', 'subject_id', 'hadm_id', 'icustay_id', 'dod', 'admittime', 'dischtime', 'ethnicity', 'hospstay_seq',
+            'intime', 'outtime', 'los_icu', 'icustay_seq', 'row_id', 'seq_num', 'icd9_code', 'age', 'level_0']
+    cohort.drop(drop, axis=1, inplace=True)
+
+    # Gender: from categorical to numerical
+    cohort.gender.replace(to_replace=dict(F=1, M=0), inplace=True)
+    cohort = cohort.astype({'admission_type': 'category', 'ethnicity_grouped': 'category', 'insurance': 'category',
+                            'icd_alzheimer': 'category', 'icd_cancer': 'category', 'icd_diabetes': 'category', 'icd_heart': 'category',
+                            'icd_transplant': 'category', 'gender': 'category', 'hospital_expire_flag': 'bool',
+                            'oasis_score':'category'}, copy=False)
 
     cat = ['gender', 'insurance', 'ethnicity_grouped', 'admission_type', 'oasis_score', 'icd_alzheimer', 'icd_cancer',
-        'icd_diabetes', 'icd_heart', 'icd_transplant', 'age_st']
+           'icd_diabetes', 'icd_heart', 'icd_transplant', 'age_st']
 
+    # Convert categorical variables
+    cohort_df = pd.get_dummies(cohort, columns=cat, drop_first=True)
+
+    # Datasets
+    cohort_X = cohort_df[cohort_df.columns.difference(["los_hospital"])]
+    cohort_y = cohort_df["los_hospital"]
 
     #############################################################
     # Lifelines library
@@ -61,32 +59,62 @@ def main():
     # Duration: los_hospital (hospital lenght of stay -- in days)
     #############################################################
 
-    # Convert categorical variables
-    cohort_df = pd.get_dummies(cohort_class, columns=cat, drop_first=True)
+    random_state = 20
 
-    named_tuple = time.localtime() # get struct_time
-    time_string = time.strftime("%m/%d/%Y, %H:%M:%S", named_tuple)
-    print("init: " + time_string)
+    # Open file
+    _file = open("files/cox.txt", "a")
 
-    # Training model
-    # cx = cox_regression(cohort_df, 'los_hospital', 'hospital_expire_flag', penalizer=0)
+    time_string = time.strftime("%m/%d/%Y, %H:%M:%S", time.localtime())
+    _file.write("########## Init: " + time_string + "\n\n")
+
+    # Train / test samples
+    X_train, X_test, y_train, y_test = train_test_split(cohort_X, cohort_y, test_size=0.20, random_state=random_state)
+
+    cox = sklearn_adapter(CoxPHFitter, event_col='hospital_expire_flag')
+    cx = cox()
+
+    # KFold
+    cv = KFold(n_splits=10, shuffle=True, random_state=random_state)
+
+    _alphas = [100, 10, 1, 0.1, 0.01, 1e-03, 1e-04, 1e-05]
+    _l1_ratios = [0, 0.001, 0.01, 0.1, 0.5]
 
     # Training ML model
-    for p in [1e+04, 1e+03, 100, 10, 1, 0.1, 0.01, 1e-03, 1e-04, 1e-05, 1e-06, 0]:
-        cx = CoxPHFitter(penalizer=p)
-        scores = k_fold_cross_validation(cx, cohort_df, duration_col='los_hospital',
-                                         event_col='hospital_expire_flag', k=10)
-        print(scores)
+    gcv = GridSearchCV(cx, {"penalizer": _alphas, "l1_ratio": _l1_ratios}, cv=cv)
 
-    named_tuple = time.localtime() # get struct_time
-    time_string = time.strftime("%m/%d/%Y, %H:%M:%S", named_tuple)
-    print("final: " + time_string)
+    # Fit
+    print(time.strftime("%m/%d/%Y, %H:%M:%S", time.localtime()))
+    gcv_fit = gcv.fit(X_train, y_train)
+
+    # Score
+    print(time.strftime("%m/%d/%Y, %H:%M:%S", time.localtime()))
+    gcv_score = gcv.score(X_test, y_test)
+
+
+    # Best Parameters
+    _file.write("Best Parameters: " + str(gcv_fit.best_params_) + "\n")
+
+    # C-Index
+    _file.write("C-Index test sample: " + str(gcv_score) + "\n")
+
+    cph = CoxPHFitter(penalizer=gcv_fit.best_params_['penalizer'], l1_ratio=gcv_fit.best_params_['l1_ratio'])
+    cph.fit(cohort_df, duration_col="los_hospital", event_col="hospital_expire_flag")
+
+    # Coef
+    _file.write("Coeficients:\n" + str(cph.params_) + "\n\n")
 
     # C-Index score
     cindex = concordance_index(cohort_df['los_hospital'],
-                               -cx.predict_partial_hazard(cohort_df),
+                               -cph.predict_partial_hazard(cohort_df),
                                cohort_df['hospital_expire_flag'])
-    print(cindex)
+    _file.write("C-Index all dataset: " + str(cindex) + "\n")
+
+    time_string = time.strftime("%m/%d/%Y, %H:%M:%S", time.localtime())
+    _file.write("\n########## Final: " + time_string + "\n")
+
+    # Close file
+    _file.close()
+
 
 if __name__ == "__main__":
     main()

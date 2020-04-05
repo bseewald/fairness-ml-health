@@ -1,0 +1,57 @@
+
+########## Init: 04/05/2020, 15:22:57
+
+Tuning hyper-parameters
+
+Alphas: [100, 10, 1, 0.1, 0.01, 0.001, 0.0001, 1e-05, 1e-06, 1e-07]
+
+
+L1 Ratio: 1
+Best Parameters: {'alphas': [1e-05]}
+C-Index: 0.719733617290417
+Coeficients:
+admission_type=EMERGENCY      0.811703
+admission_type=URGENT         0.487091
+age_st=(30, 45]              -0.239972
+age_st=(45, 60]              -0.288091
+age_st=(60, 75]              -0.266254
+age_st=(75, 90]              -0.158440
+ethnicity_grouped=black      -0.441127
+ethnicity_grouped=hispanic   -0.354179
+ethnicity_grouped=white      -0.329507
+first_hosp_stay               0.049469
+first_icu_stay                0.639208
+gender                       -0.057250
+icd_alzheimer                 0.557389
+icd_cancer                    0.254470
+icd_diabetes                  0.041068
+icd_heart                    -0.253670
+icd_transplant               -0.191179
+insurance=Public             -0.161673
+insurance=Self-Pay            1.288165
+oasis_score                   0.700892
+dtype: float64
+
+
+L1 Ratio: 0.9
+
+L1 Ratio: 0.8
+
+L1 Ratio: 0.7
+
+L1 Ratio: 0.6
+
+L1 Ratio: 0.5
+
+L1 Ratio: 0.3
+
+L1 Ratio: 0.1
+
+L1 Ratio: 0.01
+
+L1 Ratio: 0.001
+
+########## Final: 04/05/2020, 15:23:55
+
+*** The last one is the best configuration! ***
+

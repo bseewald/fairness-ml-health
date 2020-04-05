@@ -1,0 +1,31 @@
+########## Init: 04/05/2020, 18:42:05
+
+Best Parameters: {'l1_ratio': 0, 'penalizer': 0.0001}
+C-Index test sample: 0.71948902548696
+Coeficients:
+first_hosp_stay               0.051852
+first_icu_stay                0.597746
+gender_1                     -0.031945
+insurance_Public             -0.140026
+insurance_Self-Pay            1.460380
+ethnicity_grouped_black      -0.401643
+ethnicity_grouped_hispanic   -0.381533
+ethnicity_grouped_white      -0.322143
+admission_type_EMERGENCY      0.819741
+admission_type_URGENT         0.420625
+oasis_score_2.0               0.679268
+oasis_score_3.0               1.361018
+icd_alzheimer_1               0.398228
+icd_cancer_1                  0.261001
+icd_diabetes_1                0.034754
+icd_heart_1                  -0.222521
+icd_transplant_1             -0.192296
+age_st_(30, 45]              -0.222377
+age_st_(45, 60]              -0.133867
+age_st_(60, 75]              -0.167303
+age_st_(75, 90]               0.003433
+Name: coef, dtype: float64
+
+C-Index all dataset: 0.7341471569725642
+
+########## Final: 04/05/2020, 19:25:51
