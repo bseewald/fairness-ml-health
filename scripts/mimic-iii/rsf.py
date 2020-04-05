@@ -2,9 +2,9 @@ import pandas as pd
 import numpy as np
 import psycopg2
 import time
-from time import gmtime, strftime
+from cohort import get_cohort as gh
 
-from sklearn.model_selection import train_test_split
+from sklearn.model_selection import train_test_split, GridSearchCV, KFold
 
 from sksurv.preprocessing import OneHotEncoder
 from sksurv.ensemble import RandomSurvivalForest
@@ -12,40 +12,30 @@ from sksurv.util import Surv
 
 def main():
 
-    #######################
-    # POSTGRESQL Connection
-    #######################
-    host = '/tmp'
-    user='postgres'
-    passwd='postgres'
-    con = psycopg2.connect(dbname ='mimic', user=user, password=passwd, host=host)
-    cur = con.cursor()
-
-    # Cohort Table
-    cohort_query = 'SELECT * FROM mimiciii.cohort_survival'
-    cohort = pd.read_sql_query(cohort_query, con)
+    # Get data
+    cohort = gh.get_cohort()
 
     # Binning
     cohort['age_st'] = pd.cut(cohort['age'], np.arange(15, 91, 15))
 
     # Neural network
     drop = ['index', 'subject_id', 'hadm_id', 'icustay_id', 'dod', 'admittime', 'dischtime', 'ethnicity', 'hospstay_seq',
-            'intime', 'outtime', 'los_icu', 'icustay_seq', 'row_id', 'seq_num', 'icd9_code', 'age']
+            'intime', 'outtime', 'los_icu', 'icustay_seq', 'row_id', 'seq_num', 'icd9_code', 'age', 'level_0']
     cohort.drop(drop, axis=1, inplace=True)
 
     # Gender: from categorical to numerical
     cohort.gender.replace(to_replace=dict(F=1, M=0), inplace=True)
+    cohort = cohort.astype({'admission_type': 'category', 'ethnicity_grouped': 'category', 'insurance': 'category',
+                            'icd_alzheimer': 'bool', 'icd_cancer': 'bool', 'icd_diabetes': 'bool', 'icd_heart': 'bool',
+                            'icd_transplant': 'bool', 'gender': 'bool', 'hospital_expire_flag': 'bool',
+                            'oasis_score':'category'}, copy=False)
 
     # Select features
+    cohort_X = cohort[cohort.columns.difference(["los_hospital", "hospital_expire_flag"])]
+
     cohort_y = cohort[["hospital_expire_flag", "los_hospital"]]
     cohort_y['hospital_expire_flag'] = cohort_y['hospital_expire_flag'].astype(bool)
     cohort_y = Surv.from_dataframe("hospital_expire_flag", "los_hospital", cohort_y)
-
-    cohort_X = cohort[cohort.columns.difference(["los_hospital", "hospital_expire_flag"])]
-    cohort_X = cohort_X.astype({'admission_type': 'category', 'ethnicity_grouped': 'category',
-                                 'gender': 'category', 'insurance': 'category', 'icd_alzheimer': 'category',
-                                 'icd_cancer': 'category', 'icd_diabetes': 'category', 'icd_heart': 'category',
-                                 'icd_transplant': 'category'}, copy=False)
 
 
     #############################################################
@@ -56,36 +46,50 @@ def main():
     #
     #############################################################
 
+    random_state = 20
+
+    # Open file
+    _file = open("files/cox-rsf.txt", "a")
+
+    time_string = time.strftime("%m/%d/%Y, %H:%M:%S", time.localtime())
+    _file.write("########## Init: " + time_string + "\n\n")
+
     # Transformation
     Xt = OneHotEncoder().fit_transform(cohort_X)
     Xt = np.column_stack((Xt.values))
     feature_names = cohort_X.columns.tolist()
 
     # Train / test split
-    random_state = 20
-    X_train, X_test, y_train, y_test = train_test_split(Xt.transpose(), cohort_y, test_size=0.25, random_state=random_state)
+    X_train, X_test, y_train, y_test = train_test_split(Xt.transpose(), cohort_y, test_size=0.20, random_state=random_state)
 
-    named_tuple = time.localtime() # get struct_time
-    time_string = time.strftime("%m/%d/%Y, %H:%M:%S", named_tuple)
-    print("init: " + time_string)
+    # KFold
+    cv = KFold(n_splits=10, shuffle=True, random_state=random_state)
+    split = [2, 4, 6, 8]
+    leaf = [2, 8, 32, 64, 128]
+    # leaf = [8, 10, 20, 50]
 
     # Train model
-    rsf = RandomSurvivalForest(n_estimators=1000,
-                            min_samples_split=10,
-                            min_samples_leaf=15,
-                            max_features="sqrt",
-                            n_jobs=-1,
-                            random_state=random_state)
-    rsf.fit(X_train, y_train)
+    for s in split:
+        for l in leaf:
+            rsf = RandomSurvivalForest(n_estimators=1000,
+                                    min_samples_split=s,
+                                    min_samples_leaf=l,
+                                    max_features="sqrt",
+                                    n_jobs=-1,
+                                    random_state=random_state)
 
-    named_tuple = time.localtime() # get struct_time
-    time_string = time.strftime("%m/%d/%Y, %H:%M:%S", named_tuple)
-    print("final: " + time_string)
+
+            gcv = GridSearchCV(rsf, cv=cv)
+            gcv.fit(X_train, y_train)
 
     # C-index score
-    rsf.score(X_test, y_test)
+    gcv.score(X_test, y_test)
 
-    # TO-DO: ML!
+    time_string = time.strftime("%m/%d/%Y, %H:%M:%S", time.localtime())
+    _file.write("\n########## Final: " + time_string + "\n")
+
+    # Close file
+    _file.close()
 
 
 if __name__ == "__main__":
