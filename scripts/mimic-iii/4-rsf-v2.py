@@ -34,7 +34,6 @@ def main():
     cohort_X = cohort[cohort.columns.difference(["los_hospital", "hospital_expire_flag"])]
 
     cohort_y = cohort[["hospital_expire_flag", "los_hospital"]]
-    # cohort_y = cohort_y.astype({'hospital_expire_flag': 'bool'}, copy=False)
     cohort_y = Surv.from_dataframe("hospital_expire_flag", "los_hospital", cohort_y)
 
 
@@ -50,7 +49,7 @@ def main():
     old_score = 0
 
     # Open file
-    _file = open("files/cox-rsf.txt", "a")
+    _file = open("files/cox-rsf-v2.txt", "a")
 
     time_string = time.strftime("%m/%d/%Y, %H:%M:%S", time.localtime())
     _file.write("########## Init: " + time_string + "\n\n")

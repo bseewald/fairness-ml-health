@@ -51,7 +51,7 @@ def main():
     old_score = 0
 
     # Open file
-    _file = open("files/cox-rsf-v2.txt", "a")
+    _file = open("files/cox-rsf.txt", "a")
 
     time_string = time.strftime("%m/%d/%Y, %H:%M:%S", time.localtime())
     _file.write("########## Init: " + time_string + "\n\n")
