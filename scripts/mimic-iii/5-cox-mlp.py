@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 import psycopg2
 import time
-from time import gmtime, strftime
+from cohort import get_cohort as gh
 
 from sklearn.preprocessing import StandardScaler
 from sklearn_pandas import DataFrameMapper
@@ -56,24 +56,34 @@ def preprocess_target_features(x_train, x_val, x_test,
     return train, val, test
 
 
+# ---------------------
+# Hyperparameter values
+# ---------------------
+# Layers                           {1, 2, 4}
+# Nodes per layer                  {64, 128, 256, 512}
+# Dropout                          [0, 0.7]
+# Weigh decay                      {0.4, 0.2, 0.1, 0.05, 0.02, 0.01, 0} - torch.optim.Adam(params, lr=0.001, betas=(0.9, 0.999), eps=1e-08, weight_decay=0, amsgrad=False)
+# Batch size                       {64, 128, 256, 512, 1024}
+# λ(penalty to the loss function)  {0.1, 0.01, 0.001, 0} - CoxCC(net, optimizer, shrink)
+
 def make_net(train, bn, dpt):
     # Entity embedding
     num_embeddings = train[0][1].max(0) + 1
     embedding_dims = num_embeddings // 2
 
     in_features = train[0][0].shape[1]
-    num_nodes = [32, 32]
+    num_nodes = [32, 32] # 2 layers with 32 nodes each
     out_features = 1
     net = tt.practical.MixedInputMLP(in_features, num_embeddings, embedding_dims,
-                                    num_nodes, out_features,
-                                    batch_norm=bn, dropout=dpt, output_bias=False)
+                                     num_nodes, out_features,
+                                     batch_norm=bn, dropout=dpt, output_bias=False)
     return net
 
 
 # Training the model
-def fit_and_predict(survival_analysis_model, train, val, test, lr, bn, dpt, ep):
+def fit_and_predict(survival_analysis_model, train, val, test, lr, bn, dpt, ep, shrink):
     net = make_net(train, bn, dpt)
-    model = survival_analysis_model(net, optimizer=tt.optim.Adam)
+    model = survival_analysis_model(net, optimizer=tt.optim.Adam, shrink=shrink)
     model.optimizer.set_lr(lr)
 
     callbacks = [tt.callbacks.EarlyStopping()]
@@ -92,51 +102,32 @@ def best_lr(model, train, batch_size):
 
 def main():
 
-    #######################
-    # POSTGRESQL Connection
-    #######################
-    host = '/tmp'
-    user='postgres'
-    passwd='postgres'
-    con = psycopg2.connect(dbname ='mimic', user=user, password=passwd, host=host)
-    cur = con.cursor()
-
-    # Cohort Table
-    cohort_query = 'SELECT * FROM mimiciii.cohort_survival'
-    cohort = pd.read_sql_query(cohort_query, con)
+    # Get data
+    cohort = gh.get_cohort()
 
     # Binning
     cohort['age_st'] = pd.cut(cohort['age'], np.arange(15, 91, 15))
 
     # Neural network
-    drop_nn = ['index', 'subject_id', 'hadm_id', 'icustay_id', 'dod', 'admittime', 'dischtime', 'ethnicity', 'hospstay_seq',
-            'intime', 'outtime', 'los_icu', 'icustay_seq', 'row_id', 'seq_num', 'icd9_code', 'age']
-    cohort_nn = cohort.drop(drop_nn, axis=1)
+    drop = ['index', 'subject_id', 'hadm_id', 'icustay_id', 'dod', 'admittime', 'dischtime', 'ethnicity', 'hospstay_seq',
+            'intime', 'outtime', 'los_icu', 'icustay_seq', 'row_id', 'seq_num', 'icd9_code', 'age', 'level_0']
+    cohort.drop(drop, axis=1, inplace=True)
 
     # Gender: from categorical to numerical
-    cohort_nn.gender.replace(to_replace=dict(F=1, M=0), inplace=True)
+    cohort.gender.replace(to_replace=dict(F=1, M=0), inplace=True)
+    cohort = cohort.astype({'admission_type': 'category', 'ethnicity_grouped': 'category', 'insurance': 'category',
+                            'icd_alzheimer': 'int64', 'icd_cancer': 'int64', 'icd_diabetes': 'int64', 'icd_heart': 'int64',
+                            'icd_transplant': 'int64', 'gender': 'int64', 'hospital_expire_flag': 'int64',
+                            'oasis_score':'int64'}, copy=False)
+
+    # Select features
+    # cohort_y = cohort[["hospital_expire_flag", "los_hospital"]]
+    # cohort_X = cohort[cohort.columns.difference(["los_hospital", "hospital_expire_flag"])]
 
     ##################################
     # PyCox Library
     # https://github.com/havakv/pycox
-    ##################################
-
-    np.random.seed(1234)
-    _ = torch.manual_seed(123)
-
-    # Train / valid / test split
-    test_dataset = cohort_nn.sample(frac=0.2)
-    train_dataset = cohort_nn.drop(test_dataset.index)
-    valid_dataset = train_dataset.sample(frac=0.2)
-    train_dataset = train_dataset.drop(valid_dataset.index)
-
-    tt.tuplefy(train_dataset, valid_dataset, test_dataset).lens()
-
-    # Feature transforms
-    x_train, x_val, x_test = preprocess_input_features(train_dataset, valid_dataset, test_dataset)
-    train, val, test = preprocess_target_features(x_train, x_val, x_test,
-                                                  train_dataset, valid_dataset, test_dataset)
-
+    #
     # Cox-MLP (CC)
     #
     #     """Cox proportional hazards model parameterized with a neural net and
@@ -148,19 +139,41 @@ def main():
     #         Time-to-event prediction with neural networks and Cox regression.
     #         Journal of Machine Learning Research, 20(129):1–30, 2019.
     #         http://jmlr.org/papers/v20/18-424.html
-    #     """
+    #
+    ##################################
 
-    named_tuple = time.localtime() # get struct_time
-    time_string = time.strftime("%m/%d/%Y, %H:%M:%S", named_tuple)
-    print("init: " + time_string)
+    _ = torch.manual_seed(20)
+
+    # Train / valid / test split
+    test_dataset = cohort.sample(frac=0.2)
+    train_dataset = cohort.drop(test_dataset.index)
+    valid_dataset = train_dataset.sample(frac=0.2)
+    train_dataset = train_dataset.drop(valid_dataset.index)
+
+    tt.tuplefy(train_dataset, valid_dataset, test_dataset).lens()
+
+    # Feature transforms
+    x_train, x_val, x_test = preprocess_input_features(train_dataset, valid_dataset, test_dataset)
+    train, val, test = preprocess_target_features(x_train, x_val, x_test,
+                                                  train_dataset, valid_dataset, test_dataset)
+
+    # Open file
+    _file = open("files/cox-rsf-v2.txt", "a")
+
+    time_string = time.strftime("%m/%d/%Y, %H:%M:%S", time.localtime())
+    _file.write("########## Init: " + time_string + "\n\n")
+
 
     surv_cc, model_cc, log_cc = fit_and_predict(CoxCC, train, val, test, lr=0.01, bn=256, dpt=0.1, ep=512)
 
-    named_tuple = time.localtime() # get struct_time
-    time_string = time.strftime("%m/%d/%Y, %H:%M:%S", named_tuple)
-    print("final: " + time_string)
 
-    # TO-DO: ML!
+    time_string = time.strftime("%m/%d/%Y, %H:%M:%S", time.localtime())
+    _file.write("\n########## Final: " + time_string + "\n")
+
+    _file.write("\n*** The last one is the best configuration! ***\n\n")
+
+    # Close file
+    _file.close()
 
 
 if __name__ == "__main__":
