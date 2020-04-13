@@ -59,6 +59,8 @@ def main():
     # Duration: los_hospital (hospital lenght of stay -- in days)
     #############################################################
 
+    # to-do: do 10x or 20x different random_state and use box-plot ?
+    # to-do: we censored all individuals that were still under observation at time 30 ?
     random_state = 20
 
     # Open file

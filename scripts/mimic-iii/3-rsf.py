@@ -34,7 +34,8 @@ def main():
     cohort_X = cohort[cohort.columns.difference(["los_hospital", "hospital_expire_flag"])]
 
     cohort_y = cohort[["hospital_expire_flag", "los_hospital"]]
-    cohort_y['hospital_expire_flag'] = cohort_y['hospital_expire_flag'].astype(bool)
+    # cohort_y = cohort_y.astype({'hospital_expire_flag': 'bool'}, copy=False)
+    # cohort_y['hospital_expire_flag'] = cohort_y['hospital_expire_flag'].astype(bool, copy=False)
     cohort_y = Surv.from_dataframe("hospital_expire_flag", "los_hospital", cohort_y)
 
 
@@ -47,16 +48,17 @@ def main():
     #############################################################
 
     random_state = 20
+    old_score = 0
 
     # Open file
-    _file = open("files/cox-rsf.txt", "a")
+    _file = open("files/cox-rsf-v2.txt", "a")
 
     time_string = time.strftime("%m/%d/%Y, %H:%M:%S", time.localtime())
     _file.write("########## Init: " + time_string + "\n\n")
 
     # Transformation
     Xt = OneHotEncoder().fit_transform(cohort_X)
-    Xt = np.column_stack((Xt.values))
+    Xt = np.column_stack(Xt.values)
     feature_names = cohort_X.columns.tolist()
 
     # Train / test split
@@ -64,29 +66,42 @@ def main():
 
     # KFold
     cv = KFold(n_splits=10, shuffle=True, random_state=random_state)
+
+    # Params
     split = [2, 4, 6, 8]
-    leaf = [2, 8, 32, 64, 128]
-    # leaf = [8, 10, 20, 50]
+    leaf = [2, 8, 32, 64, 128] # v1
+    n_estimators = [500, 1000]
+    max_features = ["auto", "sqrt"]
+    n_jobs = [-1]
+    random_state_rsf = [random_state]
+
+    params = {'n_estimators': n_estimators, 'min_samples_split': split, 'min_samples_leaf': leaf,
+              'max_features': max_features, 'n_jobs': n_jobs, 'random_state': random_state_rsf}
 
     # Train model
-    for s in split:
-        for l in leaf:
-            rsf = RandomSurvivalForest(n_estimators=1000,
-                                    min_samples_split=s,
-                                    min_samples_leaf=l,
-                                    max_features="sqrt",
-                                    n_jobs=-1,
-                                    random_state=random_state)
-
-
-            gcv = GridSearchCV(rsf, cv=cv)
-            gcv.fit(X_train, y_train)
+    rsf = RandomSurvivalForest()
+    gcv = GridSearchCV(rsf, param_grid=params, cv=cv)
+    gcv_fit = gcv.fit(X_train, y_train)
 
     # C-index score
-    gcv.score(X_test, y_test)
+    gcv_score = gcv.score(X_test, y_test)
+
+    if gcv_score > old_score:
+
+        old_score = gcv_score
+
+        print(gcv_fit.best_params_)
+
+        # Best Parameters
+        _file.write("Best Parameters: " + str(gcv_fit.best_params_) + "\n")
+
+        # C-Index
+        _file.write("C-Index: " + str(gcv_score) + "\n")
 
     time_string = time.strftime("%m/%d/%Y, %H:%M:%S", time.localtime())
     _file.write("\n########## Final: " + time_string + "\n")
+
+    _file.write("\n*** The last one is the best configuration! ***\n\n")
 
     # Close file
     _file.close()
