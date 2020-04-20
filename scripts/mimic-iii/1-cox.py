@@ -8,7 +8,6 @@
 
 import pandas as pd
 import numpy as np
-import psycopg2
 import time
 from cohort import get_cohort as gh
 
@@ -66,7 +65,7 @@ def main():
     # Open file
     _file = open("files/cox.txt", "a")
 
-    time_string = time.strftime("%m/%d/%Y, %H:%M:%S", time.localtime())
+    time_string = time.strftime("%d/%m/%Y, %H:%M:%S", time.localtime())
     _file.write("########## Init: " + time_string + "\n\n")
 
     # Train / test samples
@@ -85,11 +84,11 @@ def main():
     gcv = GridSearchCV(cx, {"penalizer": _alphas, "l1_ratio": _l1_ratios}, cv=cv)
 
     # Fit
-    print(time.strftime("%m/%d/%Y, %H:%M:%S", time.localtime()))
+    print(time.strftime("%d/%m/%Y, %H:%M:%S", time.localtime()))
     gcv_fit = gcv.fit(X_train, y_train)
 
     # Score
-    print(time.strftime("%m/%d/%Y, %H:%M:%S", time.localtime()))
+    print(time.strftime("%d/%m/%Y, %H:%M:%S", time.localtime()))
     gcv_score = gcv.score(X_test, y_test)
 
 
@@ -111,7 +110,7 @@ def main():
                                cohort_df['hospital_expire_flag'])
     _file.write("C-Index all dataset: " + str(cindex) + "\n")
 
-    time_string = time.strftime("%m/%d/%Y, %H:%M:%S", time.localtime())
+    time_string = time.strftime("%d/%m/%Y, %H:%M:%S", time.localtime())
     _file.write("\n########## Final: " + time_string + "\n")
 
     # Close file

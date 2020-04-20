@@ -1,6 +1,5 @@
 import pandas as pd
 import numpy as np
-import psycopg2
 import time
 from cohort import get_cohort as gh
 
@@ -51,7 +50,7 @@ def main():
     # Open file
     _file = open("files/cox-rsf-v2.txt", "a")
 
-    time_string = time.strftime("%m/%d/%Y, %H:%M:%S", time.localtime())
+    time_string = time.strftime("%d/%m/%Y, %H:%M:%S", time.localtime())
     _file.write("########## Init: " + time_string + "\n\n")
 
     # Transformation
@@ -80,11 +79,11 @@ def main():
     rsf = RandomSurvivalForest()
     gcv = GridSearchCV(rsf, param_grid=params, cv=cv)
 
-    print(time.strftime("%m/%d/%Y, %H:%M:%S", time.localtime()))
+    print(time.strftime("%d/%m/%Y, %H:%M:%S", time.localtime()))
     gcv_fit = gcv.fit(X_train, y_train)
 
     # C-index score
-    print(time.strftime("%m/%d/%Y, %H:%M:%S", time.localtime()))
+    print(time.strftime("%d/%m/%Y, %H:%M:%S", time.localtime()))
     gcv_score = gcv.score(X_test, y_test)
 
     if gcv_score > old_score:
@@ -99,7 +98,7 @@ def main():
         # C-Index
         _file.write("C-Index: " + str(gcv_score) + "\n")
 
-    time_string = time.strftime("%m/%d/%Y, %H:%M:%S", time.localtime())
+    time_string = time.strftime("%d/%m/%Y, %H:%M:%S", time.localtime())
     _file.write("\n########## Final: " + time_string + "\n")
 
     _file.write("\n*** The last one is the best configuration! ***\n\n")

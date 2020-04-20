@@ -1,6 +1,5 @@
 import pandas as pd
 import numpy as np
-import psycopg2
 import time
 import matplotlib.pyplot as plt
 from cohort import get_cohort as gh
@@ -53,7 +52,7 @@ def main():
     # Open file
     _file = open("files/cox-net.txt", "a")
 
-    time_string = time.strftime("%m/%d/%Y, %H:%M:%S", time.localtime())
+    time_string = time.strftime("%d/%m/%Y, %H:%M:%S", time.localtime())
     _file.write("########## Init: " + time_string + "\n\n")
 
     # OneHot
@@ -118,7 +117,7 @@ def main():
             coef = pd.Series(gcv_fit.best_estimator_.coef_[:, 0], index=cohort_Xt.columns)
             _file.write("Coeficients:\n" + str(coef[coef != 0]) + "\n\n")
 
-    time_string = time.strftime("%m/%d/%Y, %H:%M:%S", time.localtime())
+    time_string = time.strftime("%d/%m/%Y, %H:%M:%S", time.localtime())
     _file.write("\n########## Final: " + time_string + "\n")
 
     _file.write("\n*** The last one is the best configuration! ***\n\n")

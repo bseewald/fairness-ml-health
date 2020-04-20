@@ -1,6 +1,5 @@
 import pandas as pd
 import numpy as np
-import psycopg2
 import time
 from cohort import get_cohort as gh
 
@@ -53,7 +52,7 @@ def main():
     # Open file
     _file = open("files/cox-rsf.txt", "a")
 
-    time_string = time.strftime("%m/%d/%Y, %H:%M:%S", time.localtime())
+    time_string = time.strftime("%d/%m/%Y, %H:%M:%S", time.localtime())
     _file.write("########## Init: " + time_string + "\n\n")
 
     # Transformation
@@ -98,7 +97,7 @@ def main():
         # C-Index
         _file.write("C-Index: " + str(gcv_score) + "\n")
 
-    time_string = time.strftime("%m/%d/%Y, %H:%M:%S", time.localtime())
+    time_string = time.strftime("%d/%m/%Y, %H:%M:%S", time.localtime())
     _file.write("\n########## Final: " + time_string + "\n")
 
     _file.write("\n*** The last one is the best configuration! ***\n\n")
