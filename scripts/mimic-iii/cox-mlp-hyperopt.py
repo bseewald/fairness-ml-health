@@ -2,10 +2,10 @@ import time
 
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
 import torch
 import torchtuples as tt
 from cohort import get_cohort as gh
+from hyperopt import hp, fmin, tpe, STATUS_OK, Trials
 from pycox import utils
 from pycox.evaluation import EvalSurv
 from pycox.models import CoxCC
@@ -46,7 +46,7 @@ def get_cohort():
     cohort = cohort.astype({'admission_type': 'category', 'ethnicity_grouped': 'category', 'insurance': 'category',
                             'icd_alzheimer': 'int64', 'icd_cancer': 'int64', 'icd_diabetes': 'int64', 'icd_heart': 'int64',
                             'icd_transplant': 'int64', 'gender': 'int64', 'hospital_expire_flag': 'int64',
-                            'oasis_score':'int64'}, copy=False)
+                            'oasis_score': 'int64'}, copy=False)
     return cohort
 
 
@@ -103,24 +103,6 @@ def make_net(train, dropout, num_nodes):
     return net
 
 
-# Training the model
-def fit_and_predict(survival_analysis_model, train, val, test,
-                    lr, batch, dropout, epoch, weight_decay,
-                    num_nodes, shrink, device):
-    net = make_net(train, dropout, num_nodes)
-
-    optimizer = tt.optim.Adam(weight_decay=weight_decay)
-    model = survival_analysis_model(net, device=device, optimizer=optimizer, shrink=shrink)
-    model.optimizer.set_lr(lr)
-
-    callbacks = [tt.callbacks.EarlyStopping()]
-    log = model.fit(train[0], train[1], batch, epoch, callbacks, val_data=val.repeat(10).cat())
-
-    _ = model.compute_baseline_hazards()
-    surv = model.predict_surv_df(test[0])
-    return surv, model, log
-
-
 def add_km_censor_modified(ev, durations, events):
     """
         Add censoring estimates obtained by Kaplan-Meier on the test set(durations, 1-events).
@@ -136,7 +118,25 @@ def add_km_censor_modified(ev, durations, events):
     return ev.add_censor_est(surv)
 
 
-def evaluate(test, surv):
+def experiment(params):
+
+    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+
+    cohort = get_cohort()
+    train, val, test = cohort_samples(seed=20, cohort=cohort)
+
+    net = make_net(train, params['dropout'], params['num_nodes'])
+    optimizer = tt.optim.Adam(weight_decay=params['weight_decay'])
+    model = CoxCC(net, device=device, optimizer=optimizer, shrink=params['shrink'])
+    model.optimizer.set_lr(params['lr'])
+    callbacks = [tt.callbacks.EarlyStopping()]
+    _ = model.fit(train[0], train[1], batch_size=params['batch'], epochs=512, callbacks=callbacks,
+                  val_data=val.repeat(10).cat())
+
+    _ = model.compute_baseline_hazards()
+
+    surv = model.predict_surv_df(test[0])
+
     durations = test[1][0]
     events = test[1][1]
 
@@ -146,18 +146,11 @@ def evaluate(test, surv):
     # the censoring distribution by Kaplan-Meier on the test set.
     _ = add_km_censor_modified(ev, durations, events)
 
-    # c-index
+    # c-index: the bigger, the better
     cindex = ev.concordance_td()
 
-    # brier score
-    time_grid = np.linspace(durations.min(), durations.max(), 100)
-    _ = ev.brier_score(time_grid)
-    bscore = ev.integrated_brier_score(time_grid)
-
-    # binomial log-likelihood
-    nbll = ev.integrated_nbll(time_grid)
-
-    return cindex, bscore, nbll
+    # -cindex it's a work around because hyperopt uses fmin function
+    return {'loss': -cindex, 'status': STATUS_OK}
 
 
 def main():
@@ -180,13 +173,8 @@ def main():
     #
     ##################################
 
-    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-
-    cohort = get_cohort()
-    train, val, test = cohort_samples(seed=20, cohort=cohort)
-
     # Open file
-    _file = open("files/cox-mlp.txt", "a")
+    _file = open("files/cox-mlp-hyperopt.txt", "a")
 
     time_string = time.strftime("%d/%m/%Y, %H:%M:%S", time.localtime())
     _file.write("########## Init: " + time_string + "\n\n")
@@ -196,48 +184,30 @@ def main():
     # ---------------------
     # Layers                           {2, 4}
     # Nodes per layer                  {64, 128, 256, 512}
-    # Dropout                          {0, 0.7}
+    # Dropout                          [0, 0.7]
     # Weigh decay                      {0.4, 0.2, 0.1, 0.05, 0.02, 0.01, 0}
     # Batch size                       {64, 128, 256, 512, 1024}
     # λ(penalty to the loss function)  {0.1, 0.01, 0.001, 0} - CoxCC(net, optimizer, shrink)
-    # Learning Rate                    {0.01, 0.001, 0.0001}
 
-    # Best Parameters: {'batch': 0, 'dropout': 1, 'lr': 0, 'num_nodes': 2, 'shrink': 1, 'weight_decay': 3}
+    space = {'num_nodes': hp.choice('num_nodes', [[64, 64], [128, 128], [256, 256], [512, 512],
+                                                  [64, 64, 64, 64], [128, 128, 128, 128],
+                                                  [256, 256, 256, 256], [512, 512, 512, 512]]),
+             'dropout': hp.choice('dropout', [0, 0.7]),
+             'weight_decay': hp.choice('weight_decay', [0.4, 0.2, 0.1, 0.05, 0.02, 0.01, 0]),
+             'batch': hp.choice('batch', [64, 128, 256, 512, 1024]),
+             'lr': hp.choice('lr', [0.01, 0.001, 0.0001]),
+             'shrink': hp.choice('shrink', [0.1, 0.01, 0.001, 0])}
 
-    best = {'lr': 0.01,
-            'batch_size': 64,
-            'dropout': 0.7,
-            'weight_decay': 0.05,
-            'num_nodes': [256, 256],
-            'shrink': 0.01}
+    trials = Trials()
 
-    surv, model, log = fit_and_predict(CoxCC, train, val, test,
-                                       lr=best['lr'], batch=best['batch_size'], dropout=best['dropout'],
-                                       epoch=512, weight_decay=best['weight_decay'],
-                                       num_nodes=best['num_nodes'], shrink=best['shrink'], device=device)
+    # Tree of Parzen Estimators (TPE)
+    best = fmin(experiment, space, algo=tpe.suggest, max_evals=50, trials=trials)
 
-    # Train, Val Loss
-    plt.ylabel("Loss")
-    plt.xlabel("Epochs")
-    plt.grid(True)
-    log.plot().get_figure().savefig("img/cox-mlp-train-val-loss.png", format="png", bbox_inches="tight")
-
-    # Survival estimates as a dataframe
-    estimates = 5
-    plt.ylabel('S(t | x)')
-    plt.xlabel('Time')
-    surv.iloc[:, :estimates].plot().get_figure().savefig("img/cox-mlp-survival-estimates.png", format="png", bbox_inches="tight")
-
-    # Evaluate
-    cindex, bscore, bll = evaluate(test, surv)
+    # All parameters
+    _file.write("All Parameters: \n" + str(trials.trials) + "\n\n")
 
     # Best Parameters
     _file.write("Best Parameters: " + str(best) + "\n")
-
-    # Scores
-    _file.write("C-Index: " + str(cindex) + "\n" +
-                "Brier Score: " + str(bscore) + "\n" +
-                "Binomial Log-Likelihood: " + str(bll) + "\n")
 
     time_string = time.strftime("%d/%m/%Y, %H:%M:%S", time.localtime())
     _file.write("\n########## Final: " + time_string + "\n")
