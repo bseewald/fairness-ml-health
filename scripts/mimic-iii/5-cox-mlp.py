@@ -215,6 +215,8 @@ def main():
                                        epoch=512, weight_decay=best['weight_decay'],
                                        num_nodes=best['num_nodes'], shrink=best['shrink'], device=device)
 
+    model.save_net("files/cox-mlp-net.pt")
+
     # Train, Val Loss
     plt.ylabel("Loss")
     plt.xlabel("Epochs")
