@@ -1,14 +1,14 @@
-import pandas as pd
-import numpy as np
 import time
-import matplotlib.pyplot as plt
-from cohort import get_cohort as gh
 
-from sksurv.preprocessing import OneHotEncoder
-from sksurv.util import Surv
-from sksurv.linear_model import CoxnetSurvivalAnalysis
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+from cohort import get_cohort as gh
 from sklearn.model_selection import GridSearchCV, KFold
 from sklearn.model_selection import train_test_split
+from sksurv.linear_model import CoxnetSurvivalAnalysis
+from sksurv.preprocessing import OneHotEncoder
+from sksurv.util import Surv
 
 
 def main():
@@ -124,6 +124,7 @@ def main():
 
     # Close file
     _file.close()
+
 
 if __name__ == "__main__":
     main()

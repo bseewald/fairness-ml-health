@@ -6,12 +6,11 @@
 # between birth and death events. Survival Analysis was originally developed and used by Medical
 # Researchers and Data Analysts to measure the lifetimes of a certain population."
 
-import pandas as pd
-import numpy as np
 import time
-from cohort import get_cohort as gh
 
-import lifelines
+import numpy as np
+import pandas as pd
+from cohort import get_cohort as gh
 from lifelines import CoxPHFitter
 from lifelines.utils import concordance_index
 from lifelines.utils.sklearn_adapter import sklearn_adapter
@@ -90,7 +89,6 @@ def main():
     # Score
     print(time.strftime("%d/%m/%Y, %H:%M:%S", time.localtime()))
     gcv_score = gcv.score(X_test, y_test)
-
 
     # Best Parameters
     _file.write("Best Parameters: " + str(gcv_fit.best_params_) + "\n")

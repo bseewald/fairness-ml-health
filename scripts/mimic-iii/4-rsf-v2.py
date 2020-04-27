@@ -1,13 +1,13 @@
-import pandas as pd
-import numpy as np
 import time
+
+import numpy as np
+import pandas as pd
 from cohort import get_cohort as gh
-
 from sklearn.model_selection import train_test_split, GridSearchCV, KFold
-
-from sksurv.preprocessing import OneHotEncoder
 from sksurv.ensemble import RandomSurvivalForest
+from sksurv.preprocessing import OneHotEncoder
 from sksurv.util import Surv
+
 
 def main():
 
@@ -35,7 +35,6 @@ def main():
     cohort_y = cohort[["hospital_expire_flag", "los_hospital"]]
     cohort_y = Surv.from_dataframe("hospital_expire_flag", "los_hospital", cohort_y)
 
-
     #############################################################
     # Scikit-Survival Library
     # https://github.com/sebp/scikit-survival
@@ -56,7 +55,7 @@ def main():
     # Transformation
     Xt = OneHotEncoder().fit_transform(cohort_X)
     Xt = np.column_stack(Xt.values)
-    feature_names = cohort_X.columns.tolist()
+    # feature_names = cohort_X.columns.tolist()
 
     # Train / test split
     X_train, X_test, y_train, y_test = train_test_split(Xt.transpose(), cohort_y, test_size=0.20, random_state=random_state)
