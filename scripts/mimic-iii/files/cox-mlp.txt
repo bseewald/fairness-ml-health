@@ -1,0 +1,8 @@
+########## Init: 26/04/2020, 22:08:41
+
+Best Parameters: {'lr': 0.01, 'batch_size': 128, 'dropout': 0.7, 'weight_decay': 0, 'num_nodes': [256, 256], 'shrink': 0.1}
+C-Index: 0.7304761835937312
+Brier Score: 0.14999958282478817
+Binomial Log-Likelihood: 0.46225898223582257
+
+########## Final: 26/04/2020, 22:09:03

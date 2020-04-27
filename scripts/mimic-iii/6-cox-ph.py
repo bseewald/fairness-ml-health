@@ -1,16 +1,37 @@
 import time
 
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
 import torch
 import torchtuples as tt
 from cohort import get_cohort as gh
 from pycox import utils
 from pycox.evaluation import EvalSurv
-from pycox.models import CoxCC
+from pycox.models import CoxPH
 from pycox.preprocessing.feature_transforms import OrderedCategoricalLong
 from sklearn_pandas import DataFrameMapper
+
+
+def get_cohort():
+    # Get data
+    cohort = gh.get_cohort()
+
+    # Binning
+    cohort['age_st'] = pd.cut(cohort['age'], np.arange(15, 91, 15))
+
+    # Neural network
+    drop = ['index', 'subject_id', 'hadm_id', 'icustay_id', 'dod', 'admittime', 'dischtime', 'ethnicity', 'hospstay_seq',
+            'intime', 'outtime', 'los_icu', 'icustay_seq', 'row_id', 'seq_num', 'icd9_code', 'age']
+    cohort.drop(drop, axis=1, inplace=True)
+
+    # Gender: from categorical to numerical
+    cohort.gender.replace(to_replace=dict(F=1, M=0), inplace=True)
+    cohort = cohort.astype({'admission_type': 'category', 'ethnicity_grouped': 'category', 'insurance': 'category',
+                            'icd_alzheimer': 'int64', 'icd_cancer': 'int64', 'icd_diabetes': 'int64', 'icd_heart': 'int64',
+                            'icd_transplant': 'int64', 'gender': 'int64', 'hospital_expire_flag': 'int64',
+                            'oasis_score':'int64'}, copy=False)
+    return cohort
 
 
 def cohort_samples(seed, cohort):
@@ -29,27 +50,6 @@ def cohort_samples(seed, cohort):
     return train, val, test
 
 
-def get_cohort():
-    # Get data
-    cohort = gh.get_cohort()
-
-    # Binning
-    cohort['age_st'] = pd.cut(cohort['age'], np.arange(15, 91, 15))
-
-    # Neural network
-    drop = ['index', 'subject_id', 'hadm_id', 'icustay_id', 'dod', 'admittime', 'dischtime', 'ethnicity', 'hospstay_seq',
-            'intime', 'outtime', 'los_icu', 'icustay_seq', 'row_id', 'seq_num', 'icd9_code', 'age', 'level_0']
-    cohort.drop(drop, axis=1, inplace=True)
-
-    # Gender: from categorical to numerical
-    cohort.gender.replace(to_replace=dict(F=1, M=0), inplace=True)
-    cohort = cohort.astype({'admission_type': 'category', 'ethnicity_grouped': 'category', 'insurance': 'category',
-                            'icd_alzheimer': 'int64', 'icd_cancer': 'int64', 'icd_diabetes': 'int64', 'icd_heart': 'int64',
-                            'icd_transplant': 'int64', 'gender': 'int64', 'hospital_expire_flag': 'int64',
-                            'oasis_score':'int64'}, copy=False)
-    return cohort
-
-
 def preprocess_input_features(train_dataset, valid_dataset, test_dataset):
     cols_categorical = ['insurance', 'ethnicity_grouped', 'age_st', 'oasis_score', 'admission_type']
     categorical = [(col, OrderedCategoricalLong()) for col in cols_categorical]
@@ -61,8 +61,10 @@ def preprocess_input_features(train_dataset, valid_dataset, test_dataset):
     leave = [(col, None) for col in cols_leave]
     x_mapper_float = DataFrameMapper(leave)
 
-    x_fit_transform = lambda df: tt.tuplefy(x_mapper_float.fit_transform(df).astype('float32'), x_mapper_long.fit_transform(df))
-    x_transform = lambda df: tt.tuplefy(x_mapper_float.transform(df).astype('float32'), x_mapper_long.transform(df))
+    x_fit_transform = lambda df: tt.tuplefy(x_mapper_float.fit_transform(df).astype('float32'),
+                                            x_mapper_long.fit_transform(df))
+    x_transform = lambda df: tt.tuplefy(x_mapper_float.transform(df).astype('float32'),
+                                        x_mapper_long.transform(df))
 
     x_train = x_fit_transform(train_dataset)
     x_val = x_transform(valid_dataset)
@@ -165,17 +167,19 @@ def main():
     # PyCox Library
     # https://github.com/havakv/pycox
     #
-    # Cox-MLP (CC)
+    # CoxPH (DeepServ)
     #
-    #     """Cox proportional hazards model parameterized with a neural net and
-    #     trained with case-control sampling [1].
-    #     This is similar to DeepSurv, but use an approximation of the loss function.
+    #     """Cox proportional hazards model parameterized with a neural net.
+    #     This is essentially the DeepSurv method [1].
     #
-    #     References:
-    #     [1] Håvard Kvamme, Ørnulf Borgan, and Ida Scheel.
-    #         Time-to-event prediction with neural networks and Cox regression.
-    #         Journal of Machine Learning Research, 20(129):1–30, 2019.
-    #         http://jmlr.org/papers/v20/18-424.html
+    #     The loss function is not quite the partial log-likelihood, but close.
+    #     The difference is that for tied events, we use a random order instead of
+    #     including all individuals that had an event at that point in time.
+    #
+    #     [1] Jared L. Katzman, Uri Shaham, Alexander Cloninger, Jonathan Bates, Tingting Jiang, and Yuval Kluger.
+    #         Deepsurv: personalized treatment recommender system using a Cox proportional hazards deep neural network.
+    #         BMC Medical Research Methodology, 18(1), 2018.
+    #         https://bmcmedresmethodol.biomedcentral.com/articles/10.1186/s12874-018-0482-1
     #
     ##################################
 
@@ -185,7 +189,7 @@ def main():
     train, val, test = cohort_samples(seed=20, cohort=cohort)
 
     # Open file
-    _file = open("files/cox-mlp.txt", "a")
+    _file = open("files/cox-ph.txt", "a")
 
     time_string = time.strftime("%d/%m/%Y, %H:%M:%S", time.localtime())
     _file.write("########## Init: " + time_string + "\n\n")
@@ -201,16 +205,16 @@ def main():
     # λ(penalty to the loss function)  {0.1, 0.01, 0.001, 0} - CoxCC(net, optimizer, shrink)
     # Learning Rate                    {0.01, 0.001, 0.0001}
 
-    # Best Parameters: {'batch': 1, 'dropout': 1, 'lr': 0, 'num_nodes': 2, 'shrink': 0, 'weight_decay': 6}
+    # Best Parameters: {}
 
     best = {'lr': 0.01,
-            'batch_size': 128,
+            'batch_size': 64,
             'dropout': 0.7,
-            'weight_decay': 0,
+            'weight_decay': 0.05,
             'num_nodes': [256, 256],
-            'shrink': 0.1}
+            'shrink': 0.01}
 
-    surv, model, log = fit_and_predict(CoxCC, train, val, test,
+    surv, model, log = fit_and_predict(CoxPH, train, val, test,
                                        lr=best['lr'], batch=best['batch_size'], dropout=best['dropout'],
                                        epoch=512, weight_decay=best['weight_decay'],
                                        num_nodes=best['num_nodes'], shrink=best['shrink'], device=device)
@@ -219,13 +223,13 @@ def main():
     plt.ylabel("Loss")
     plt.xlabel("Epochs")
     plt.grid(True)
-    log.plot().get_figure().savefig("img/cox-mlp-train-val-loss.png", format="png", bbox_inches="tight")
+    log.plot().get_figure().savefig("img/cox-ph-train-val-loss.png", format="png", bbox_inches="tight")
 
     # Survival estimates as a dataframe
     estimates = 5
     plt.ylabel('S(t | x)')
     plt.xlabel('Time')
-    surv.iloc[:, :estimates].plot().get_figure().savefig("img/cox-mlp-survival-estimates.png", format="png", bbox_inches="tight")
+    surv.iloc[:, :estimates].plot().get_figure().savefig("img/cox-ph-survival-estimates.png", format="png", bbox_inches="tight")
 
     # Evaluate
     cindex, bscore, bll = evaluate(test, surv)
