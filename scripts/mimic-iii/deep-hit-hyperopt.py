@@ -8,7 +8,7 @@ import torchtuples as tt
 from cohort import get_cohort as gh
 from pycox import utils
 from pycox.evaluation import EvalSurv
-from pycox.models import CoxPH
+from pycox.models import DeepHitSingle
 from pycox.preprocessing.feature_transforms import OrderedCategoricalLong
 from sklearn_pandas import DataFrameMapper
 
@@ -30,7 +30,7 @@ def get_cohort():
     cohort = cohort.astype({'admission_type': 'category', 'ethnicity_grouped': 'category', 'insurance': 'category',
                             'icd_alzheimer': 'int64', 'icd_cancer': 'int64', 'icd_diabetes': 'int64', 'icd_heart': 'int64',
                             'icd_transplant': 'int64', 'gender': 'int64', 'hospital_expire_flag': 'int64',
-                            'oasis_score':'int64'}, copy=False)
+                            'oasis_score': 'int64'}, copy=False)
     return cohort
 
 
@@ -44,14 +44,23 @@ def cohort_samples(seed, cohort):
     train_dataset = train_dataset.drop(valid_dataset.index)
 
     # Feature transforms
+    # ------------------
+    # DeepHit is a discrete-time method, meaning it requires discretization of the event times to be applied
+    # to continuous-time data. We let 'num_durations' define the size of this (equidistant) discretization grid,
+    # meaning our network will have 'num_durations' output nodes.
+    num_durations = 10
+    labtrans = DeepHitSingle.label_transform(num_durations)
     x_train, x_val, x_test = preprocess_input_features(train_dataset, valid_dataset, test_dataset)
-    train, val, test = preprocess_target_features(x_train, x_val, x_test,
-                                                  train_dataset, valid_dataset, test_dataset)
-    return train, val, test
+    train, val, test = deep_hit_preprocess_target_features(x_train, x_val, x_test,
+                                                           train_dataset, valid_dataset, test_dataset,
+                                                           labtrans)
+
+    return train, val, test, labtrans
 
 
 def preprocess_input_features(train_dataset, valid_dataset, test_dataset):
-    cols_categorical = ['insurance', 'ethnicity_grouped', 'age_st', 'oasis_score', 'admission_type']
+    cols_categorical = ['insurance', 'ethnicity_grouped', 'age_st',
+                        'oasis_score', 'admission_type']
     categorical = [(col, OrderedCategoricalLong()) for col in cols_categorical]
     x_mapper_long = DataFrameMapper(categorical)
 
@@ -73,14 +82,10 @@ def preprocess_input_features(train_dataset, valid_dataset, test_dataset):
     return x_train, x_val, x_test
 
 
-def preprocess_target_features(x_train, x_val, x_test,
-                               train_dataset, valid_dataset, test_dataset):
-
-    get_target = lambda df: (df['los_hospital'].values.astype('float32'),
-                             df['hospital_expire_flag'].values.astype('float32'))
-
-    y_train = get_target(train_dataset)
-    y_val = get_target(valid_dataset)
+def deep_hit_preprocess_target_features(x_train, x_val, x_test, train_dataset, valid_dataset, test_dataset, labtrans):
+    get_target = lambda df: (df['los_hospital'].values, df['hospital_expire_flag'].values)
+    y_train = labtrans.fit_transform(*get_target(train_dataset))
+    y_val = labtrans.transform(*get_target(valid_dataset))
     y_test = get_target(test_dataset)
 
     train = tt.tuplefy(x_train, y_train)
@@ -90,33 +95,30 @@ def preprocess_target_features(x_train, x_val, x_test,
     return train, val, test
 
 
-def make_net(train, dropout, num_nodes):
-    # Entity embedding
+def deep_hit_make_net(train, dropout, num_nodes, labtrans):
     num_embeddings = train[0][1].max(0) + 1
     embedding_dims = num_embeddings // 2
 
     in_features = train[0][0].shape[1]
-    out_features = 1
-    net = tt.practical.MixedInputMLP(in_features,
-                                     num_embeddings=num_embeddings,
-                                     embedding_dims=embedding_dims,
-                                     num_nodes=num_nodes, out_features=out_features,
-                                     dropout=dropout, output_bias=False)
+    batch_norm = True
+    out_features = labtrans.out_features
+    net = tt.practical.MixedInputMLP(in_features, num_embeddings, embedding_dims,
+                                     num_nodes, out_features, batch_norm, dropout)
     return net
 
 
-# Training the model
-def fit_and_predict(survival_analysis_model, train, val, test,
-                    lr, batch, dropout, epoch, weight_decay,
-                    num_nodes, device):
-    net = make_net(train, dropout, num_nodes)
+def deep_hit_fit_and_predict(survival_analysis_model, train, val, test,
+                             lr, batch, dropout, epoch, weight_decay,
+                             num_nodes, alpha, sigma, device, labtrans):
 
+    net = deep_hit_make_net(train, dropout, num_nodes, labtrans)
     optimizer = tt.optim.Adam(weight_decay=weight_decay)
-    model = survival_analysis_model(net, device=device, optimizer=optimizer)
+    model = survival_analysis_model(net, optimizer=optimizer, alpha=alpha, sigma=sigma,
+                                    device=device, duration_index=labtrans.cuts)
     model.optimizer.set_lr(lr)
 
     callbacks = [tt.callbacks.EarlyStopping()]
-    log = model.fit(train[0], train[1], batch, epoch, callbacks, val_data=val.repeat(10).cat(), drop_last=True)
+    log = model.fit(train[0], train[1], batch, epoch, callbacks, val_data=val.repeat(10).cat())
 
     _ = model.compute_baseline_hazards()
     surv = model.predict_surv_df(test[0])
@@ -137,28 +139,6 @@ def add_km_censor_modified(ev, durations, events):
     return ev.add_censor_est(surv)
 
 
-def evaluate(test, surv):
-    durations = test[1][0]
-    events = test[1][1]
-
-    ev = EvalSurv(surv, durations, events)
-
-    # Setting 'add_km_censor_modified' means that we estimate
-    # the censoring distribution by Kaplan-Meier on the test set.
-    _ = add_km_censor_modified(ev, durations, events)
-
-    # c-index
-    cindex = ev.concordance_td()
-
-    # brier score
-    time_grid = np.linspace(durations.min(), durations.max(), 100)
-    _ = ev.brier_score(time_grid)
-    bscore = ev.integrated_brier_score(time_grid)
-
-    # binomial log-likelihood
-    nbll = ev.integrated_nbll(time_grid)
-
-    return cindex, bscore, nbll
 
 
 def main():
@@ -167,29 +147,32 @@ def main():
     # PyCox Library
     # https://github.com/havakv/pycox
     #
-    # CoxPH (DeepServ)
+    #  """The DeepHit methods by [1] but only for single event (not competing risks).
     #
-    #     """Cox proportional hazards model parameterized with a neural net.
-    #     This is essentially the DeepSurv method [1].
+    #     References:
+    #     [1] Changhee Lee, William R Zame, Jinsung Yoon, and Mihaela van der Schaar. Deephit: A deep learning
+    #         approach to survival analysis with competing risks. In Thirty-Second AAAI Conference on Artificial
+    #         Intelligence, 2018.
+    #         http://medianetlab.ee.ucla.edu/papers/AAAI_2018_DeepHit
     #
-    #     The loss function is not quite the partial log-likelihood, but close.
-    #     The difference is that for tied events, we use a random order instead of
-    #     including all individuals that had an event at that point in time.
+    #     [2] Håvard Kvamme, Ørnulf Borgan, and Ida Scheel.
+    #         Time-to-event prediction with neural networks and Cox regression.
+    #         Journal of Machine Learning Research, 20(129):1–30, 2019.
+    #         http://jmlr.org/papers/v20/18-424.html
     #
-    #     [1] Jared L. Katzman, Uri Shaham, Alexander Cloninger, Jonathan Bates, Tingting Jiang, and Yuval Kluger.
-    #         Deepsurv: personalized treatment recommender system using a Cox proportional hazards deep neural network.
-    #         BMC Medical Research Methodology, 18(1), 2018.
-    #         https://bmcmedresmethodol.biomedcentral.com/articles/10.1186/s12874-018-0482-1
+    #     [3] Håvard Kvamme and Ørnulf Borgan. Continuous and Discrete-Time Survival Prediction
+    #         with Neural Networks. arXiv preprint arXiv:1910.06724, 2019.
+    #         https://arxiv.org/pdf/1910.06724.pdf
     #
     ##################################
 
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
     cohort = get_cohort()
-    train, val, test = cohort_samples(seed=20, cohort=cohort)
+    train, val, test, labtrans = cohort_samples(seed=20, cohort=cohort)
 
     # Open file
-    _file = open("files/cox-ph.txt", "a")
+    _file = open("files/deep-hit.txt", "a")
 
     time_string = time.strftime("%d/%m/%Y, %H:%M:%S", time.localtime())
     _file.write("########## Init: " + time_string + "\n\n")
@@ -202,46 +185,25 @@ def main():
     # Dropout                          {0, 0.7}
     # Weigh decay                      {0.4, 0.2, 0.1, 0.05, 0.02, 0.01, 0}
     # Batch size                       {64, 128, 256, 512, 1024}
+    # λ(penalty to the loss function)  {0.1, 0.01, 0.001, 0} - CoxCC(net, optimizer, shrink)
     # Learning Rate                    {0.01, 0.001, 0.0001}
 
-    # Best Parameters: {'batch': 0, 'dropout': 1, 'lr': 1, 'num_nodes': 5, 'weight_decay': 1}
+    # Best Parameters: {}
 
-    best = {'lr': 0.001,
-            'batch_size': 64,
+    best = {'lr': 0.01,
+            'batch_size': 128,
             'dropout': 0.7,
-            'weight_decay': 0.2,
-            'num_nodes': [128, 128, 128, 128],
+            'weight_decay': 0,
+            'num_nodes': [256, 256],
+            'alpha': 0,
+            'sigma': 0,
             'epoch': 512}
 
-    surv, model, log = fit_and_predict(CoxPH, train, val, test,
-                                       lr=best['lr'], batch=best['batch_size'], dropout=best['dropout'],
-                                       epoch=best['epoch'], weight_decay=best['weight_decay'],
-                                       num_nodes=best['num_nodes'], device=device)
-
-    model.save_net("files/cox-ph-net.pt")
-
-    # Train, Val Loss
-    plt.ylabel("Loss")
-    plt.xlabel("Epochs")
-    plt.grid(True)
-    log.plot().get_figure().savefig("img/cox-ph-train-val-loss.png", format="png", bbox_inches="tight")
-
-    # Survival estimates as a dataframe
-    estimates = 5
-    plt.ylabel('S(t | x)')
-    plt.xlabel('Time')
-    surv.iloc[:, :estimates].plot().get_figure().savefig("img/cox-ph-survival-estimates.png", format="png", bbox_inches="tight")
-
-    # Evaluate
-    cindex, bscore, bll = evaluate(test, surv)
-
-    # Best Parameters
-    _file.write("Best Parameters: " + str(best) + "\n")
-
-    # Scores
-    _file.write("C-Index: " + str(cindex) + "\n" +
-                "Brier Score: " + str(bscore) + "\n" +
-                "Binomial Log-Likelihood: " + str(bll) + "\n")
+    surv, model, log = deep_hit_fit_and_predict(DeepHitSingle, train, val, test,
+                                                lr=best['lr'], batch=best['batch_size'], dropout=best['dropout'],
+                                                epoch=best['epoch'], weight_decay=best['weight_decay'],
+                                                num_nodes=best['num_nodes'], alpha=best['alpha'], sigma=best['sigma'],
+                                                device=device, labtrans=labtrans)
 
     time_string = time.strftime("%d/%m/%Y, %H:%M:%S", time.localtime())
     _file.write("\n########## Final: " + time_string + "\n")
