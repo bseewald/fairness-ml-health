@@ -108,15 +108,15 @@ def make_net(train, dropout, num_nodes):
 # Training the model
 def fit_and_predict(survival_analysis_model, train, val, test,
                     lr, batch, dropout, epoch, weight_decay,
-                    num_nodes, shrink, device):
+                    num_nodes, device):
     net = make_net(train, dropout, num_nodes)
 
     optimizer = tt.optim.Adam(weight_decay=weight_decay)
-    model = survival_analysis_model(net, device=device, optimizer=optimizer, shrink=shrink)
+    model = survival_analysis_model(net, device=device, optimizer=optimizer)
     model.optimizer.set_lr(lr)
 
     callbacks = [tt.callbacks.EarlyStopping()]
-    log = model.fit(train[0], train[1], batch, epoch, callbacks, val_data=val.repeat(10).cat())
+    log = model.fit(train[0], train[1], batch, epoch, callbacks, val_data=val.repeat(10).cat(), drop_last=True)
 
     _ = model.compute_baseline_hazards()
     surv = model.predict_surv_df(test[0])
@@ -202,22 +202,22 @@ def main():
     # Dropout                          {0, 0.7}
     # Weigh decay                      {0.4, 0.2, 0.1, 0.05, 0.02, 0.01, 0}
     # Batch size                       {64, 128, 256, 512, 1024}
-    # λ(penalty to the loss function)  {0.1, 0.01, 0.001, 0} - CoxCC(net, optimizer, shrink)
     # Learning Rate                    {0.01, 0.001, 0.0001}
 
-    # Best Parameters: {}
+    # Best Parameters: {'batch': 0, 'dropout': 1, 'lr': 1, 'num_nodes': 5, 'weight_decay': 1}
 
-    best = {'lr': 0.01,
+    best = {'lr': 0.001,
             'batch_size': 64,
             'dropout': 0.7,
-            'weight_decay': 0.05,
-            'num_nodes': [256, 256],
-            'shrink': 0.01}
+            'weight_decay': 0.2,
+            'num_nodes': [128, 128, 128, 128]}
 
     surv, model, log = fit_and_predict(CoxPH, train, val, test,
                                        lr=best['lr'], batch=best['batch_size'], dropout=best['dropout'],
                                        epoch=512, weight_decay=best['weight_decay'],
-                                       num_nodes=best['num_nodes'], shrink=best['shrink'], device=device)
+                                       num_nodes=best['num_nodes'], device=device)
+
+    model.save_net("files/cox-ph-net.pt")
 
     # Train, Val Loss
     plt.ylabel("Loss")

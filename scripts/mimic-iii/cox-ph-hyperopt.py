@@ -126,11 +126,11 @@ def experiment(params):
 
     net = make_net(train, params['dropout'], params['num_nodes'])
     optimizer = tt.optim.Adam(weight_decay=params['weight_decay'])
-    model = CoxPH(net, device=device, optimizer=optimizer, shrink=params['shrink'])
+    model = CoxPH(net, device=device, optimizer=optimizer)
     model.optimizer.set_lr(params['lr'])
     callbacks = [tt.callbacks.EarlyStopping()]
     _ = model.fit(train[0], train[1], batch_size=params['batch'], epochs=512, callbacks=callbacks,
-                  val_data=val.repeat(10).cat())
+                  val_data=val.repeat(10).cat(), drop_last=True)
 
     _ = model.compute_baseline_hazards()
 
@@ -188,7 +188,6 @@ def main():
     # Dropout                          [0, 0.7]
     # Weigh decay                      {0.4, 0.2, 0.1, 0.05, 0.02, 0.01, 0}
     # Batch size                       {64, 128, 256, 512, 1024}
-    # λ(penalty to the loss function)  {0.1, 0.01, 0.001, 0} - CoxCC(net, optimizer, shrink)
 
     space = {'num_nodes': hp.choice('num_nodes', [[64, 64], [128, 128], [256, 256], [512, 512],
                                                   [64, 64, 64, 64], [128, 128, 128, 128],
@@ -196,8 +195,7 @@ def main():
              'dropout': hp.choice('dropout', [0, 0.7]),
              'weight_decay': hp.choice('weight_decay', [0.4, 0.2, 0.1, 0.05, 0.02, 0.01, 0]),
              'batch': hp.choice('batch', [64, 128, 256, 512, 1024]),
-             'lr': hp.choice('lr', [0.01, 0.001, 0.0001]),
-             'shrink': hp.choice('shrink', [0.1, 0.01, 0.001, 0])}
+             'lr': hp.choice('lr', [0.01, 0.001, 0.0001])}
 
     trials = Trials()
 
