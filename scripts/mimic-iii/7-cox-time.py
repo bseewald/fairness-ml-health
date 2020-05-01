@@ -223,6 +223,8 @@ def main():
                                                         device=device, labtrans=labtrans)
 
     model.save_net("files/cox-time-net.pt")
+    model.save_model_weights("files/cox-time-net-weights.pt")
+    model.print_weights("files/cox-time-net-weights.txt")
 
     # Train, Val Loss
     plt.ylabel("Loss")

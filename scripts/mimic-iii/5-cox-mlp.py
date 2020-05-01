@@ -216,11 +216,13 @@ def main():
             'epoch': 512}
 
     surv, surv_v, model, log = fit_and_predict(CoxCC, train, val, test,
-                                       lr=best['lr'], batch=best['batch_size'], dropout=best['dropout'],
-                                       epoch=best['epoch'], weight_decay=best['weight_decay'],
-                                       num_nodes=best['num_nodes'], shrink=best['shrink'], device=device)
+                                               lr=best['lr'], batch=best['batch_size'], dropout=best['dropout'],
+                                               epoch=best['epoch'], weight_decay=best['weight_decay'],
+                                               num_nodes=best['num_nodes'], shrink=best['shrink'], device=device)
 
     model.save_net("files/cox-mlp-net.pt")
+    model.save_model_weights("files/cox-mlp-net-weights.pt")
+    model.print_weights("files/cox-mlp-net-weights.txt")
 
     # Train, Val Loss
     plt.ylabel("Loss")

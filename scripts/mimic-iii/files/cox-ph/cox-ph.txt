@@ -1,8 +1,13 @@
-########## Init: 29/04/2020, 20:37:35
+########## Init: 01/05/2020, 17:08:18
 
 Best Parameters: {'lr': 0.0001, 'batch_size': 256, 'dropout': 0.4, 'weight_decay': 0.01, 'num_nodes': [64, 64, 64, 64], 'epoch': 512}
-C-Index: 0.7282873185550814
-Brier Score: 0.16205257391624894
-Binomial Log-Likelihood: 0.4818495126384966
+Validation 
+C-Index: 0.7096877364761758
+Brier Score: 0.15950334291401072
+Binomial Log-Likelihood: 0.4812768373536183
+Test 
+C-Index: 0.7452962430789248
+Brier Score: 0.17846270790977514
+Binomial Log-Likelihood: 0.5229250097993751
 
-########## Final: 29/04/2020, 20:39:34
+########## Final: 01/05/2020, 17:10:15

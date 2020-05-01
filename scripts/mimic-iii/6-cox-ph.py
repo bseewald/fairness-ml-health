@@ -222,6 +222,8 @@ def main():
                                                num_nodes=best['num_nodes'], device=device)
 
     model.save_net("files/cox-ph-net.pt")
+    model.save_model_weights("files/cox-ph-net-weights.txt")
+    model.print_weights("files/cox-ph-net-weights.txt")
 
     # Train, Val Loss
     plt.ylabel("Loss")

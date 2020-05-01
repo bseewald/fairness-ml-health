@@ -235,6 +235,8 @@ def main():
                                                         labtrans=labtrans)
 
     model.save_net("files/deep-hit-net.pt")
+    model.save_model_weights("files/deep-hit-net-weights.pt")
+    model.print_weights("files/deep-hit-net-weights.txt")
 
     # Train, Val Loss
     plt.ylabel("Loss")
