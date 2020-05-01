@@ -11,8 +11,7 @@ from sksurv.preprocessing import OneHotEncoder
 from sksurv.util import Surv
 
 
-def main():
-
+def get_cohort():
     # Get data
     cohort = gh.get_cohort()
 
@@ -38,16 +37,31 @@ def main():
 
     cohort_X = cohort[cohort.columns.difference(["los_hospital", "hospital_expire_flag"])]
 
+    return cohort_X, cohort_y
+
+
+def main():
+
     ############################################################
     # Scikit-Survival Library
     # https://github.com/sebp/scikit-survival
     #
     # CoxnetSurvivalAnalysis
     #
+    #     """Cox's proportional hazard's model with elastic net penalty.
+    #
+    #     References
+    #     ----------
+    #     .. [1] Simon N, Friedman J, Hastie T, Tibshirani R.
+    #            Regularization paths for Cox’s proportional hazards model via coordinate descent.
+    #            Journal of statistical software. 2011 Mar;39(5):1.
+    #
     ############################################################
 
-    random_state = 20
+    seed = 20
+    test_size = 0.2
     old_score = 0
+    k = 10
 
     # Open file
     _file = open("files/cox-net.txt", "a")
@@ -55,14 +69,16 @@ def main():
     time_string = time.strftime("%d/%m/%Y, %H:%M:%S", time.localtime())
     _file.write("########## Init: " + time_string + "\n\n")
 
+    cohort_X, cohort_y = get_cohort()
+
     # OneHot
     cohort_Xt = OneHotEncoder().fit_transform(cohort_X)
 
     # Train / test samples
-    X_train, X_test, y_train, y_test = train_test_split(cohort_Xt, cohort_y, test_size=0.20, random_state=random_state)
+    X_train, X_test, y_train, y_test = train_test_split(cohort_Xt, cohort_y, test_size=test_size, random_state=seed)
 
     # KFold
-    cv = KFold(n_splits=10, shuffle=True, random_state=random_state)
+    cv = KFold(n_splits=k, shuffle=True, random_state=seed)
 
     _alphas = [100, 10, 1, 0.1, 0.01, 1e-03, 1e-04, 1e-05, 1e-06, 1e-07]
     _l1_ratios = [1, 0.9, 0.8, 0.7, 0.6, 0.5, 0.3, 0.1, 0.01, 0.001]

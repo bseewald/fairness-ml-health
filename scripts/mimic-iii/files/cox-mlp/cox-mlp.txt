@@ -1,16 +1,8 @@
-########## Init: 26/04/2020, 22:08:41
+########## Init: 29/04/2020, 20:36:38
 
-Best Parameters: {'lr': 0.01, 'batch_size': 128, 'dropout': 0.7, 'weight_decay': 0, 'num_nodes': [256, 256], 'shrink': 0.1}
-C-Index: 0.7304761835937312
-Brier Score: 0.14999958282478817
-Binomial Log-Likelihood: 0.46225898223582257
+Best Parameters: {'lr': 0.01, 'batch_size': 128, 'dropout': 0.01, 'weight_decay': 0, 'num_nodes': [256, 256], 'shrink': 0.01, 'epoch': 512}
+C-Index: 0.6999734285020547
+Brier Score: 0.15545091194931104
+Binomial Log-Likelihood: 0.47062238334642
 
-########## Final: 26/04/2020, 22:09:03
-########## Init: 26/04/2020, 22:49:17
-
-Best Parameters: {'lr': 0.01, 'batch_size': 128, 'dropout': 0.7, 'weight_decay': 0, 'num_nodes': [256, 256], 'shrink': 0.1}
-C-Index: 0.7312482357211028
-Brier Score: 0.14883103063385722
-Binomial Log-Likelihood: 0.4559956572639385
-
-########## Final: 26/04/2020, 22:49:30
+########## Final: 29/04/2020, 20:36:48

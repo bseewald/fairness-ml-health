@@ -111,7 +111,7 @@ def fit_and_predict(survival_analysis_model, train, val, test,
                     num_nodes, device):
     net = make_net(train, dropout, num_nodes)
 
-    optimizer = tt.optim.Adam(weight_decay=weight_decay)
+    optimizer = tt.optim.AdamWR(decoupled_weight_decay=weight_decay)
     model = survival_analysis_model(net, device=device, optimizer=optimizer)
     model.optimizer.set_lr(lr)
 
@@ -120,7 +120,8 @@ def fit_and_predict(survival_analysis_model, train, val, test,
 
     _ = model.compute_baseline_hazards()
     surv = model.predict_surv_df(test[0])
-    return surv, model, log
+    surv_v = model.predict_surv_df(val[0])
+    return surv, surv_v, model, log
 
 
 def add_km_censor_modified(ev, durations, events):
@@ -132,14 +133,16 @@ def add_km_censor_modified(ev, durations, events):
     km = utils.kaplan_meier(durations, 1-events)
     surv = pd.DataFrame(np.repeat(km.values.reshape(-1, 1), len(durations), axis=1), index=km.index)
 
-    # increasing index (pd.Series(surv.index).is_monotonic)
-    surv.drop(0.000000, axis=0, inplace=True)
+    # increasing index
+    if pd.Series(surv.index).is_monotonic is False:
+        surv.drop(0.000000, axis=0, inplace=True)
+
     return ev.add_censor_est(surv)
 
 
-def evaluate(test, surv):
-    durations = test[1][0]
-    events = test[1][1]
+def evaluate(sample, surv):
+    durations = sample[1][0]
+    events = sample[1][1]
 
     ev = EvalSurv(surv, durations, events)
 
@@ -199,24 +202,24 @@ def main():
     # ---------------------
     # Layers                           {2, 4}
     # Nodes per layer                  {64, 128, 256, 512}
-    # Dropout                          {0, 0.7}
+    # Dropout                          {0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7}
     # Weigh decay                      {0.4, 0.2, 0.1, 0.05, 0.02, 0.01, 0}
     # Batch size                       {64, 128, 256, 512, 1024}
     # Learning Rate                    {0.01, 0.001, 0.0001}
 
-    # Best Parameters: {'batch': 0, 'dropout': 1, 'lr': 1, 'num_nodes': 5, 'weight_decay': 1}
+    # Best Parameters: {'batch': 2, 'dropout': 4, 'lr': 2, 'num_nodes': 4, 'weight_decay': 5}
 
-    best = {'lr': 0.001,
-            'batch_size': 64,
-            'dropout': 0.7,
-            'weight_decay': 0.2,
-            'num_nodes': [128, 128, 128, 128],
+    best = {'lr': 0.0001,
+            'batch_size': 256,
+            'dropout': 0.4,
+            'weight_decay': 0.01,
+            'num_nodes': [64, 64, 64, 64],
             'epoch': 512}
 
-    surv, model, log = fit_and_predict(CoxPH, train, val, test,
-                                       lr=best['lr'], batch=best['batch_size'], dropout=best['dropout'],
-                                       epoch=best['epoch'], weight_decay=best['weight_decay'],
-                                       num_nodes=best['num_nodes'], device=device)
+    surv, surv_v, model, log = fit_and_predict(CoxPH, train, val, test,
+                                               lr=best['lr'], batch=best['batch_size'], dropout=best['dropout'],
+                                               epoch=best['epoch'], weight_decay=best['weight_decay'],
+                                               num_nodes=best['num_nodes'], device=device)
 
     model.save_net("files/cox-ph-net.pt")
 
@@ -230,16 +233,23 @@ def main():
     estimates = 5
     plt.ylabel('S(t | x)')
     plt.xlabel('Time')
-    surv.iloc[:, :estimates].plot().get_figure().savefig("img/cox-ph-survival-estimates.png", format="png", bbox_inches="tight")
+    surv.iloc[:, :estimates].plot().get_figure().savefig("img/cox-ph-survival-estimates.png", format="png",
+                                                         bbox_inches="tight")
 
     # Evaluate
+    cindex_v, bscore_v, bll_v = evaluate(val, surv_v)
     cindex, bscore, bll = evaluate(test, surv)
 
     # Best Parameters
     _file.write("Best Parameters: " + str(best) + "\n")
 
     # Scores
-    _file.write("C-Index: " + str(cindex) + "\n" +
+    _file.write("Validation \n" 
+                "C-Index: " + str(cindex_v) + "\n" +
+                "Brier Score: " + str(bscore_v) + "\n" +
+                "Binomial Log-Likelihood: " + str(bll_v) + "\n")
+    _file.write("Test \n" 
+                "C-Index: " + str(cindex) + "\n" +
                 "Brier Score: " + str(bscore) + "\n" +
                 "Binomial Log-Likelihood: " + str(bll) + "\n")
 

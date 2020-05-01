@@ -31,7 +31,7 @@ def get_cohort():
     cohort = cohort.astype({'admission_type': 'category', 'ethnicity_grouped': 'category', 'insurance': 'category',
                             'icd_alzheimer': 'int64', 'icd_cancer': 'int64', 'icd_diabetes': 'int64', 'icd_heart': 'int64',
                             'icd_transplant': 'int64', 'gender': 'int64', 'hospital_expire_flag': 'int64',
-                            'oasis_score':'int64'}, copy=False)
+                            'oasis_score': 'int64'}, copy=False)
     return cohort
 
 
@@ -110,7 +110,7 @@ def cox_time_fit_and_predict(survival_analysis_model, train, val, test,
 
     net = cox_time_make_net(train, dropout, num_nodes)
 
-    optimizer = tt.optim.Adam(weight_decay=weight_decay)
+    optimizer = tt.optim.AdamWR(decoupled_weight_decay=weight_decay)
     model = survival_analysis_model(net, device=device, optimizer=optimizer, shrink=shrink, labtrans=labtrans)
     model.optimizer.set_lr(lr)
 
@@ -119,7 +119,8 @@ def cox_time_fit_and_predict(survival_analysis_model, train, val, test,
 
     _ = model.compute_baseline_hazards()
     surv = model.predict_surv_df(test[0])
-    return surv, model, log
+    surv_v = model.predict_surv_df(val[0])
+    return surv, surv_v, model, log
 
 
 def add_km_censor_modified(ev, durations, events):
@@ -131,14 +132,16 @@ def add_km_censor_modified(ev, durations, events):
     km = utils.kaplan_meier(durations, 1-events)
     surv = pd.DataFrame(np.repeat(km.values.reshape(-1, 1), len(durations), axis=1), index=km.index)
 
-    # increasing index (pd.Series(surv.index).is_monotonic)
-    surv.drop(0.000000, axis=0, inplace=True)
+    # increasing index
+    if pd.Series(surv.index).is_monotonic is False:
+        surv.drop(0.000000, axis=0, inplace=True)
+
     return ev.add_censor_est(surv)
 
 
-def evaluate(test, surv):
-    durations = test[1][0]
-    events = test[1][1]
+def evaluate(sample, surv):
+    durations = sample[1][0]
+    events = sample[1][1]
 
     ev = EvalSurv(surv, durations, events)
 
@@ -196,27 +199,28 @@ def main():
     # ---------------------
     # Layers                           {2, 4}
     # Nodes per layer                  {64, 128, 256, 512}
-    # Dropout                          {0, 0.7}
+    # Dropout                          {0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7}
     # Weigh decay                      {0.4, 0.2, 0.1, 0.05, 0.02, 0.01, 0}
     # Batch size                       {64, 128, 256, 512, 1024}
-    # λ(penalty to the loss function)  {0.1, 0.01, 0.001, 0} - CoxCC(net, optimizer, shrink)
+    # λ(penalty to the loss function)  {0.1, 0.01, 0.001, 0}
     # Learning Rate                    {0.01, 0.001, 0.0001}
+    # Log Durations                    {True, False}
 
-    # Best Parameters: {'batch': 4, 'dropout': 1, 'lr': 1, 'num_nodes': 3, 'shrink': 3, 'weight_decay': 3}
+    # Best Parameters: {'batch': 2, 'dropout': 3, 'lr': 1, 'num_nodes': 3, 'shrink': 0, 'weight_decay': 4}
 
     best = {'lr': 0.001,
-            'batch_size': 1024,
-            'dropout': 0.7,
-            'weight_decay': 0.05,
+            'batch_size': 256,
+            'dropout': 0.3,
+            'weight_decay': 0.02,
             'num_nodes': [512, 512],
-            'shrink': 0,
+            'shrink': 0.1,
             'epoch': 512}
 
-    surv, model, log = cox_time_fit_and_predict(CoxTime, train, val, test,
-                                                lr=best['lr'], batch=best['batch_size'], dropout=best['dropout'],
-                                                epoch=best['epoch'], weight_decay=best['weight_decay'],
-                                                num_nodes=best['num_nodes'], shrink=best['shrink'],
-                                                device=device, labtrans=labtrans)
+    surv, surv_v, model, log = cox_time_fit_and_predict(CoxTime, train, val, test,
+                                                        lr=best['lr'], batch=best['batch_size'], dropout=best['dropout'],
+                                                        epoch=best['epoch'], weight_decay=best['weight_decay'],
+                                                        num_nodes=best['num_nodes'], shrink=best['shrink'],
+                                                        device=device, labtrans=labtrans)
 
     model.save_net("files/cox-time-net.pt")
 
@@ -230,16 +234,23 @@ def main():
     estimates = 5
     plt.ylabel('S(t | x)')
     plt.xlabel('Time')
-    surv.iloc[:, :estimates].plot().get_figure().savefig("img/cox-time-survival-estimates.png", format="png", bbox_inches="tight")
+    surv.iloc[:, :estimates].plot().get_figure().savefig("img/cox-time-survival-estimates.png", format="png",
+                                                         bbox_inches="tight")
 
     # Evaluate
+    cindex_v, bscore_v, bll_v = evaluate(val, surv_v)
     cindex, bscore, bll = evaluate(test, surv)
 
     # Best Parameters
     _file.write("Best Parameters: " + str(best) + "\n")
 
     # Scores
-    _file.write("C-Index: " + str(cindex) + "\n" +
+    _file.write("Validation \n" 
+                "C-Index: " + str(cindex_v) + "\n" +
+                "Brier Score: " + str(bscore_v) + "\n" +
+                "Binomial Log-Likelihood: " + str(bll_v) + "\n")
+    _file.write("Test \n" 
+                "C-Index: " + str(cindex) + "\n" +
                 "Brier Score: " + str(bscore) + "\n" +
                 "Binomial Log-Likelihood: " + str(bll) + "\n")
 

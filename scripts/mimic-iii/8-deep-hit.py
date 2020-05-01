@@ -34,7 +34,7 @@ def get_cohort():
     return cohort
 
 
-def cohort_samples(seed, cohort):
+def cohort_samples(seed, cohort, num_durations):
     _ = torch.manual_seed(seed)
 
     # Train / valid / test split
@@ -48,7 +48,7 @@ def cohort_samples(seed, cohort):
     # DeepHit is a discrete-time method, meaning it requires discretization of the event times to be applied
     # to continuous-time data. We let 'num_durations' define the size of this (equidistant) discretization grid,
     # meaning our network will have 'num_durations' output nodes.
-    num_durations = 10
+
     labtrans = DeepHitSingle.label_transform(num_durations)
     x_train, x_val, x_test = preprocess_input_features(train_dataset, valid_dataset, test_dataset)
     train, val, test = deep_hit_preprocess_target_features(x_train, x_val, x_test,
@@ -112,7 +112,7 @@ def deep_hit_fit_and_predict(survival_analysis_model, train, val, test,
                              num_nodes, alpha, sigma, device, labtrans):
 
     net = deep_hit_make_net(train, dropout, num_nodes, labtrans)
-    optimizer = tt.optim.Adam(weight_decay=weight_decay)
+    optimizer = tt.optim.AdamWR(decoupled_weight_decay=weight_decay)
     model = survival_analysis_model(net, optimizer=optimizer, alpha=alpha, sigma=sigma,
                                     device=device, duration_index=labtrans.cuts)
     model.optimizer.set_lr(lr)
@@ -120,9 +120,9 @@ def deep_hit_fit_and_predict(survival_analysis_model, train, val, test,
     callbacks = [tt.callbacks.EarlyStopping()]
     log = model.fit(train[0], train[1], batch, epoch, callbacks, val_data=val.repeat(10).cat())
 
-    _ = model.compute_baseline_hazards()
     surv = model.predict_surv_df(test[0])
-    return surv, model, log
+    surv_v = model.predict_surv_df(val[0])
+    return surv, surv_v, model, log
 
 
 def add_km_censor_modified(ev, durations, events):
@@ -134,14 +134,16 @@ def add_km_censor_modified(ev, durations, events):
     km = utils.kaplan_meier(durations, 1-events)
     surv = pd.DataFrame(np.repeat(km.values.reshape(-1, 1), len(durations), axis=1), index=km.index)
 
-    # increasing index (pd.Series(surv.index).is_monotonic)
-    surv.drop(0.000000, axis=0, inplace=True)
+    # increasing index
+    if pd.Series(surv.index).is_monotonic is False:
+        surv.drop(0.000000, axis=0, inplace=True)
+
     return ev.add_censor_est(surv)
 
 
-def evaluate(test, surv):
-    durations = test[1][0]
-    events = test[1][1]
+def evaluate(sample, surv):
+    durations = sample[1][0]
+    events = sample[1][1]
 
     ev = EvalSurv(surv, durations, events)
 
@@ -188,11 +190,6 @@ def main():
     #
     ##################################
 
-    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-
-    cohort = get_cohort()
-    train, val, test, labtrans = cohort_samples(seed=20, cohort=cohort)
-
     # Open file
     _file = open("files/deep-hit.txt", "a")
 
@@ -204,28 +201,38 @@ def main():
     # ---------------------
     # Layers                           {2, 4}
     # Nodes per layer                  {64, 128, 256, 512}
-    # Dropout                          {0, 0.7}
+    # Dropout                          {0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7}
     # Weigh decay                      {0.4, 0.2, 0.1, 0.05, 0.02, 0.01, 0}
     # Batch size                       {64, 128, 256, 512, 1024}
-    # λ(penalty to the loss function)  {0.1, 0.01, 0.001, 0} - CoxCC(net, optimizer, shrink)
+    # Alpha                            [0, 1]
+    # Sigma                            {0.1, 0.25, 0.5, 1, 2.5, 5, 10, 100}
+    # Num Durations                    {50, 100, 200, 400}
     # Learning Rate                    {0.01, 0.001, 0.0001}
 
-    # Best Parameters: {}
+    # Best Parameters: {'alpha': 0.1771086883645474, 'batch': 1, 'dropout': 7, 'lr': 0, 'num_durations': 3,
+    #                   'num_nodes': 6, 'sigma': 1, 'weight_decay': 6}
 
     best = {'lr': 0.01,
             'batch_size': 128,
             'dropout': 0.7,
             'weight_decay': 0,
-            'num_nodes': [256, 256],
-            'alpha': 0,
-            'sigma': 0,
+            'num_nodes': [256, 256, 256, 256],
+            'alpha': 0.1771086883645474,
+            'sigma': 0.25,
+            'num_durations': 400,
             'epoch': 512}
 
-    surv, model, log = deep_hit_fit_and_predict(DeepHitSingle, train, val, test,
-                                                lr=best['lr'], batch=best['batch_size'], dropout=best['dropout'],
-                                                epoch=best['epoch'], weight_decay=best['weight_decay'],
-                                                num_nodes=best['num_nodes'], alpha=best['alpha'], sigma=best['sigma'],
-                                                device=device, labtrans=labtrans)
+    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+
+    cohort = get_cohort()
+    train, val, test, labtrans = cohort_samples(seed=20, cohort=cohort, num_durations=best['num_durations'])
+
+    surv, surv_v, model, log = deep_hit_fit_and_predict(DeepHitSingle, train, val, test,
+                                                        lr=best['lr'], batch=best['batch_size'],
+                                                        dropout=best['dropout'], epoch=best['epoch'],
+                                                        weight_decay=best['weight_decay'], num_nodes=best['num_nodes'],
+                                                        alpha=best['alpha'], sigma=best['sigma'], device=device,
+                                                        labtrans=labtrans)
 
     model.save_net("files/deep-hit-net.pt")
 
@@ -239,16 +246,23 @@ def main():
     estimates = 5
     plt.ylabel('S(t | x)')
     plt.xlabel('Time')
-    surv.iloc[:, :estimates].plot().get_figure().savefig("img/deep-hit-survival-estimates.png", format="png", bbox_inches="tight")
+    surv.iloc[:, :estimates].plot().get_figure().savefig("img/deep-hit-survival-estimates.png", format="png",
+                                                         bbox_inches="tight")
 
     # Evaluate
+    cindex_v, bscore_v, bll_v = evaluate(val, surv_v)
     cindex, bscore, bll = evaluate(test, surv)
 
     # Best Parameters
     _file.write("Best Parameters: " + str(best) + "\n")
 
     # Scores
-    _file.write("C-Index: " + str(cindex) + "\n" +
+    _file.write("Validation \n" 
+                "C-Index: " + str(cindex_v) + "\n" +
+                "Brier Score: " + str(bscore_v) + "\n" +
+                "Binomial Log-Likelihood: " + str(bll_v) + "\n")
+    _file.write("Test \n" 
+                "C-Index: " + str(cindex) + "\n" +
                 "Brier Score: " + str(bscore) + "\n" +
                 "Binomial Log-Likelihood: " + str(bll) + "\n")
 

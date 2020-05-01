@@ -18,8 +18,7 @@ from sklearn.model_selection import GridSearchCV, KFold
 from sklearn.model_selection import train_test_split
 
 
-def main():
-
+def get_cohort():
     # Get data
     cohort = gh.get_cohort()
 
@@ -49,6 +48,11 @@ def main():
     cohort_X = cohort_df[cohort_df.columns.difference(["los_hospital"])]
     cohort_y = cohort_df["los_hospital"]
 
+    return cohort_X, cohort_y, cohort_df
+
+
+def main():
+
     #############################################################
     # Lifelines library
     # https://github.com/CamDavidsonPilon/lifelines
@@ -59,7 +63,9 @@ def main():
 
     # to-do: do 10x or 20x different random_state and use box-plot ?
     # to-do: we censored all individuals that were still under observation at time 30 ?
-    random_state = 20
+    seed = 20
+    test_size = 0.2
+    k = 10
 
     # Open file
     _file = open("files/cox.txt", "a")
@@ -68,13 +74,14 @@ def main():
     _file.write("########## Init: " + time_string + "\n\n")
 
     # Train / test samples
-    X_train, X_test, y_train, y_test = train_test_split(cohort_X, cohort_y, test_size=0.20, random_state=random_state)
+    cohort_X, cohort_y, cohort_df = get_cohort()
+    X_train, X_test, y_train, y_test = train_test_split(cohort_X, cohort_y, test_size=test_size, random_state=seed)
 
     cox = sklearn_adapter(CoxPHFitter, event_col='hospital_expire_flag')
     cx = cox()
 
     # KFold
-    cv = KFold(n_splits=10, shuffle=True, random_state=random_state)
+    cv = KFold(n_splits=k, shuffle=True, random_state=seed)
 
     _alphas = [100, 10, 1, 0.1, 0.01, 1e-03, 1e-04, 1e-05]
     _l1_ratios = [0, 0.001, 0.01, 0.1, 0.5]

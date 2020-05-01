@@ -109,7 +109,7 @@ def fit_and_predict(survival_analysis_model, train, val, test,
                     num_nodes, shrink, device):
     net = make_net(train, dropout, num_nodes)
 
-    optimizer = tt.optim.Adam(weight_decay=weight_decay)
+    optimizer = tt.optim.AdamWR(decoupled_weight_decay=weight_decay)
     model = survival_analysis_model(net, device=device, optimizer=optimizer, shrink=shrink)
     model.optimizer.set_lr(lr)
 
@@ -118,7 +118,8 @@ def fit_and_predict(survival_analysis_model, train, val, test,
 
     _ = model.compute_baseline_hazards()
     surv = model.predict_surv_df(test[0])
-    return surv, model, log
+    surv_v = model.predict_surv_df(val[0])
+    return surv, surv_v, model, log
 
 
 def add_km_censor_modified(ev, durations, events):
@@ -130,14 +131,16 @@ def add_km_censor_modified(ev, durations, events):
     km = utils.kaplan_meier(durations, 1-events)
     surv = pd.DataFrame(np.repeat(km.values.reshape(-1, 1), len(durations), axis=1), index=km.index)
 
-    # increasing index (pd.Series(surv.index).is_monotonic)
-    surv.drop(0.000000, axis=0, inplace=True)
+    # increasing index
+    if pd.Series(surv.index).is_monotonic is False:
+        surv.drop(0.000000, axis=0, inplace=True)
+
     return ev.add_censor_est(surv)
 
 
-def evaluate(test, surv):
-    durations = test[1][0]
-    events = test[1][1]
+def evaluate(sample, surv):
+    durations = sample[1][0]
+    events = sample[1][1]
 
     ev = EvalSurv(surv, durations, events)
 
@@ -148,7 +151,8 @@ def evaluate(test, surv):
     # c-index
     cindex = ev.concordance_td()
 
-    # brier score
+    # The Brier score (BS)
+    # for binary classification is a metric of both discrimination and calibration of a model’s estimates
     time_grid = np.linspace(durations.min(), durations.max(), 100)
     _ = ev.brier_score(time_grid)
     bscore = ev.integrated_brier_score(time_grid)
@@ -195,23 +199,23 @@ def main():
     # ---------------------
     # Layers                           {2, 4}
     # Nodes per layer                  {64, 128, 256, 512}
-    # Dropout                          {0, 0.7}
+    # Dropout                          {0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7}
     # Weigh decay                      {0.4, 0.2, 0.1, 0.05, 0.02, 0.01, 0}
     # Batch size                       {64, 128, 256, 512, 1024}
-    # λ(penalty to the loss function)  {0.1, 0.01, 0.001, 0} - CoxCC(net, optimizer, shrink)
+    # λ(penalty to the loss function)  {0.1, 0.01, 0.001, 0}
     # Learning Rate                    {0.01, 0.001, 0.0001}
 
-    # Best Parameters: {'batch': 1, 'dropout': 1, 'lr': 0, 'num_nodes': 2, 'shrink': 0, 'weight_decay': 6}
+    # Best Parameters: {'batch': 1, 'dropout': 1, 'lr': 0, 'num_nodes': 2, 'shrink': 1, 'weight_decay': 5}
 
     best = {'lr': 0.01,
             'batch_size': 128,
-            'dropout': 0.7,
+            'dropout': 0.01,
             'weight_decay': 0,
             'num_nodes': [256, 256],
-            'shrink': 0.1,
+            'shrink': 0.01,
             'epoch': 512}
 
-    surv, model, log = fit_and_predict(CoxCC, train, val, test,
+    surv, surv_v, model, log = fit_and_predict(CoxCC, train, val, test,
                                        lr=best['lr'], batch=best['batch_size'], dropout=best['dropout'],
                                        epoch=best['epoch'], weight_decay=best['weight_decay'],
                                        num_nodes=best['num_nodes'], shrink=best['shrink'], device=device)
@@ -231,13 +235,19 @@ def main():
     surv.iloc[:, :estimates].plot().get_figure().savefig("img/cox-mlp-survival-estimates.png", format="png", bbox_inches="tight")
 
     # Evaluate
+    cindex_v, bscore_v, bll_v = evaluate(val, surv_v)
     cindex, bscore, bll = evaluate(test, surv)
 
     # Best Parameters
     _file.write("Best Parameters: " + str(best) + "\n")
 
     # Scores
-    _file.write("C-Index: " + str(cindex) + "\n" +
+    _file.write("Validation \n" 
+                "C-Index: " + str(cindex_v) + "\n" +
+                "Brier Score: " + str(bscore_v) + "\n" +
+                "Binomial Log-Likelihood: " + str(bll_v) + "\n")
+    _file.write("Test \n" 
+                "C-Index: " + str(cindex) + "\n" +
                 "Brier Score: " + str(bscore) + "\n" +
                 "Binomial Log-Likelihood: " + str(bll) + "\n")
 

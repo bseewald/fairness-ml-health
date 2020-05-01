@@ -1,11 +1,11 @@
 import time
 
-import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import torch
 import torchtuples as tt
 from cohort import get_cohort as gh
+from hyperopt import hp, fmin, tpe, STATUS_OK, Trials
 from pycox import utils
 from pycox.evaluation import EvalSurv
 from pycox.models import DeepHitSingle
@@ -34,7 +34,7 @@ def get_cohort():
     return cohort
 
 
-def cohort_samples(seed, cohort):
+def cohort_samples(seed, cohort, num_durations):
     _ = torch.manual_seed(seed)
 
     # Train / valid / test split
@@ -48,7 +48,6 @@ def cohort_samples(seed, cohort):
     # DeepHit is a discrete-time method, meaning it requires discretization of the event times to be applied
     # to continuous-time data. We let 'num_durations' define the size of this (equidistant) discretization grid,
     # meaning our network will have 'num_durations' output nodes.
-    num_durations = 10
     labtrans = DeepHitSingle.label_transform(num_durations)
     x_train, x_val, x_test = preprocess_input_features(train_dataset, valid_dataset, test_dataset)
     train, val, test = deep_hit_preprocess_target_features(x_train, x_val, x_test,
@@ -116,7 +115,6 @@ def deep_hit_fit_and_predict(survival_analysis_model, train, val, test,
     model = survival_analysis_model(net, optimizer=optimizer, alpha=alpha, sigma=sigma,
                                     device=device, duration_index=labtrans.cuts)
     model.optimizer.set_lr(lr)
-
     callbacks = [tt.callbacks.EarlyStopping()]
     log = model.fit(train[0], train[1], batch, epoch, callbacks, val_data=val.repeat(10).cat())
 
@@ -139,6 +137,40 @@ def add_km_censor_modified(ev, durations, events):
     return ev.add_censor_est(surv)
 
 
+def experiment(params):
+
+    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+
+    cohort = get_cohort()
+    train, val, test, labtrans = cohort_samples(seed=20, cohort=cohort, num_durations=params['num_durations'])
+
+    net = deep_hit_make_net(train, params['dropout'], params['num_nodes'], labtrans)
+    optimizer = tt.optim.AdamWR(decoupled_weight_decay=params['weight_decay'])
+
+    model = DeepHitSingle(net, optimizer=optimizer, alpha=params['alpha'], sigma=params['sigma'],
+                          device=device, duration_index=labtrans.cuts)
+
+    model.optimizer.set_lr(params['lr'])
+    callbacks = [tt.callbacks.EarlyStopping()]
+    _ = model.fit(train[0], train[1], batch_size=params['batch'], epochs=512, callbacks=callbacks,
+                  val_data=val.repeat(10).cat(), drop_last=True)
+
+    surv = model.predict_surv_df(test[0])
+
+    durations = test[1][0]
+    events = test[1][1]
+
+    ev = EvalSurv(surv, durations, events)
+
+    # Setting 'add_km_censor_modified' means that we estimate
+    # the censoring distribution by Kaplan-Meier on the test set.
+    _ = add_km_censor_modified(ev, durations, events)
+
+    # c-index: the bigger, the better
+    cindex = ev.concordance_td()
+
+    # -cindex it's a work around because hyperopt uses fmin function
+    return {'loss': -cindex, 'status': STATUS_OK}
 
 
 def main():
@@ -166,13 +198,8 @@ def main():
     #
     ##################################
 
-    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-
-    cohort = get_cohort()
-    train, val, test, labtrans = cohort_samples(seed=20, cohort=cohort)
-
     # Open file
-    _file = open("files/deep-hit.txt", "a")
+    _file = open("files/deep-hit-hyperopt.txt", "a")
 
     time_string = time.strftime("%d/%m/%Y, %H:%M:%S", time.localtime())
     _file.write("########## Init: " + time_string + "\n\n")
@@ -182,28 +209,35 @@ def main():
     # ---------------------
     # Layers                           {2, 4}
     # Nodes per layer                  {64, 128, 256, 512}
-    # Dropout                          {0, 0.7}
+    # Dropout                          {0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7}
     # Weigh decay                      {0.4, 0.2, 0.1, 0.05, 0.02, 0.01, 0}
     # Batch size                       {64, 128, 256, 512, 1024}
-    # λ(penalty to the loss function)  {0.1, 0.01, 0.001, 0} - CoxCC(net, optimizer, shrink)
+    # Alpha                            [0, 1]
+    # Sigma                            {0.1, 0.25, 0.5, 1, 2.5, 5, 10, 100}
+    # Num Durations                    {50, 100, 200, 400}
     # Learning Rate                    {0.01, 0.001, 0.0001}
 
-    # Best Parameters: {}
+    space = {'num_nodes': hp.choice('num_nodes', [[64, 64], [128, 128], [256, 256], [512, 512],
+                                                  [64, 64, 64, 64], [128, 128, 128, 128],
+                                                  [256, 256, 256, 256], [512, 512, 512, 512]]),
+             'dropout': hp.choice('dropout', [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7]),
+             'weight_decay': hp.choice('weight_decay', [0.4, 0.2, 0.1, 0.05, 0.02, 0.01, 0]),
+             'batch': hp.choice('batch', [64, 128, 256, 512, 1024]),
+             'alpha': hp.uniform('alpha', 0, 1),
+             'sigma': hp.choice('sigma', [0.1, 0.25, 0.5, 1, 2.5, 5, 10, 100]),
+             'num_durations': hp.choice('num_durations', [50, 100, 200, 400]),
+             'lr': hp.choice('lr', [0.01, 0.001, 0.0001])}
 
-    best = {'lr': 0.01,
-            'batch_size': 128,
-            'dropout': 0.7,
-            'weight_decay': 0,
-            'num_nodes': [256, 256],
-            'alpha': 0,
-            'sigma': 0,
-            'epoch': 512}
+    trials = Trials()
 
-    surv, model, log = deep_hit_fit_and_predict(DeepHitSingle, train, val, test,
-                                                lr=best['lr'], batch=best['batch_size'], dropout=best['dropout'],
-                                                epoch=best['epoch'], weight_decay=best['weight_decay'],
-                                                num_nodes=best['num_nodes'], alpha=best['alpha'], sigma=best['sigma'],
-                                                device=device, labtrans=labtrans)
+    # Tree of Parzen Estimators (TPE)
+    best = fmin(experiment, space, algo=tpe.suggest, max_evals=50, trials=trials)
+
+    # All parameters
+    _file.write("All Parameters: \n" + str(trials.trials) + "\n\n")
+
+    # Best Parameters
+    _file.write("Best Parameters: " + str(best) + "\n")
 
     time_string = time.strftime("%d/%m/%Y, %H:%M:%S", time.localtime())
     _file.write("\n########## Final: " + time_string + "\n")

@@ -145,7 +145,7 @@ def experiment(params):
     train, val, test, labtrans = cohort_samples(seed=20, cohort=cohort)
 
     net = cox_time_make_net(train, params['dropout'], params['num_nodes'])
-    optimizer = tt.optim.Adam(weight_decay=params['weight_decay'])
+    optimizer = tt.optim.AdamWR(decoupled_weight_decay=params['weight_decay'])
     model = CoxTime(net, device=device, optimizer=optimizer, shrink=params['shrink'], labtrans=labtrans)
     model.optimizer.set_lr(params['lr'])
     callbacks = [tt.callbacks.EarlyStopping()]
@@ -203,16 +203,17 @@ def main():
     # ---------------------
     # Layers                           {2, 4}
     # Nodes per layer                  {64, 128, 256, 512}
-    # Dropout                          {0, 0.7}
+    # Dropout                          {0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7}
     # Weigh decay                      {0.4, 0.2, 0.1, 0.05, 0.02, 0.01, 0}
     # Batch size                       {64, 128, 256, 512, 1024}
-    # λ(penalty to the loss function)  {0.1, 0.01, 0.001, 0} - CoxCC(net, optimizer, shrink)
+    # λ(penalty to the loss function)  {0.1, 0.01, 0.001, 0}
     # Learning Rate                    {0.01, 0.001, 0.0001}
+    # Log Durations                    {True, False}
 
     space = {'num_nodes': hp.choice('num_nodes', [[64, 64], [128, 128], [256, 256], [512, 512],
                                                   [64, 64, 64, 64], [128, 128, 128, 128],
                                                   [256, 256, 256, 256], [512, 512, 512, 512]]),
-             'dropout': hp.choice('dropout', [0, 0.7]),
+             'dropout': hp.choice('dropout', [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7]),
              'weight_decay': hp.choice('weight_decay', [0.4, 0.2, 0.1, 0.05, 0.02, 0.01, 0]),
              'batch': hp.choice('batch', [64, 128, 256, 512, 1024]),
              'lr': hp.choice('lr', [0.01, 0.001, 0.0001]),
