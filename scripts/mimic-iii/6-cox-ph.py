@@ -1,11 +1,12 @@
 import time
+import cohort.get_cohort as sa_cohort
+import settings
 
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import torch
 import torchtuples as tt
-from cohort import get_cohort as gh
 from pycox import utils
 from pycox.evaluation import EvalSurv
 from pycox.models import CoxPH
@@ -13,35 +14,15 @@ from pycox.preprocessing.feature_transforms import OrderedCategoricalLong
 from sklearn_pandas import DataFrameMapper
 
 
-def get_cohort():
-    # Get data
-    cohort = gh.get_cohort()
-
-    # Binning
-    cohort['age_st'] = pd.cut(cohort['age'], np.arange(15, 91, 15))
-
-    # Neural network
-    drop = ['index', 'subject_id', 'hadm_id', 'icustay_id', 'dod', 'admittime', 'dischtime', 'ethnicity', 'hospstay_seq',
-            'intime', 'outtime', 'los_icu', 'icustay_seq', 'row_id', 'seq_num', 'icd9_code', 'age']
-    cohort.drop(drop, axis=1, inplace=True)
-
-    # Gender: from categorical to numerical
-    cohort.gender.replace(to_replace=dict(F=1, M=0), inplace=True)
-    cohort = cohort.astype({'admission_type': 'category', 'ethnicity_grouped': 'category', 'insurance': 'category',
-                            'icd_alzheimer': 'int64', 'icd_cancer': 'int64', 'icd_diabetes': 'int64', 'icd_heart': 'int64',
-                            'icd_transplant': 'int64', 'gender': 'int64', 'hospital_expire_flag': 'int64',
-                            'oasis_score':'int64'}, copy=False)
-    return cohort
-
-
-def cohort_samples(seed, cohort):
-    _ = torch.manual_seed(seed)
+def cohort_samples(seed, size, cohort):
+    # _ = torch.manual_seed(seed)
+    # test_dataset = cohort.sample(frac=size)
+    # train_dataset = cohort.drop(test_dataset.index)
+    # valid_dataset = train_dataset.sample(frac=size)
+    # train_dataset = train_dataset.drop(valid_dataset.index)
 
     # Train / valid / test split
-    test_dataset = cohort.sample(frac=0.2)
-    train_dataset = cohort.drop(test_dataset.index)
-    valid_dataset = train_dataset.sample(frac=0.2)
-    train_dataset = train_dataset.drop(valid_dataset.index)
+    train_dataset, valid_dataset, test_dataset = sa_cohort.train_test_split_nn(seed, size, cohort)
 
     # Feature transforms
     x_train, x_val, x_test = preprocess_input_features(train_dataset, valid_dataset, test_dataset)
@@ -128,7 +109,6 @@ def add_km_censor_modified(ev, durations, events):
     """
         Add censoring estimates obtained by Kaplan-Meier on the test set(durations, 1-events).
     """
-
     # modified add_km_censor function
     km = utils.kaplan_meier(durations, 1-events)
     surv = pd.DataFrame(np.repeat(km.values.reshape(-1, 1), len(durations), axis=1), index=km.index)
@@ -188,8 +168,8 @@ def main():
 
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
-    cohort = get_cohort()
-    train, val, test = cohort_samples(seed=20, cohort=cohort)
+    cohort = sa_cohort.cox_neural_network()
+    train, val, test = cohort_samples(seed=settings.seed, size=settings.size, cohort=cohort)
 
     # Open file
     _file = open("files/cox-ph.txt", "a")
@@ -232,7 +212,7 @@ def main():
     log.plot().get_figure().savefig("img/cox-ph-train-val-loss.png", format="png", bbox_inches="tight")
 
     # Survival estimates as a dataframe
-    estimates = 5
+    estimates = settings.estimates
     plt.ylabel('S(t | x)')
     plt.xlabel('Time')
     surv.iloc[:, :estimates].plot().get_figure().savefig("img/cox-ph-survival-estimates.png", format="png",
@@ -246,11 +226,11 @@ def main():
     _file.write("Best Parameters: " + str(best) + "\n")
 
     # Scores
-    _file.write("Validation \n" 
+    _file.write("Validation \n"
                 "C-Index: " + str(cindex_v) + "\n" +
                 "Brier Score: " + str(bscore_v) + "\n" +
                 "Binomial Log-Likelihood: " + str(bll_v) + "\n")
-    _file.write("Test \n" 
+    _file.write("Test \n"
                 "C-Index: " + str(cindex) + "\n" +
                 "Brier Score: " + str(bscore) + "\n" +
                 "Binomial Log-Likelihood: " + str(bll) + "\n")

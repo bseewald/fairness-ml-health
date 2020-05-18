@@ -1,6 +1,3 @@
-#!/usr/bin/env python
-
-# Imports
 import pandas as pd
 import psycopg2
 from sqlalchemy import create_engine
@@ -184,7 +181,7 @@ def main():
     cohort = cohort_df.copy()
     cohort.dropna(inplace=True)
 
-    cohort = pd.concat([cohort,pd.DataFrame(columns=["icd_alzheimer", "icd_cancer", "icd_diabetes", "icd_heart","icd_transplant"])])
+    cohort = pd.concat([cohort,pd.DataFrame(columns=["icd_alzheimer", "icd_cancer", "icd_diabetes", "icd_heart", "icd_transplant"])])
     cohort.loc[(cohort['hadm_id'].isin(hadm_ids_list_alzheimer)),'icd_alzheimer'] = '1'
     cohort.loc[(cohort['hadm_id'].isin(hadm_ids_list_cancer)),'icd_cancer'] = '1'
     cohort.loc[(cohort['hadm_id'].isin(hadm_ids_list_diabetes)),'icd_diabetes'] = '1'

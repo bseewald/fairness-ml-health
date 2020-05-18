@@ -1,11 +1,13 @@
 import time
+import cohort.get_cohort as sa_cohort
+import settings
 
 import numpy as np
 import pandas as pd
 import torch
 import torchtuples as tt
-from cohort import get_cohort as gh
-from hyperopt import hp, fmin, tpe, STATUS_OK, Trials
+import hyperopt_parameters as parameters
+from hyperopt import STATUS_OK
 from pycox import utils
 from pycox.evaluation import EvalSurv
 from pycox.models import DeepHitSingle
@@ -13,35 +15,15 @@ from pycox.preprocessing.feature_transforms import OrderedCategoricalLong
 from sklearn_pandas import DataFrameMapper
 
 
-def get_cohort():
-    # Get data
-    cohort = gh.get_cohort()
-
-    # Binning
-    cohort['age_st'] = pd.cut(cohort['age'], np.arange(15, 91, 15))
-
-    # Neural network
-    drop = ['index', 'subject_id', 'hadm_id', 'icustay_id', 'dod', 'admittime', 'dischtime', 'ethnicity', 'hospstay_seq',
-            'intime', 'outtime', 'los_icu', 'icustay_seq', 'row_id', 'seq_num', 'icd9_code', 'age']
-    cohort.drop(drop, axis=1, inplace=True)
-
-    # Gender: from categorical to numerical
-    cohort.gender.replace(to_replace=dict(F=1, M=0), inplace=True)
-    cohort = cohort.astype({'admission_type': 'category', 'ethnicity_grouped': 'category', 'insurance': 'category',
-                            'icd_alzheimer': 'int64', 'icd_cancer': 'int64', 'icd_diabetes': 'int64', 'icd_heart': 'int64',
-                            'icd_transplant': 'int64', 'gender': 'int64', 'hospital_expire_flag': 'int64',
-                            'oasis_score': 'int64'}, copy=False)
-    return cohort
-
-
-def cohort_samples(seed, cohort, num_durations):
-    _ = torch.manual_seed(seed)
+def cohort_samples(seed, size, cohort, num_durations):
+    # _ = torch.manual_seed(seed)
+    # test_dataset = cohort.sample(frac=size)
+    # train_dataset = cohort.drop(test_dataset.index)
+    # valid_dataset = train_dataset.sample(frac=size)
+    # train_dataset = train_dataset.drop(valid_dataset.index)
 
     # Train / valid / test split
-    test_dataset = cohort.sample(frac=0.2)
-    train_dataset = cohort.drop(test_dataset.index)
-    valid_dataset = train_dataset.sample(frac=0.2)
-    train_dataset = train_dataset.drop(valid_dataset.index)
+    train_dataset, valid_dataset, test_dataset = sa_cohort.train_test_split_nn(seed, size, cohort)
 
     # Feature transforms
     # ------------------
@@ -127,7 +109,6 @@ def add_km_censor_modified(ev, durations, events):
     """
         Add censoring estimates obtained by Kaplan-Meier on the test set(durations, 1-events).
     """
-
     # modified add_km_censor function
     km = utils.kaplan_meier(durations, 1-events)
     surv = pd.DataFrame(np.repeat(km.values.reshape(-1, 1), len(durations), axis=1), index=km.index)
@@ -141,8 +122,8 @@ def experiment(params):
 
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
-    cohort = get_cohort()
-    train, val, test, labtrans = cohort_samples(seed=20, cohort=cohort, num_durations=params['num_durations'])
+    cohort = sa_cohort.cox_neural_network()
+    train, val, test = cohort_samples(seed=settings.seed, size=settings, cohort=cohort, num_durations=params['num_durations'].size)
 
     net = deep_hit_make_net(train, params['dropout'], params['num_nodes'], labtrans)
     optimizer = tt.optim.AdamWR(decoupled_weight_decay=params['weight_decay'])
@@ -152,7 +133,7 @@ def experiment(params):
 
     model.optimizer.set_lr(params['lr'])
     callbacks = [tt.callbacks.EarlyStopping()]
-    _ = model.fit(train[0], train[1], batch_size=params['batch'], epochs=512, callbacks=callbacks,
+    _ = model.fit(train[0], train[1], batch_size=params['batch'], epochs=settings.epochs, callbacks=callbacks,
                   val_data=val.repeat(10).cat(), drop_last=True)
 
     surv = model.predict_surv_df(test[0])
@@ -204,34 +185,7 @@ def main():
     time_string = time.strftime("%d/%m/%Y, %H:%M:%S", time.localtime())
     _file.write("########## Init: " + time_string + "\n\n")
 
-    # ---------------------
-    # Hyperparameter values
-    # ---------------------
-    # Layers                           {2, 4}
-    # Nodes per layer                  {64, 128, 256, 512}
-    # Dropout                          {0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7}
-    # Weigh decay                      {0.4, 0.2, 0.1, 0.05, 0.02, 0.01, 0}
-    # Batch size                       {64, 128, 256, 512, 1024}
-    # Alpha                            [0, 1]
-    # Sigma                            {0.1, 0.25, 0.5, 1, 2.5, 5, 10, 100}
-    # Num Durations                    {50, 100, 200, 400}
-    # Learning Rate                    {0.01, 0.001, 0.0001}
-
-    space = {'num_nodes': hp.choice('num_nodes', [[64, 64], [128, 128], [256, 256], [512, 512],
-                                                  [64, 64, 64, 64], [128, 128, 128, 128],
-                                                  [256, 256, 256, 256], [512, 512, 512, 512]]),
-             'dropout': hp.choice('dropout', [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7]),
-             'weight_decay': hp.choice('weight_decay', [0.4, 0.2, 0.1, 0.05, 0.02, 0.01, 0]),
-             'batch': hp.choice('batch', [64, 128, 256, 512, 1024]),
-             'alpha': hp.uniform('alpha', 0, 1),
-             'sigma': hp.choice('sigma', [0.1, 0.25, 0.5, 1, 2.5, 5, 10, 100]),
-             'num_durations': hp.choice('num_durations', [50, 100, 200, 400]),
-             'lr': hp.choice('lr', [0.01, 0.001, 0.0001])}
-
-    trials = Trials()
-
-    # Tree of Parzen Estimators (TPE)
-    best = fmin(experiment, space, algo=tpe.suggest, max_evals=50, trials=trials)
+    trials, best = parameters.hyperopt(experiment, "deephit")
 
     # All parameters
     _file.write("All Parameters: \n" + str(trials.trials) + "\n\n")
