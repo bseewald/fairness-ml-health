@@ -1,5 +1,5 @@
 import settings
-from hyperopt import hp, fmin, tpe, STATUS_OK, Trials
+from hyperopt import hp, fmin, tpe, Trials
 
 # ---------------------
 # Hyperparameter values
@@ -10,6 +10,7 @@ from hyperopt import hp, fmin, tpe, STATUS_OK, Trials
 # Weigh decay                      {0.4, 0.2, 0.1, 0.05, 0.02, 0.01, 0}
 # Batch size                       {64, 128, 256, 512, 1024}
 # λ(penalty to the loss function)  {0.1, 0.01, 0.001, 0} - CoxCC(net, optimizer, shrink)
+
 
 def hyperopt(experiment, parameters=None):
     space = {'num_nodes': hp.choice('num_nodes', [[64, 64], [128, 128], [256, 256], [512, 512],

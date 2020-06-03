@@ -1,12 +1,12 @@
 import time
-import cohort.get_cohort as sa_cohort
-import settings
 
+import cohort.get_cohort as sa_cohort
+import hyperopt_parameters as parameters
 import numpy as np
 import pandas as pd
+import settings
 import torch
 import torchtuples as tt
-import hyperopt_parameters as parameters
 from hyperopt import STATUS_OK
 from pycox import utils
 from pycox.evaluation import EvalSurv

@@ -8,10 +8,10 @@ from sksurv.util import Surv
 def get_cohort():
 
     host = '/tmp'
-    user='postgres'
-    passwd='postgres'
-    con = psycopg2.connect(dbname ='mimic', user=user, password=passwd, host=host)
-    cur = con.cursor()
+    user = 'postgres'
+    passwd = 'postgres'
+    con = psycopg2.connect(dbname='mimic', user=user, password=passwd, host=host)
+    # cur = con.cursor()
 
     # Cohort Table
     cohort_query = 'SELECT * FROM mimiciii.cohort_survival'
@@ -20,7 +20,7 @@ def get_cohort():
     return cohort
 
 
-def train_test_split(cohort_X, cohort_y):
+def train_test_split(cohort_x, cohort_y):
 
     ########################################################
     # Cohort
@@ -39,19 +39,20 @@ def train_test_split(cohort_X, cohort_y):
     ########################################################
 
     cohort = get_cohort()
+    cohort = cohort.loc[cohort['los_hospital'] > 0]
     cohort_train = cohort.groupby("subject_id").filter(lambda x: len(x) < 2)
-    cohort_test = cohort.groupby("subject_id").filter(lambda x: len(x) > 1 and len(x) < 4)
+    cohort_test = cohort.groupby("subject_id").filter(lambda x: 1 < len(x) < 4)
 
-    # id_train = cohort_X.index.intersection(train_index)
-    # id_test = cohort_X.index.intersection(test_index)
+    # id_train = cohort_x.index.intersection(train_index)
+    # id_test = cohort_x.index.intersection(test_index)
     # print (id_train, id_test)
 
-    X_train = cohort_X.drop(cohort_test.index)
-    X_test = cohort_X.drop(cohort_train.index)
+    x_train = cohort_x.drop(cohort_test.index)
+    x_test = cohort_x.drop(cohort_train.index)
     y_train = cohort_y.drop(cohort_test.index)
     y_test = cohort_y.drop(cohort_train.index)
 
-    return X_train, X_test, y_train, y_test
+    return x_train, x_test, y_train, y_test
 
 
 def train_test_split_nn(seed, size, sa_cohort):
@@ -59,8 +60,9 @@ def train_test_split_nn(seed, size, sa_cohort):
     _ = manual_seed(seed)
 
     cohort = get_cohort()
+    cohort = cohort.loc[cohort['los_hospital'] > 0]
     cohort_train = cohort.groupby("subject_id").filter(lambda x: len(x) < 2)
-    cohort_test = cohort.groupby("subject_id").filter(lambda x: len(x) > 1 and len(x) < 4)
+    cohort_test = cohort.groupby("subject_id").filter(lambda x: 1 < len(x) < 4)
 
     test_dataset = sa_cohort.drop(cohort_train.index)
     train_dataset = sa_cohort.drop(cohort_test.index)
@@ -82,9 +84,9 @@ def cox_classical():
 
     # Change types
     cohort = cohort.astype({'admission_type': 'category', 'ethnicity_grouped': 'category', 'insurance': 'category',
-                            'icd_alzheimer': 'category', 'icd_cancer': 'category', 'icd_diabetes': 'category', 'icd_heart': 'category',
-                            'icd_transplant': 'category', 'gender': 'category', 'hospital_expire_flag': 'bool',
-                            'oasis_score':'category'}, copy=False)
+                            'icd_alzheimer': 'category', 'icd_cancer': 'category', 'icd_diabetes': 'category',
+                            'icd_heart': 'category', 'icd_transplant': 'category', 'gender': 'category',
+                            'hospital_expire_flag': 'bool', 'oasis_score': 'category'}, copy=False)
 
     # Convert categorical variables
     cat = ['gender', 'insurance', 'ethnicity_grouped', 'admission_type', 'oasis_score',
@@ -96,9 +98,12 @@ def cox_classical():
             'intime', 'outtime', 'los_icu', 'icustay_seq', 'row_id', 'seq_num', 'icd9_code', 'age', 'level_0']
     cohort_df.drop(drop, axis=1, inplace=True)
 
-    cohort_X = cohort_df[cohort_df.columns.difference(["los_hospital"])]
+    # TODO: there are negative values, investigate why
+    cohort_df = cohort_df.loc[cohort_df['los_hospital'] > 0]
+
+    cohort_x = cohort_df[cohort_df.columns.difference(["los_hospital"])]
     cohort_y = cohort_df["los_hospital"]
-    return cohort_X, cohort_y, cohort_df
+    return cohort_x, cohort_y, cohort_df
 
 
 def cox():
@@ -123,12 +128,14 @@ def cox():
     cohort.drop(drop, axis=1, inplace=True)
 
     # Datasets
-    cohort_X = cohort[cohort.columns.difference(["los_hospital", "hospital_expire_flag"])]
+    cohort = cohort.loc[cohort['los_hospital'] > 0]
+
+    cohort_x = cohort[cohort.columns.difference(["los_hospital", "hospital_expire_flag"])]
     cohort_y = cohort[["hospital_expire_flag", "los_hospital"]]
     cohort_y['hospital_expire_flag'] = cohort_y['hospital_expire_flag'].astype(bool)
     cohort_y = Surv.from_dataframe("hospital_expire_flag", "los_hospital", cohort_y)
 
-    return cohort_X, cohort_y
+    return cohort_x, cohort_y
 
 
 def cox_neural_network():
@@ -149,5 +156,7 @@ def cox_neural_network():
     drop = ['index', 'subject_id', 'hadm_id', 'icustay_id', 'dod', 'admittime', 'dischtime', 'ethnicity', 'hospstay_seq',
             'intime', 'outtime', 'los_icu', 'icustay_seq', 'row_id', 'seq_num', 'icd9_code', 'age', 'level_0']
     cohort.drop(drop, axis=1, inplace=True)
+
+    cohort = cohort.loc[cohort['los_hospital'] > 0]
 
     return cohort

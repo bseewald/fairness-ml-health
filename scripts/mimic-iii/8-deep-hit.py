@@ -1,10 +1,10 @@
 import time
-import cohort.get_cohort as sa_cohort
-import settings
 
+import cohort.get_cohort as sa_cohort
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+import settings
 import torch
 import torchtuples as tt
 from pycox import utils

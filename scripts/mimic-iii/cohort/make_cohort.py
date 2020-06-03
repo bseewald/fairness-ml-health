@@ -23,19 +23,18 @@ def hadms_list(icd_list, icu_diagnoses_df):
 
 def main():
 
-    #######################
+    # -----------------------
     # POSTGRESQL Connection
-    #######################
+    # -----------------------
     host = '/tmp'
-    user='postgres'
-    passwd='postgres'
-    con = psycopg2.connect(dbname ='mimic', user=user, password=passwd, host=host)
-    cur = con.cursor()
+    user = 'postgres'
+    passwd = 'postgres'
+    con = psycopg2.connect(dbname='mimic', user=user, password=passwd, host=host)
+    # cur = con.cursor()
 
-
-    ##################
-    ## MIMIC-III
-    ##################
+    # -----------------------
+    # MIMIC-III
+    # -----------------------
 
     # ICD-9 Codes table
 
@@ -64,7 +63,7 @@ def main():
     icustay_details_df['insurance'] = icustay_details_df['insurance'].apply(normalize_insurance)
 
     # icd9 merge
-    icu_diagnoses_df = pd.merge(icustay_details_df, mimic_diagnoses_df, on = ['subject_id', 'hadm_id'], how = 'inner')
+    icu_diagnoses_df = pd.merge(icustay_details_df, mimic_diagnoses_df, on=['subject_id', 'hadm_id'], how='inner')
     eth_mortality_df = icu_diagnoses_df.groupby(['icd9_code', 'ethnicity_grouped', 'hospital_expire_flag']).size().unstack()
     eth_mortality_df = eth_mortality_df.reset_index()
     eth_mortality_df.columns.names = [None]
@@ -72,14 +71,13 @@ def main():
     eth_mortality_df.insert(4, 'total', '0')
     eth_mortality_df = eth_mortality_df.fillna(0)
     eth_mortality_df['total'] = eth_mortality_df['total'].astype(float)
-    eth_mortality_df
+
     # Compute alive, dead and total
     for index, row in eth_mortality_df.iterrows():
         eth_mortality_df.at[index, 'total'] = row['alive'] + row['dead']
 
     # merge mortality with descriptions from each ICD
     eth_mortality_df = eth_mortality_df.merge(mimic_diagnoses_descriptions_df, left_on='icd9_code', right_on='icd9_code')
-
 
     # At this point, we decided to work with 3 types of diseases.
     # Which are among the top 10 causes of death in high-income countries
@@ -96,11 +94,10 @@ def main():
     # 1.2. Remove ICD9 codes with only ONE ETHNICITY
     for index, row in transplanted_patients_df.iterrows():
         rows = transplanted_patients_df.loc[transplanted_patients_df['icd9_code'] == row['icd9_code']]
-        if (len(rows) == 1):
+        if len(rows) == 1:
             transplanted_patients_df.drop(rows.index, inplace=True)
 
     transplanted_patients_df = transplanted_patients_df.drop(['row_id', 'short_title'], axis=1)
-
 
     # 2. Cancer
     searchfor = ['neoplasm', 'neoplasms', 'sarcoma', 'carcinoma']
@@ -112,11 +109,10 @@ def main():
     # 2.2. Remove ICD9 codes with only ONE ETHNICITY
     for index, row in cancer_patients_df.iterrows():
         rows = cancer_patients_df.loc[cancer_patients_df['icd9_code'] == row['icd9_code']]
-        if (len(rows) == 1):
+        if len(rows) == 1:
             cancer_patients_df.drop(rows.index, inplace=True)
 
     cancer_patients_df = cancer_patients_df.drop(['row_id', 'short_title'], axis=1)
-
 
     # 3. Diabetes
     diabetes_patients_df = eth_mortality_df[eth_mortality_df['long_title'].str.lower().str.contains('diabetes')].copy()
@@ -127,11 +123,10 @@ def main():
     # 3.2. Remove ICD9 codes with only ONE ETHNICITY
     for index, row in diabetes_patients_df.iterrows():
         rows = diabetes_patients_df.loc[diabetes_patients_df['icd9_code'] == row['icd9_code']]
-        if (len(rows) == 1):
+        if len(rows) == 1:
             diabetes_patients_df.drop(rows.index, inplace=True)
 
     diabetes_patients_df = diabetes_patients_df.drop(['row_id', 'short_title'], axis=1)
-
 
     # 4. Heart
     searchfor = ['heart', 'myocardial','stroke', 'artery', 'arterial']
@@ -140,11 +135,10 @@ def main():
 
     for index, row in heart_patients_df.iterrows():
         rows = heart_patients_df.loc[heart_patients_df['icd9_code'] == row['icd9_code']]
-        if (len(rows) == 1):
+        if len(rows) == 1:
             heart_patients_df.drop(rows.index, inplace=True)
 
     heart_patients_df = heart_patients_df.drop(['row_id', 'short_title'], axis=1)
-
 
     # 5. Alzheimer
     alzheimer_patients_df = eth_mortality_df[eth_mortality_df['long_title'].str.lower().str.contains('alzheimer')].copy()
@@ -155,7 +149,7 @@ def main():
     # 5.2. Remove ICD9 codes with only ONE ETHNICITY
     for index, row in alzheimer_patients_df.iterrows():
         rows = alzheimer_patients_df.loc[alzheimer_patients_df['icd9_code'] == row['icd9_code']]
-        if (len(rows) == 1):
+        if len(rows) == 1:
             alzheimer_patients_df.drop(rows.index, inplace=True)
 
     alzheimer_patients_df = alzheimer_patients_df.drop(['row_id', 'short_title'], axis=1)
@@ -182,17 +176,18 @@ def main():
     cohort.dropna(inplace=True)
 
     cohort = pd.concat([cohort,pd.DataFrame(columns=["icd_alzheimer", "icd_cancer", "icd_diabetes", "icd_heart", "icd_transplant"])])
-    cohort.loc[(cohort['hadm_id'].isin(hadm_ids_list_alzheimer)),'icd_alzheimer'] = '1'
-    cohort.loc[(cohort['hadm_id'].isin(hadm_ids_list_cancer)),'icd_cancer'] = '1'
-    cohort.loc[(cohort['hadm_id'].isin(hadm_ids_list_diabetes)),'icd_diabetes'] = '1'
-    cohort.loc[(cohort['hadm_id'].isin(hadm_ids_list_heart)),'icd_heart'] = '1'
-    cohort.loc[(cohort['hadm_id'].isin(hadm_ids_list_transplants)), 'icd_transplant']= '1'
+    cohort.loc[(cohort['hadm_id'].isin(hadm_ids_list_alzheimer)), 'icd_alzheimer'] = '1'
+    cohort.loc[(cohort['hadm_id'].isin(hadm_ids_list_cancer)), 'icd_cancer'] = '1'
+    cohort.loc[(cohort['hadm_id'].isin(hadm_ids_list_diabetes)), 'icd_diabetes'] = '1'
+    cohort.loc[(cohort['hadm_id'].isin(hadm_ids_list_heart)), 'icd_heart'] = '1'
+    cohort.loc[(cohort['hadm_id'].isin(hadm_ids_list_transplants)), 'icd_transplant'] = '1'
     cohort.fillna(value=0, inplace=True)
 
     # save in Postgres
     print("Saving cohort table...")
     eng = create_engine('postgresql://postgres:postgres@localhost:5432/mimic')
     cohort.to_sql("cohort_survival", con=eng, schema="mimiciii")
+
 
 if __name__ == "__main__":
     main()
