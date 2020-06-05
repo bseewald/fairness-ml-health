@@ -6,26 +6,14 @@
 # between birth and death events. Survival Analysis was originally developed and used by Medical
 # Researchers and Data Analysts to measure the lifetimes of a certain population."
 
-import time
+from time import localtime, strftime
 
-import numpy as np
-import pandas as pd
 import cohort.get_cohort as cohort
 import settings
 from lifelines import CoxPHFitter
 from lifelines.utils import concordance_index
 from lifelines.utils.sklearn_adapter import sklearn_adapter
 from sklearn.model_selection import GridSearchCV, KFold
-from sklearn.model_selection import train_test_split
-
-
-# TODO: implement!
-def brier_score():
-    return None
-
-
-def binomial_log_likelihood():
-    return None
 
 
 def main():
@@ -44,14 +32,13 @@ def main():
     # Open file
     _file = open("files/cox.txt", "a")
 
-    time_string = time.strftime("%d/%m/%Y, %H:%M:%S", time.localtime())
+    time_string = strftime("%d/%m/%Y, %H:%M:%S", localtime())
     _file.write("########## Init: " + time_string + "\n\n")
 
-    cohort_X, cohort_y, cohort_df = cohort.cox_classical()
+    cohort_x, cohort_y, cohort_df = cohort.cox_classical()
 
     # Train / test samples
-    X_train, X_test, y_train, y_test = train_test_split(cohort_X, cohort_y)
-    # X_train, X_test, y_train, y_test = train_test_split(cohort_X, cohort_y, test_size=settings.size, random_state=settings.seed)
+    X_train, X_test, y_train, y_test = cohort.train_test_split(cohort_x, cohort_y)
 
     cox = sklearn_adapter(CoxPHFitter, event_col='hospital_expire_flag')
     cx = cox()
@@ -63,11 +50,11 @@ def main():
     gcv = GridSearchCV(cx, {"penalizer": settings._alphas, "l1_ratio": settings._l1_ratios}, cv=cv)
 
     # Fit
-    print(time.strftime("%d/%m/%Y, %H:%M:%S", time.localtime()))
+    print(strftime("%d/%m/%Y, %H:%M:%S", localtime()))
     gcv_fit = gcv.fit(X_train, y_train)
 
     # Score
-    print(time.strftime("%d/%m/%Y, %H:%M:%S", time.localtime()))
+    print(strftime("%d/%m/%Y, %H:%M:%S", localtime()))
     gcv_score = gcv.score(X_test, y_test)
 
     # Best Parameters
@@ -88,7 +75,7 @@ def main():
                                cohort_df['hospital_expire_flag'])
     _file.write("C-Index all dataset: " + str(cindex) + "\n")
 
-    time_string = time.strftime("%d/%m/%Y, %H:%M:%S", time.localtime())
+    time_string = strftime("%d/%m/%Y, %H:%M:%S", localtime())
     _file.write("\n########## Final: " + time_string + "\n")
 
     # Close file

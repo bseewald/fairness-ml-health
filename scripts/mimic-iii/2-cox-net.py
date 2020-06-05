@@ -1,14 +1,13 @@
-import time
+from time import localtime, strftime
 
-import matplotlib.pyplot as plt
-import numpy as np
-import pandas as pd
 import cohort.get_cohort as cohort
+import matplotlib.pyplot as plt
+import pandas as pd
 import settings
 from sklearn.model_selection import GridSearchCV, KFold
-from sklearn.model_selection import train_test_split
 from sksurv.linear_model import CoxnetSurvivalAnalysis
 from sksurv.preprocessing import OneHotEncoder
+from sksurv.util import Surv
 
 
 def main():
@@ -34,18 +33,22 @@ def main():
     # Open file
     _file = open("files/cox-net.txt", "a")
 
-    time_string = time.strftime("%d/%m/%Y, %H:%M:%S", time.localtime())
+    time_string = strftime("%d/%m/%Y, %H:%M:%S", localtime())
     _file.write("########## Init: " + time_string + "\n\n")
 
     # Cohort
-    cohort_X, cohort_y = cohort.cox()
+    cohort_x, cohort_y = cohort.cox()
 
     # OneHot
-    cohort_Xt = OneHotEncoder().fit_transform(cohort_X)
+    cohort_xt = OneHotEncoder().fit_transform(cohort_x)
 
     # Train / test samples
-    X_train, X_test, y_train, y_test = train_test_split(cohort_Xt, cohort_y)
-    # X_train, X_test, y_train, y_test = train_test_split(cohort_Xt, cohort_y, test_size=settings.size, random_state=settings.seed)
+    x_train, x_test, y_train, y_test = cohort.train_test_split(cohort_xt, cohort_y)
+
+    cohort_y = Surv.from_dataframe("hospital_expire_flag", "los_hospital", cohort_y)
+    y_train = Surv.from_dataframe("hospital_expire_flag", "los_hospital", y_train)
+    y_test = Surv.from_dataframe("hospital_expire_flag", "los_hospital", y_test)
+
 
     # KFold
     cv = KFold(n_splits=settings.k, shuffle=True, random_state=settings.seed)
@@ -55,7 +58,7 @@ def main():
 
     # Training Model
     for ratio in settings._l1_ratios_cn:
-        coxnet = CoxnetSurvivalAnalysis(alphas=settings._alphas_cn, l1_ratio=ratio).fit(cohort_Xt, cohort_y)
+        coxnet = CoxnetSurvivalAnalysis(alphas=settings._alphas_cn, l1_ratio=ratio, fit_baseline_model=True).fit(cohort_xt, cohort_y)
 
         _file.write("\nL1 Ratio: " + str(ratio) + "\n")
 
@@ -63,10 +66,10 @@ def main():
         gcv = GridSearchCV(coxnet, {"alphas": [[v] for v in coxnet.alphas_]}, cv=cv)
 
         # Fit
-        gcv_fit = gcv.fit(X_train, y_train)
+        gcv_fit = gcv.fit(x_train, y_train)
 
         # Score
-        gcv_score = gcv.score(X_test, y_test)
+        gcv_score = gcv.score(x_test, y_test)
 
         _file.write("gcv_score: " + str(gcv_score) + " old_score: " + str(old_score) + "\n")
         if gcv_score > old_score:
@@ -98,10 +101,10 @@ def main():
             _file.write("C-Index: " + str(gcv_score) + "\n")
 
             # Coef
-            coef = pd.Series(gcv_fit.best_estimator_.coef_[:, 0], index=cohort_Xt.columns)
+            coef = pd.Series(gcv_fit.best_estimator_.coef_[:, 0], index=cohort_xt.columns)
             _file.write("Coeficients:\n" + str(coef[coef != 0]) + "\n\n")
 
-    time_string = time.strftime("%d/%m/%Y, %H:%M:%S", time.localtime())
+    time_string = strftime("%d/%m/%Y, %H:%M:%S", localtime())
     _file.write("\n########## Final: " + time_string + "\n")
 
     _file.write("\n*** The last one is the best configuration! ***\n\n")

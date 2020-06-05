@@ -2,7 +2,6 @@ import psycopg2
 import pandas as pd
 import numpy as np
 from torch import manual_seed
-from sksurv.util import Surv
 
 
 def get_cohort():
@@ -31,11 +30,11 @@ def train_test_split(cohort_x, cohort_y):
     #
     # New cohort
     # ----------
-    # Total: 4823 + 2014 + 891 = 7728 admissions
+    # Total: 4814 + 2901 = 7715 admissions
     # patients with 2 admissions -> 2014
     # patients with 3 admissions -> 891
-    # 4823/7728 -> 62,4% train
-    # 2905/7728 -> 37,6% test
+    # 4814/7715 -> 62,5% train
+    # 2901/7715 -> 37,5% test
     ########################################################
 
     cohort = get_cohort()
@@ -43,9 +42,9 @@ def train_test_split(cohort_x, cohort_y):
     cohort_train = cohort.groupby("subject_id").filter(lambda x: len(x) < 2)
     cohort_test = cohort.groupby("subject_id").filter(lambda x: 1 < len(x) < 4)
 
-    # id_train = cohort_x.index.intersection(train_index)
-    # id_test = cohort_x.index.intersection(test_index)
-    # print (id_train, id_test)
+    # id_train = cohort_x.index.intersection(cohort_train.index)
+    # id_test = cohort_x.index.intersection(cohort_test.index)
+    # print(id_train, id_test)
 
     x_train = cohort_x.drop(cohort_test.index)
     x_test = cohort_x.drop(cohort_train.index)
@@ -133,7 +132,7 @@ def cox():
     cohort_x = cohort[cohort.columns.difference(["los_hospital", "hospital_expire_flag"])]
     cohort_y = cohort[["hospital_expire_flag", "los_hospital"]]
     cohort_y['hospital_expire_flag'] = cohort_y['hospital_expire_flag'].astype(bool)
-    cohort_y = Surv.from_dataframe("hospital_expire_flag", "los_hospital", cohort_y)
+    # cohort_y = Surv.from_dataframe("hospital_expire_flag", "los_hospital", cohort_y)
 
     return cohort_x, cohort_y
 
