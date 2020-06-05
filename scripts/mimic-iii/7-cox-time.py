@@ -16,11 +16,6 @@ from sklearn_pandas import DataFrameMapper
 
 
 def cohort_samples(seed, size, cohort):
-    # _ = torch.manual_seed(seed)
-    # test_dataset = cohort.sample(frac=size)
-    # train_dataset = cohort.drop(test_dataset.index)
-    # valid_dataset = train_dataset.sample(frac=size)
-    # train_dataset = train_dataset.drop(valid_dataset.index)
 
     # Train / valid / test split
     train_dataset, valid_dataset, test_dataset = sa_cohort.train_test_split_nn(seed, size, cohort)
@@ -145,14 +140,14 @@ def evaluate(sample, surv):
 
 def main():
 
-    ##################################
+    ##################################################################################
     # PyCox Library
     # https://github.com/havakv/pycox
     #
     # CoxTime
     #
-    #     """The Cox-Time model from [1]. A relative risk model without proportional hazards, trained
-    #     with case-control sampling.
+    #     """The Cox-Time model from [1]. A relative risk model without proportional hazards,
+    #     trained with case-control sampling.
     #
     #     References:
     #     [1] Håvard Kvamme, Ørnulf Borgan, and Ida Scheel.
@@ -161,7 +156,7 @@ def main():
     #         http://jmlr.org/papers/v20/18-424.html
     #     """
     #
-    ##################################
+    ##################################################################################
 
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 

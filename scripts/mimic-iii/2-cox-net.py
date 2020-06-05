@@ -10,7 +10,7 @@ from sksurv.preprocessing import OneHotEncoder
 from sksurv.util import Surv
 
 
-def main():
+def main(seed):
 
     ############################################################
     # Scikit-Survival Library
@@ -51,7 +51,7 @@ def main():
 
 
     # KFold
-    cv = KFold(n_splits=settings.k, shuffle=True, random_state=settings.seed)
+    cv = KFold(n_splits=settings.k, shuffle=True, random_state=seed)
 
     _file.write("Tuning hyper-parameters\n\n")
     _file.write("Alphas: " + str(settings._alphas_cn) + "\n\n")
@@ -114,4 +114,5 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    for seed in settings.seed:
+        main(seed)

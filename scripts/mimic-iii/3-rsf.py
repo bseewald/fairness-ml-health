@@ -9,7 +9,7 @@ from sksurv.preprocessing import OneHotEncoder
 from sksurv.util import Surv
 
 
-def main():
+def main(seed):
 
     #############################################################
     # Scikit-Survival Library
@@ -41,7 +41,7 @@ def main():
     y_test = Surv.from_dataframe("hospital_expire_flag", "los_hospital", y_test)
 
     # KFold
-    cv = KFold(n_splits=settings.k, shuffle=True, random_state=settings.seed)
+    cv = KFold(n_splits=settings.k, shuffle=True, random_state=seed)
 
     # Params
     params = {'n_estimators': settings.n_estimators, 'min_samples_split': settings.split, 'min_samples_leaf': settings.leaf,
@@ -77,4 +77,5 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    for seed in settings.seed:
+        main(seed)

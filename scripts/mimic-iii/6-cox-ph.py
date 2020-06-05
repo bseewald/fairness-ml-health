@@ -146,7 +146,7 @@ def evaluate(sample, surv):
 
 def main():
 
-    ##################################
+    ##################################################################################
     # PyCox Library
     # https://github.com/havakv/pycox
     #
@@ -164,7 +164,7 @@ def main():
     #         BMC Medical Research Methodology, 18(1), 2018.
     #         https://bmcmedresmethodol.biomedcentral.com/articles/10.1186/s12874-018-0482-1
     #
-    ##################################
+    ##################################################################################
 
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 

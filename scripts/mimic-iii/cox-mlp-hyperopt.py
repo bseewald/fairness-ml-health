@@ -136,7 +136,7 @@ def experiment(params):
 
 def main():
 
-    ##################################
+    ##################################################################################
     # PyCox Library
     # https://github.com/havakv/pycox
     #
@@ -152,7 +152,7 @@ def main():
     #         Journal of Machine Learning Research, 20(129):1–30, 2019.
     #         http://jmlr.org/papers/v20/18-424.html
     #
-    ##################################
+    ##################################################################################
 
     # Open file
     _file = open("files/cox-mlp-hyperopt.txt", "a")

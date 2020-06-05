@@ -147,7 +147,7 @@ def evaluate(sample, surv):
 
 def main():
 
-    ##################################
+    ##################################################################################
     # PyCox Library
     # https://github.com/havakv/pycox
     #
@@ -168,7 +168,7 @@ def main():
     #         with Neural Networks. arXiv preprint arXiv:1910.06724, 2019.
     #         https://arxiv.org/pdf/1910.06724.pdf
     #
-    ##################################
+    ##################################################################################
 
     # Open file
     _file = open("files/deep-hit.txt", "a")

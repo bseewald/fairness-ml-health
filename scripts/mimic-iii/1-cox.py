@@ -16,7 +16,7 @@ from lifelines.utils.sklearn_adapter import sklearn_adapter
 from sklearn.model_selection import GridSearchCV, KFold
 
 
-def main():
+def main(seed):
 
     #############################################################
     # Lifelines library
@@ -26,7 +26,7 @@ def main():
     # Duration: los_hospital (hospital lenght of stay -- in days)
     #############################################################
 
-    # To-Do:
+    # ToDo:
     # Do we censor all individuals that were still under observation at time 30 ?
 
     # Open file
@@ -44,7 +44,7 @@ def main():
     cx = cox()
 
     # KFold
-    cv = KFold(n_splits=settings.k, shuffle=True, random_state=settings.seed)
+    cv = KFold(n_splits=settings.k, shuffle=True, random_state=seed)
 
     # Training ML model
     gcv = GridSearchCV(cx, {"penalizer": settings._alphas, "l1_ratio": settings._l1_ratios}, cv=cv)
@@ -83,7 +83,8 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    for seed in settings.seed:
+        main(seed)
 
 
 #################################

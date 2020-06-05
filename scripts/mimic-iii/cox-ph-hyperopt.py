@@ -134,8 +134,7 @@ def experiment(params):
 
 
 def main():
-
-    ##################################
+    ##################################################################################
     # PyCox Library
     # https://github.com/havakv/pycox
     #
@@ -153,7 +152,7 @@ def main():
     #         BMC Medical Research Methodology, 18(1), 2018.
     #         https://bmcmedresmethodol.biomedcentral.com/articles/10.1186/s12874-018-0482-1
     #
-    ##################################
+    ##################################################################################
 
     # Open file
     _file = open("files/cox-ph-hyperopt.txt", "a")
