@@ -45,7 +45,7 @@ def main(seed):
 
     # Params
     params = {'n_estimators': settings.n_estimators, 'min_samples_split': settings.split, 'min_samples_leaf': settings.leaf,
-              'max_features': settings.max_features, 'n_jobs': settings.n_jobs, 'random_state': settings.random_state_rsf}
+              'max_features': settings.max_features, 'n_jobs': settings.n_jobs, 'random_state': [seed]}
 
     # Train model
     rsf = RandomSurvivalForest()
@@ -56,21 +56,17 @@ def main(seed):
     gcv_score = gcv.score(X_test, y_test)
 
     _file.write("gcv_score: " + str(gcv_score) + " old_score: " + str(old_score) + "\n")
-    if gcv_score > old_score:
 
-        old_score = gcv_score
+    # Best Parameters
+    _file.write("Best Parameters: " + str(gcv_fit.best_params_) + "\n")
 
-        # Best Parameters
-        _file.write("Best Parameters: " + str(gcv_fit.best_params_) + "\n")
-
-        # C-Index
-        _file.write("C-Index: " + str(gcv_score) + "\n")
+    # C-Index
+    _file.write("C-Index: " + str(gcv_score) + "\n")
 
     time_string = strftime("%d/%m/%Y, %H:%M:%S", localtime())
     _file.write("\n########## Final: " + time_string + "\n")
-    print(strftime("%d/%m/%Y, %H:%M:%S", localtime()))
 
-    _file.write("\n*** The last one is the best configuration! ***\n\n")
+    print(strftime("%d/%m/%Y, %H:%M:%S", localtime()))
 
     # Close file
     _file.close()

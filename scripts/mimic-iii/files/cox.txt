@@ -61,3 +61,1555 @@ Name: coef, dtype: float64
 C-Index all dataset: 0.7341471569725642
 
 ########## Final: 01/05/2020, 12:31:43
+
+
+########## Init: 05/06/2020, 09:40:15
+
+Best Parameters: {'l1_ratio': 0.1, 'penalizer': 0.001}
+C-Index test sample: 0.6449524840230374
+Coeficients:
+first_hosp_stay               0.046027
+first_icu_stay                0.592411
+gender_1                     -0.031220
+insurance_Public             -0.140064
+insurance_Self-Pay            1.484786
+ethnicity_grouped_black      -0.387947
+ethnicity_grouped_hispanic   -0.370456
+ethnicity_grouped_white      -0.302497
+admission_type_EMERGENCY      0.802159
+admission_type_URGENT         0.405679
+oasis_score_2.0               0.677169
+oasis_score_3.0               1.359444
+icd_alzheimer_1               0.403763
+icd_cancer_1                  0.245837
+icd_diabetes_1                0.026585
+icd_heart_1                  -0.222475
+icd_transplant_1             -0.194157
+age_st_(30, 45]              -0.181950
+age_st_(45, 60]              -0.102740
+age_st_(60, 75]              -0.130771
+age_st_(75, 90]               0.042509
+Name: coef, dtype: float64
+
+C-Index all dataset: 0.7351611860149887
+
+########## Final: 05/06/2020, 10:17:17
+########## Init: 05/06/2020, 10:17:17
+
+Best Parameters: {'l1_ratio': 0, 'penalizer': 0.001}
+C-Index test sample: 0.6446398535191001
+Coeficients:
+first_hosp_stay               0.046421
+first_icu_stay                0.592736
+gender_1                     -0.031541
+insurance_Public             -0.140901
+insurance_Self-Pay            1.483338
+ethnicity_grouped_black      -0.392107
+ethnicity_grouped_hispanic   -0.375702
+ethnicity_grouped_white      -0.306201
+admission_type_EMERGENCY      0.803587
+admission_type_URGENT         0.408962
+oasis_score_2.0               0.677413
+oasis_score_3.0               1.359527
+icd_alzheimer_1               0.404946
+icd_cancer_1                  0.246991
+icd_diabetes_1                0.028058
+icd_heart_1                  -0.222781
+icd_transplant_1             -0.194010
+age_st_(30, 45]              -0.193776
+age_st_(45, 60]              -0.114238
+age_st_(60, 75]              -0.142090
+age_st_(75, 90]               0.031789
+Name: coef, dtype: float64
+
+C-Index all dataset: 0.7351837839075073
+
+########## Final: 05/06/2020, 10:53:18
+########## Init: 05/06/2020, 10:53:18
+
+Best Parameters: {'l1_ratio': 0.5, 'penalizer': 0.001}
+C-Index test sample: 0.644983361109846
+Coeficients:
+first_hosp_stay               0.044391
+first_icu_stay                0.591085
+gender_1                     -0.029918
+insurance_Public             -0.136724
+insurance_Self-Pay            1.492388
+ethnicity_grouped_black      -0.370862
+ethnicity_grouped_hispanic   -0.348823
+ethnicity_grouped_white      -0.287398
+admission_type_EMERGENCY      0.796466
+admission_type_URGENT         0.392482
+oasis_score_2.0               0.676146
+oasis_score_3.0               1.359059
+icd_alzheimer_1               0.398945
+icd_cancer_1                  0.240989
+icd_diabetes_1                0.020415
+icd_heart_1                  -0.221337
+icd_transplant_1             -0.194665
+age_st_(30, 45]              -0.126142
+age_st_(45, 60]              -0.048113
+age_st_(60, 75]              -0.076815
+age_st_(75, 90]               0.094123
+Name: coef, dtype: float64
+
+C-Index all dataset: 0.7351291804161426
+
+########## Final: 05/06/2020, 11:30:11
+########## Init: 05/06/2020, 11:30:11
+
+Best Parameters: {'l1_ratio': 0.5, 'penalizer': 1e-05}
+C-Index test sample: 0.6447355724882069
+Coeficients:
+first_hosp_stay               0.046517
+first_icu_stay                0.595699
+gender_1                     -0.031621
+insurance_Public             -0.142072
+insurance_Self-Pay            1.478926
+ethnicity_grouped_black      -0.405608
+ethnicity_grouped_hispanic   -0.389957
+ethnicity_grouped_white      -0.317315
+admission_type_EMERGENCY      0.811143
+admission_type_URGENT         0.418743
+oasis_score_2.0               0.687075
+oasis_score_3.0               1.369643
+icd_alzheimer_1               0.405556
+icd_cancer_1                  0.250352
+icd_diabetes_1                0.030862
+icd_heart_1                  -0.223468
+icd_transplant_1             -0.193938
+age_st_(30, 45]              -0.223606
+age_st_(45, 60]              -0.145345
+age_st_(60, 75]              -0.173998
+age_st_(75, 90]              -0.000733
+Name: coef, dtype: float64
+
+C-Index all dataset: 0.7352863957971412
+
+########## Final: 05/06/2020, 12:06:13
+########## Init: 05/06/2020, 12:06:13
+
+Best Parameters: {'l1_ratio': 0, 'penalizer': 0.0001}
+C-Index test sample: 0.6446985199840366
+Coeficients:
+first_hosp_stay               0.046502
+first_icu_stay                0.595425
+gender_1                     -0.031615
+insurance_Public             -0.141970
+insurance_Self-Pay            1.479569
+ethnicity_grouped_black      -0.404360
+ethnicity_grouped_hispanic   -0.388612
+ethnicity_grouped_white      -0.316304
+admission_type_EMERGENCY      0.810457
+admission_type_URGENT         0.417850
+oasis_score_2.0               0.686176
+oasis_score_3.0               1.368700
+icd_alzheimer_1               0.405494
+icd_cancer_1                  0.250029
+icd_diabetes_1                0.030591
+icd_heart_1                  -0.223420
+icd_transplant_1             -0.193920
+age_st_(30, 45]              -0.219989
+age_st_(45, 60]              -0.141594
+age_st_(60, 75]              -0.170167
+age_st_(75, 90]               0.003166
+Name: coef, dtype: float64
+
+C-Index all dataset: 0.7352729146509606
+
+########## Final: 05/06/2020, 12:42:12
+########## Init: 05/06/2020, 12:42:12
+
+Best Parameters: {'l1_ratio': 0, 'penalizer': 0.0001}
+C-Index test sample: 0.6446985199840366
+Coeficients:
+first_hosp_stay               0.046502
+first_icu_stay                0.595425
+gender_1                     -0.031615
+insurance_Public             -0.141970
+insurance_Self-Pay            1.479569
+ethnicity_grouped_black      -0.404360
+ethnicity_grouped_hispanic   -0.388612
+ethnicity_grouped_white      -0.316304
+admission_type_EMERGENCY      0.810457
+admission_type_URGENT         0.417850
+oasis_score_2.0               0.686176
+oasis_score_3.0               1.368700
+icd_alzheimer_1               0.405494
+icd_cancer_1                  0.250029
+icd_diabetes_1                0.030591
+icd_heart_1                  -0.223420
+icd_transplant_1             -0.193920
+age_st_(30, 45]              -0.219989
+age_st_(45, 60]              -0.141594
+age_st_(60, 75]              -0.170167
+age_st_(75, 90]               0.003166
+Name: coef, dtype: float64
+
+C-Index all dataset: 0.7352729146509606
+
+########## Final: 05/06/2020, 13:18:51
+########## Init: 05/06/2020, 13:18:51
+
+Best Parameters: {'l1_ratio': 0.5, 'penalizer': 0.001}
+C-Index test sample: 0.644983361109846
+Coeficients:
+first_hosp_stay               0.044391
+first_icu_stay                0.591085
+gender_1                     -0.029918
+insurance_Public             -0.136724
+insurance_Self-Pay            1.492388
+ethnicity_grouped_black      -0.370862
+ethnicity_grouped_hispanic   -0.348823
+ethnicity_grouped_white      -0.287398
+admission_type_EMERGENCY      0.796466
+admission_type_URGENT         0.392482
+oasis_score_2.0               0.676146
+oasis_score_3.0               1.359059
+icd_alzheimer_1               0.398945
+icd_cancer_1                  0.240989
+icd_diabetes_1                0.020415
+icd_heart_1                  -0.221337
+icd_transplant_1             -0.194665
+age_st_(30, 45]              -0.126142
+age_st_(45, 60]              -0.048113
+age_st_(60, 75]              -0.076815
+age_st_(75, 90]               0.094123
+Name: coef, dtype: float64
+
+C-Index all dataset: 0.7351291804161426
+
+########## Final: 05/06/2020, 13:55:14
+########## Init: 05/06/2020, 13:55:14
+
+Best Parameters: {'l1_ratio': 0.1, 'penalizer': 0.001}
+C-Index test sample: 0.6449524840230374
+Coeficients:
+first_hosp_stay               0.046027
+first_icu_stay                0.592411
+gender_1                     -0.031220
+insurance_Public             -0.140064
+insurance_Self-Pay            1.484786
+ethnicity_grouped_black      -0.387947
+ethnicity_grouped_hispanic   -0.370456
+ethnicity_grouped_white      -0.302497
+admission_type_EMERGENCY      0.802159
+admission_type_URGENT         0.405679
+oasis_score_2.0               0.677169
+oasis_score_3.0               1.359444
+icd_alzheimer_1               0.403763
+icd_cancer_1                  0.245837
+icd_diabetes_1                0.026585
+icd_heart_1                  -0.222475
+icd_transplant_1             -0.194157
+age_st_(30, 45]              -0.181950
+age_st_(45, 60]              -0.102740
+age_st_(60, 75]              -0.130771
+age_st_(75, 90]               0.042509
+Name: coef, dtype: float64
+
+C-Index all dataset: 0.7351611860149887
+
+########## Final: 05/06/2020, 14:31:54
+########## Init: 05/06/2020, 14:31:54
+
+Best Parameters: {'l1_ratio': 0.5, 'penalizer': 0.001}
+C-Index test sample: 0.644983361109846
+Coeficients:
+first_hosp_stay               0.044391
+first_icu_stay                0.591085
+gender_1                     -0.029918
+insurance_Public             -0.136724
+insurance_Self-Pay            1.492388
+ethnicity_grouped_black      -0.370862
+ethnicity_grouped_hispanic   -0.348823
+ethnicity_grouped_white      -0.287398
+admission_type_EMERGENCY      0.796466
+admission_type_URGENT         0.392482
+oasis_score_2.0               0.676146
+oasis_score_3.0               1.359059
+icd_alzheimer_1               0.398945
+icd_cancer_1                  0.240989
+icd_diabetes_1                0.020415
+icd_heart_1                  -0.221337
+icd_transplant_1             -0.194665
+age_st_(30, 45]              -0.126142
+age_st_(45, 60]              -0.048113
+age_st_(60, 75]              -0.076815
+age_st_(75, 90]               0.094123
+Name: coef, dtype: float64
+
+C-Index all dataset: 0.7351291804161426
+
+########## Final: 05/06/2020, 15:08:31
+########## Init: 05/06/2020, 15:08:31
+
+Best Parameters: {'l1_ratio': 0.01, 'penalizer': 0.001}
+C-Index test sample: 0.6446413973734406
+Coeficients:
+first_hosp_stay               0.046404
+first_icu_stay                0.592700
+gender_1                     -0.031536
+insurance_Public             -0.140838
+insurance_Self-Pay            1.483553
+ethnicity_grouped_black      -0.391696
+ethnicity_grouped_hispanic   -0.375185
+ethnicity_grouped_white      -0.305847
+admission_type_EMERGENCY      0.803458
+admission_type_URGENT         0.408671
+oasis_score_2.0               0.677384
+oasis_score_3.0               1.359511
+icd_alzheimer_1               0.404842
+icd_cancer_1                  0.246907
+icd_diabetes_1                0.027964
+icd_heart_1                  -0.222763
+icd_transplant_1             -0.193983
+age_st_(30, 45]              -0.192345
+age_st_(45, 60]              -0.112825
+age_st_(60, 75]              -0.140681
+age_st_(75, 90]               0.033165
+Name: coef, dtype: float64
+
+C-Index all dataset: 0.7351867904940655
+
+########## Final: 05/06/2020, 15:44:49
+########## Init: 05/06/2020, 15:44:49
+
+Best Parameters: {'l1_ratio': 0, 'penalizer': 1e-05}
+C-Index test sample: 0.6447301689980154
+Coeficients:
+first_hosp_stay               0.046517
+first_icu_stay                0.595700
+gender_1                     -0.031621
+insurance_Public             -0.142073
+insurance_Self-Pay            1.478917
+ethnicity_grouped_black      -0.405619
+ethnicity_grouped_hispanic   -0.389970
+ethnicity_grouped_white      -0.317324
+admission_type_EMERGENCY      0.811149
+admission_type_URGENT         0.418750
+oasis_score_2.0               0.687070
+oasis_score_3.0               1.369636
+icd_alzheimer_1               0.405558
+icd_cancer_1                  0.250354
+icd_diabetes_1                0.030864
+icd_heart_1                  -0.223468
+icd_transplant_1             -0.193938
+age_st_(30, 45]              -0.223648
+age_st_(45, 60]              -0.145386
+age_st_(60, 75]              -0.174039
+age_st_(75, 90]              -0.000773
+Name: coef, dtype: float64
+
+C-Index all dataset: 0.7352865897704675
+
+########## Final: 05/06/2020, 16:21:34
+########## Init: 05/06/2020, 16:21:34
+
+Best Parameters: {'l1_ratio': 0, 'penalizer': 1e-05}
+C-Index test sample: 0.6447301689980154
+Coeficients:
+first_hosp_stay               0.046517
+first_icu_stay                0.595700
+gender_1                     -0.031621
+insurance_Public             -0.142073
+insurance_Self-Pay            1.478917
+ethnicity_grouped_black      -0.405619
+ethnicity_grouped_hispanic   -0.389970
+ethnicity_grouped_white      -0.317324
+admission_type_EMERGENCY      0.811149
+admission_type_URGENT         0.418750
+oasis_score_2.0               0.687070
+oasis_score_3.0               1.369636
+icd_alzheimer_1               0.405558
+icd_cancer_1                  0.250354
+icd_diabetes_1                0.030864
+icd_heart_1                  -0.223468
+icd_transplant_1             -0.193938
+age_st_(30, 45]              -0.223648
+age_st_(45, 60]              -0.145386
+age_st_(60, 75]              -0.174039
+age_st_(75, 90]              -0.000773
+Name: coef, dtype: float64
+
+C-Index all dataset: 0.7352865897704675
+
+########## Final: 05/06/2020, 16:58:12
+########## Init: 05/06/2020, 16:58:12
+
+Best Parameters: {'l1_ratio': 0, 'penalizer': 0.0001}
+C-Index test sample: 0.6446985199840366
+Coeficients:
+first_hosp_stay               0.046502
+first_icu_stay                0.595425
+gender_1                     -0.031615
+insurance_Public             -0.141970
+insurance_Self-Pay            1.479569
+ethnicity_grouped_black      -0.404360
+ethnicity_grouped_hispanic   -0.388612
+ethnicity_grouped_white      -0.316304
+admission_type_EMERGENCY      0.810457
+admission_type_URGENT         0.417850
+oasis_score_2.0               0.686176
+oasis_score_3.0               1.368700
+icd_alzheimer_1               0.405494
+icd_cancer_1                  0.250029
+icd_diabetes_1                0.030591
+icd_heart_1                  -0.223420
+icd_transplant_1             -0.193920
+age_st_(30, 45]              -0.219989
+age_st_(45, 60]              -0.141594
+age_st_(60, 75]              -0.170167
+age_st_(75, 90]               0.003166
+Name: coef, dtype: float64
+
+C-Index all dataset: 0.7352729146509606
+
+########## Final: 05/06/2020, 17:34:18
+########## Init: 05/06/2020, 17:34:18
+
+Best Parameters: {'l1_ratio': 0.1, 'penalizer': 0.0001}
+C-Index test sample: 0.6447046954013983
+Coeficients:
+first_hosp_stay               0.046471
+first_icu_stay                0.595385
+gender_1                     -0.031607
+insurance_Public             -0.141911
+insurance_Self-Pay            1.480052
+ethnicity_grouped_black      -0.403940
+ethnicity_grouped_hispanic   -0.388048
+ethnicity_grouped_white      -0.315962
+admission_type_EMERGENCY      0.810327
+admission_type_URGENT         0.417543
+oasis_score_2.0               0.686142
+oasis_score_3.0               1.368676
+icd_alzheimer_1               0.405365
+icd_cancer_1                  0.249922
+icd_diabetes_1                0.030472
+icd_heart_1                  -0.223417
+icd_transplant_1             -0.193865
+age_st_(30, 45]              -0.217515
+age_st_(45, 60]              -0.139125
+age_st_(60, 75]              -0.167697
+age_st_(75, 90]               0.005620
+Name: coef, dtype: float64
+
+C-Index all dataset: 0.7352748543842239
+
+########## Final: 05/06/2020, 18:10:34
+########## Init: 05/06/2020, 18:10:34
+
+Best Parameters: {'l1_ratio': 0, 'penalizer': 1e-05}
+C-Index test sample: 0.6447301689980154
+Coeficients:
+first_hosp_stay               0.046517
+first_icu_stay                0.595700
+gender_1                     -0.031621
+insurance_Public             -0.142073
+insurance_Self-Pay            1.478917
+ethnicity_grouped_black      -0.405619
+ethnicity_grouped_hispanic   -0.389970
+ethnicity_grouped_white      -0.317324
+admission_type_EMERGENCY      0.811149
+admission_type_URGENT         0.418750
+oasis_score_2.0               0.687070
+oasis_score_3.0               1.369636
+icd_alzheimer_1               0.405558
+icd_cancer_1                  0.250354
+icd_diabetes_1                0.030864
+icd_heart_1                  -0.223468
+icd_transplant_1             -0.193938
+age_st_(30, 45]              -0.223648
+age_st_(45, 60]              -0.145386
+age_st_(60, 75]              -0.174039
+age_st_(75, 90]              -0.000773
+Name: coef, dtype: float64
+
+C-Index all dataset: 0.7352865897704675
+
+########## Final: 05/06/2020, 18:47:07
+########## Init: 05/06/2020, 18:47:07
+
+Best Parameters: {'l1_ratio': 0.5, 'penalizer': 0.001}
+C-Index test sample: 0.644983361109846
+Coeficients:
+first_hosp_stay               0.044391
+first_icu_stay                0.591085
+gender_1                     -0.029918
+insurance_Public             -0.136724
+insurance_Self-Pay            1.492388
+ethnicity_grouped_black      -0.370862
+ethnicity_grouped_hispanic   -0.348823
+ethnicity_grouped_white      -0.287398
+admission_type_EMERGENCY      0.796466
+admission_type_URGENT         0.392482
+oasis_score_2.0               0.676146
+oasis_score_3.0               1.359059
+icd_alzheimer_1               0.398945
+icd_cancer_1                  0.240989
+icd_diabetes_1                0.020415
+icd_heart_1                  -0.221337
+icd_transplant_1             -0.194665
+age_st_(30, 45]              -0.126142
+age_st_(45, 60]              -0.048113
+age_st_(60, 75]              -0.076815
+age_st_(75, 90]               0.094123
+Name: coef, dtype: float64
+
+C-Index all dataset: 0.7351291804161426
+
+########## Final: 05/06/2020, 19:23:56
+########## Init: 05/06/2020, 19:23:56
+
+Best Parameters: {'l1_ratio': 0, 'penalizer': 0.01}
+C-Index test sample: 0.6444075034408654
+Coeficients:
+first_hosp_stay               0.046893
+first_icu_stay                0.568236
+gender_1                     -0.029923
+insurance_Public             -0.130140
+insurance_Self-Pay            1.468888
+ethnicity_grouped_black      -0.299094
+ethnicity_grouped_hispanic   -0.282822
+ethnicity_grouped_white      -0.226684
+admission_type_EMERGENCY      0.742886
+admission_type_URGENT         0.332553
+oasis_score_2.0               0.601034
+oasis_score_3.0               1.278671
+icd_alzheimer_1               0.401947
+icd_cancer_1                  0.224141
+icd_diabetes_1                0.010154
+icd_heart_1                  -0.213410
+icd_transplant_1             -0.198260
+age_st_(30, 45]              -0.145911
+age_st_(45, 60]              -0.059912
+age_st_(60, 75]              -0.082936
+age_st_(75, 90]               0.093382
+Name: coef, dtype: float64
+
+C-Index all dataset: 0.734705445684753
+
+########## Final: 05/06/2020, 20:00:01
+########## Init: 05/06/2020, 20:00:01
+
+Best Parameters: {'l1_ratio': 0.1, 'penalizer': 0.001}
+C-Index test sample: 0.6449524840230374
+Coeficients:
+first_hosp_stay               0.046027
+first_icu_stay                0.592411
+gender_1                     -0.031220
+insurance_Public             -0.140064
+insurance_Self-Pay            1.484786
+ethnicity_grouped_black      -0.387947
+ethnicity_grouped_hispanic   -0.370456
+ethnicity_grouped_white      -0.302497
+admission_type_EMERGENCY      0.802159
+admission_type_URGENT         0.405679
+oasis_score_2.0               0.677169
+oasis_score_3.0               1.359444
+icd_alzheimer_1               0.403763
+icd_cancer_1                  0.245837
+icd_diabetes_1                0.026585
+icd_heart_1                  -0.222475
+icd_transplant_1             -0.194157
+age_st_(30, 45]              -0.181950
+age_st_(45, 60]              -0.102740
+age_st_(60, 75]              -0.130771
+age_st_(75, 90]               0.042509
+Name: coef, dtype: float64
+
+C-Index all dataset: 0.7351611860149887
+
+########## Final: 05/06/2020, 20:36:15
+########## Init: 05/06/2020, 20:36:15
+
+Best Parameters: {'l1_ratio': 0.5, 'penalizer': 0.001}
+C-Index test sample: 0.644983361109846
+Coeficients:
+first_hosp_stay               0.044391
+first_icu_stay                0.591085
+gender_1                     -0.029918
+insurance_Public             -0.136724
+insurance_Self-Pay            1.492388
+ethnicity_grouped_black      -0.370862
+ethnicity_grouped_hispanic   -0.348823
+ethnicity_grouped_white      -0.287398
+admission_type_EMERGENCY      0.796466
+admission_type_URGENT         0.392482
+oasis_score_2.0               0.676146
+oasis_score_3.0               1.359059
+icd_alzheimer_1               0.398945
+icd_cancer_1                  0.240989
+icd_diabetes_1                0.020415
+icd_heart_1                  -0.221337
+icd_transplant_1             -0.194665
+age_st_(30, 45]              -0.126142
+age_st_(45, 60]              -0.048113
+age_st_(60, 75]              -0.076815
+age_st_(75, 90]               0.094123
+Name: coef, dtype: float64
+
+C-Index all dataset: 0.7351291804161426
+
+########## Final: 05/06/2020, 21:12:56
+########## Init: 05/06/2020, 21:12:56
+
+Best Parameters: {'l1_ratio': 0.01, 'penalizer': 0.01}
+C-Index test sample: 0.6444360647461633
+Coeficients:
+first_hosp_stay               0.046561
+first_icu_stay                0.567932
+gender_1                     -0.029575
+insurance_Public             -0.129320
+insurance_Self-Pay            1.468437
+ethnicity_grouped_black      -0.295540
+ethnicity_grouped_hispanic   -0.278457
+ethnicity_grouped_white      -0.223362
+admission_type_EMERGENCY      0.741611
+admission_type_URGENT         0.329535
+oasis_score_2.0               0.600771
+oasis_score_3.0               1.278586
+icd_alzheimer_1               0.400866
+icd_cancer_1                  0.223215
+icd_diabetes_1                0.008931
+icd_heart_1                  -0.213007
+icd_transplant_1             -0.198510
+age_st_(30, 45]              -0.141633
+age_st_(45, 60]              -0.056046
+age_st_(60, 75]              -0.079281
+age_st_(75, 90]               0.096394
+Name: coef, dtype: float64
+
+C-Index all dataset: 0.7347069004847006
+
+########## Final: 05/06/2020, 21:49:13
+########## Init: 05/06/2020, 21:49:13
+
+Best Parameters: {'l1_ratio': 0, 'penalizer': 1e-05}
+C-Index test sample: 0.6447301689980154
+Coeficients:
+first_hosp_stay               0.046517
+first_icu_stay                0.595700
+gender_1                     -0.031621
+insurance_Public             -0.142073
+insurance_Self-Pay            1.478917
+ethnicity_grouped_black      -0.405619
+ethnicity_grouped_hispanic   -0.389970
+ethnicity_grouped_white      -0.317324
+admission_type_EMERGENCY      0.811149
+admission_type_URGENT         0.418750
+oasis_score_2.0               0.687070
+oasis_score_3.0               1.369636
+icd_alzheimer_1               0.405558
+icd_cancer_1                  0.250354
+icd_diabetes_1                0.030864
+icd_heart_1                  -0.223468
+icd_transplant_1             -0.193938
+age_st_(30, 45]              -0.223648
+age_st_(45, 60]              -0.145386
+age_st_(60, 75]              -0.174039
+age_st_(75, 90]              -0.000773
+Name: coef, dtype: float64
+
+C-Index all dataset: 0.7352865897704675
+
+########## Final: 05/06/2020, 22:25:25
+########## Init: 05/06/2020, 22:25:25
+
+Best Parameters: {'l1_ratio': 0, 'penalizer': 0.001}
+C-Index test sample: 0.6446398535191001
+Coeficients:
+first_hosp_stay               0.046421
+first_icu_stay                0.592736
+gender_1                     -0.031541
+insurance_Public             -0.140901
+insurance_Self-Pay            1.483338
+ethnicity_grouped_black      -0.392107
+ethnicity_grouped_hispanic   -0.375702
+ethnicity_grouped_white      -0.306201
+admission_type_EMERGENCY      0.803587
+admission_type_URGENT         0.408962
+oasis_score_2.0               0.677413
+oasis_score_3.0               1.359527
+icd_alzheimer_1               0.404946
+icd_cancer_1                  0.246991
+icd_diabetes_1                0.028058
+icd_heart_1                  -0.222781
+icd_transplant_1             -0.194010
+age_st_(30, 45]              -0.193776
+age_st_(45, 60]              -0.114238
+age_st_(60, 75]              -0.142090
+age_st_(75, 90]               0.031789
+Name: coef, dtype: float64
+
+C-Index all dataset: 0.7351837839075073
+
+########## Final: 05/06/2020, 23:01:39
+########## Init: 05/06/2020, 23:01:39
+
+Best Parameters: {'l1_ratio': 0.01, 'penalizer': 0.001}
+C-Index test sample: 0.6446413973734406
+Coeficients:
+first_hosp_stay               0.046404
+first_icu_stay                0.592700
+gender_1                     -0.031536
+insurance_Public             -0.140838
+insurance_Self-Pay            1.483553
+ethnicity_grouped_black      -0.391696
+ethnicity_grouped_hispanic   -0.375185
+ethnicity_grouped_white      -0.305847
+admission_type_EMERGENCY      0.803458
+admission_type_URGENT         0.408671
+oasis_score_2.0               0.677384
+oasis_score_3.0               1.359511
+icd_alzheimer_1               0.404842
+icd_cancer_1                  0.246907
+icd_diabetes_1                0.027964
+icd_heart_1                  -0.222763
+icd_transplant_1             -0.193983
+age_st_(30, 45]              -0.192345
+age_st_(45, 60]              -0.112825
+age_st_(60, 75]              -0.140681
+age_st_(75, 90]               0.033165
+Name: coef, dtype: float64
+
+C-Index all dataset: 0.7351867904940655
+
+########## Final: 05/06/2020, 23:37:38
+########## Init: 05/06/2020, 23:37:38
+
+Best Parameters: {'l1_ratio': 0.1, 'penalizer': 0.001}
+C-Index test sample: 0.6449524840230374
+Coeficients:
+first_hosp_stay               0.046027
+first_icu_stay                0.592411
+gender_1                     -0.031220
+insurance_Public             -0.140064
+insurance_Self-Pay            1.484786
+ethnicity_grouped_black      -0.387947
+ethnicity_grouped_hispanic   -0.370456
+ethnicity_grouped_white      -0.302497
+admission_type_EMERGENCY      0.802159
+admission_type_URGENT         0.405679
+oasis_score_2.0               0.677169
+oasis_score_3.0               1.359444
+icd_alzheimer_1               0.403763
+icd_cancer_1                  0.245837
+icd_diabetes_1                0.026585
+icd_heart_1                  -0.222475
+icd_transplant_1             -0.194157
+age_st_(30, 45]              -0.181950
+age_st_(45, 60]              -0.102740
+age_st_(60, 75]              -0.130771
+age_st_(75, 90]               0.042509
+Name: coef, dtype: float64
+
+C-Index all dataset: 0.7351611860149887
+
+########## Final: 06/06/2020, 00:14:07
+########## Init: 06/06/2020, 00:14:07
+
+Best Parameters: {'l1_ratio': 0, 'penalizer': 0.01}
+C-Index test sample: 0.6444075034408654
+Coeficients:
+first_hosp_stay               0.046893
+first_icu_stay                0.568236
+gender_1                     -0.029923
+insurance_Public             -0.130140
+insurance_Self-Pay            1.468888
+ethnicity_grouped_black      -0.299094
+ethnicity_grouped_hispanic   -0.282822
+ethnicity_grouped_white      -0.226684
+admission_type_EMERGENCY      0.742886
+admission_type_URGENT         0.332553
+oasis_score_2.0               0.601034
+oasis_score_3.0               1.278671
+icd_alzheimer_1               0.401947
+icd_cancer_1                  0.224141
+icd_diabetes_1                0.010154
+icd_heart_1                  -0.213410
+icd_transplant_1             -0.198260
+age_st_(30, 45]              -0.145911
+age_st_(45, 60]              -0.059912
+age_st_(60, 75]              -0.082936
+age_st_(75, 90]               0.093382
+Name: coef, dtype: float64
+
+C-Index all dataset: 0.734705445684753
+
+########## Final: 06/06/2020, 00:50:24
+########## Init: 06/06/2020, 00:50:24
+
+Best Parameters: {'l1_ratio': 0.1, 'penalizer': 0.001}
+C-Index test sample: 0.6449524840230374
+Coeficients:
+first_hosp_stay               0.046027
+first_icu_stay                0.592411
+gender_1                     -0.031220
+insurance_Public             -0.140064
+insurance_Self-Pay            1.484786
+ethnicity_grouped_black      -0.387947
+ethnicity_grouped_hispanic   -0.370456
+ethnicity_grouped_white      -0.302497
+admission_type_EMERGENCY      0.802159
+admission_type_URGENT         0.405679
+oasis_score_2.0               0.677169
+oasis_score_3.0               1.359444
+icd_alzheimer_1               0.403763
+icd_cancer_1                  0.245837
+icd_diabetes_1                0.026585
+icd_heart_1                  -0.222475
+icd_transplant_1             -0.194157
+age_st_(30, 45]              -0.181950
+age_st_(45, 60]              -0.102740
+age_st_(60, 75]              -0.130771
+age_st_(75, 90]               0.042509
+Name: coef, dtype: float64
+
+C-Index all dataset: 0.7351611860149887
+
+########## Final: 06/06/2020, 01:26:42
+########## Init: 06/06/2020, 01:26:42
+
+Best Parameters: {'l1_ratio': 0.01, 'penalizer': 0.0001}
+C-Index test sample: 0.6446985199840366
+Coeficients:
+first_hosp_stay               0.046502
+first_icu_stay                0.595425
+gender_1                     -0.031616
+insurance_Public             -0.141970
+insurance_Self-Pay            1.479570
+ethnicity_grouped_black      -0.404357
+ethnicity_grouped_hispanic   -0.388609
+ethnicity_grouped_white      -0.316302
+admission_type_EMERGENCY      0.810456
+admission_type_URGENT         0.417848
+oasis_score_2.0               0.686177
+oasis_score_3.0               1.368701
+icd_alzheimer_1               0.405493
+icd_cancer_1                  0.250028
+icd_diabetes_1                0.030591
+icd_heart_1                  -0.223420
+icd_transplant_1             -0.193920
+age_st_(30, 45]              -0.219981
+age_st_(45, 60]              -0.141586
+age_st_(60, 75]              -0.170159
+age_st_(75, 90]               0.003173
+Name: coef, dtype: float64
+
+C-Index all dataset: 0.7352729146509606
+
+########## Final: 06/06/2020, 02:02:50
+########## Init: 06/06/2020, 02:02:50
+
+Best Parameters: {'l1_ratio': 0, 'penalizer': 0.01}
+C-Index test sample: 0.6444075034408654
+Coeficients:
+first_hosp_stay               0.046893
+first_icu_stay                0.568236
+gender_1                     -0.029923
+insurance_Public             -0.130140
+insurance_Self-Pay            1.468888
+ethnicity_grouped_black      -0.299094
+ethnicity_grouped_hispanic   -0.282822
+ethnicity_grouped_white      -0.226684
+admission_type_EMERGENCY      0.742886
+admission_type_URGENT         0.332553
+oasis_score_2.0               0.601034
+oasis_score_3.0               1.278671
+icd_alzheimer_1               0.401947
+icd_cancer_1                  0.224141
+icd_diabetes_1                0.010154
+icd_heart_1                  -0.213410
+icd_transplant_1             -0.198260
+age_st_(30, 45]              -0.145911
+age_st_(45, 60]              -0.059912
+age_st_(60, 75]              -0.082936
+age_st_(75, 90]               0.093382
+Name: coef, dtype: float64
+
+C-Index all dataset: 0.734705445684753
+
+########## Final: 06/06/2020, 02:39:06
+########## Init: 06/06/2020, 02:39:06
+
+Best Parameters: {'l1_ratio': 0.01, 'penalizer': 0.001}
+C-Index test sample: 0.6446413973734406
+Coeficients:
+first_hosp_stay               0.046404
+first_icu_stay                0.592700
+gender_1                     -0.031536
+insurance_Public             -0.140838
+insurance_Self-Pay            1.483553
+ethnicity_grouped_black      -0.391696
+ethnicity_grouped_hispanic   -0.375185
+ethnicity_grouped_white      -0.305847
+admission_type_EMERGENCY      0.803458
+admission_type_URGENT         0.408671
+oasis_score_2.0               0.677384
+oasis_score_3.0               1.359511
+icd_alzheimer_1               0.404842
+icd_cancer_1                  0.246907
+icd_diabetes_1                0.027964
+icd_heart_1                  -0.222763
+icd_transplant_1             -0.193983
+age_st_(30, 45]              -0.192345
+age_st_(45, 60]              -0.112825
+age_st_(60, 75]              -0.140681
+age_st_(75, 90]               0.033165
+Name: coef, dtype: float64
+
+C-Index all dataset: 0.7351867904940655
+
+########## Final: 06/06/2020, 03:15:22
+########## Init: 06/06/2020, 03:15:22
+
+Best Parameters: {'l1_ratio': 0.5, 'penalizer': 0.001}
+C-Index test sample: 0.644983361109846
+Coeficients:
+first_hosp_stay               0.044391
+first_icu_stay                0.591085
+gender_1                     -0.029918
+insurance_Public             -0.136724
+insurance_Self-Pay            1.492388
+ethnicity_grouped_black      -0.370862
+ethnicity_grouped_hispanic   -0.348823
+ethnicity_grouped_white      -0.287398
+admission_type_EMERGENCY      0.796466
+admission_type_URGENT         0.392482
+oasis_score_2.0               0.676146
+oasis_score_3.0               1.359059
+icd_alzheimer_1               0.398945
+icd_cancer_1                  0.240989
+icd_diabetes_1                0.020415
+icd_heart_1                  -0.221337
+icd_transplant_1             -0.194665
+age_st_(30, 45]              -0.126142
+age_st_(45, 60]              -0.048113
+age_st_(60, 75]              -0.076815
+age_st_(75, 90]               0.094123
+Name: coef, dtype: float64
+
+C-Index all dataset: 0.7351291804161426
+
+########## Final: 06/06/2020, 03:51:40
+########## Init: 06/06/2020, 03:51:40
+
+Best Parameters: {'l1_ratio': 0.5, 'penalizer': 0.001}
+C-Index test sample: 0.644983361109846
+Coeficients:
+first_hosp_stay               0.044391
+first_icu_stay                0.591085
+gender_1                     -0.029918
+insurance_Public             -0.136724
+insurance_Self-Pay            1.492388
+ethnicity_grouped_black      -0.370862
+ethnicity_grouped_hispanic   -0.348823
+ethnicity_grouped_white      -0.287398
+admission_type_EMERGENCY      0.796466
+admission_type_URGENT         0.392482
+oasis_score_2.0               0.676146
+oasis_score_3.0               1.359059
+icd_alzheimer_1               0.398945
+icd_cancer_1                  0.240989
+icd_diabetes_1                0.020415
+icd_heart_1                  -0.221337
+icd_transplant_1             -0.194665
+age_st_(30, 45]              -0.126142
+age_st_(45, 60]              -0.048113
+age_st_(60, 75]              -0.076815
+age_st_(75, 90]               0.094123
+Name: coef, dtype: float64
+
+C-Index all dataset: 0.7351291804161426
+
+########## Final: 06/06/2020, 04:28:02
+########## Init: 06/06/2020, 04:28:02
+
+Best Parameters: {'l1_ratio': 0, 'penalizer': 0.01}
+C-Index test sample: 0.6444075034408654
+Coeficients:
+first_hosp_stay               0.046893
+first_icu_stay                0.568236
+gender_1                     -0.029923
+insurance_Public             -0.130140
+insurance_Self-Pay            1.468888
+ethnicity_grouped_black      -0.299094
+ethnicity_grouped_hispanic   -0.282822
+ethnicity_grouped_white      -0.226684
+admission_type_EMERGENCY      0.742886
+admission_type_URGENT         0.332553
+oasis_score_2.0               0.601034
+oasis_score_3.0               1.278671
+icd_alzheimer_1               0.401947
+icd_cancer_1                  0.224141
+icd_diabetes_1                0.010154
+icd_heart_1                  -0.213410
+icd_transplant_1             -0.198260
+age_st_(30, 45]              -0.145911
+age_st_(45, 60]              -0.059912
+age_st_(60, 75]              -0.082936
+age_st_(75, 90]               0.093382
+Name: coef, dtype: float64
+
+C-Index all dataset: 0.734705445684753
+
+########## Final: 06/06/2020, 05:04:17
+########## Init: 06/06/2020, 05:04:17
+
+Best Parameters: {'l1_ratio': 0.5, 'penalizer': 0.001}
+C-Index test sample: 0.644983361109846
+Coeficients:
+first_hosp_stay               0.044391
+first_icu_stay                0.591085
+gender_1                     -0.029918
+insurance_Public             -0.136724
+insurance_Self-Pay            1.492388
+ethnicity_grouped_black      -0.370862
+ethnicity_grouped_hispanic   -0.348823
+ethnicity_grouped_white      -0.287398
+admission_type_EMERGENCY      0.796466
+admission_type_URGENT         0.392482
+oasis_score_2.0               0.676146
+oasis_score_3.0               1.359059
+icd_alzheimer_1               0.398945
+icd_cancer_1                  0.240989
+icd_diabetes_1                0.020415
+icd_heart_1                  -0.221337
+icd_transplant_1             -0.194665
+age_st_(30, 45]              -0.126142
+age_st_(45, 60]              -0.048113
+age_st_(60, 75]              -0.076815
+age_st_(75, 90]               0.094123
+Name: coef, dtype: float64
+
+C-Index all dataset: 0.7351291804161426
+
+########## Final: 06/06/2020, 05:40:41
+########## Init: 06/06/2020, 05:40:41
+
+Best Parameters: {'l1_ratio': 0.01, 'penalizer': 0.01}
+C-Index test sample: 0.6444360647461633
+Coeficients:
+first_hosp_stay               0.046561
+first_icu_stay                0.567932
+gender_1                     -0.029575
+insurance_Public             -0.129320
+insurance_Self-Pay            1.468437
+ethnicity_grouped_black      -0.295540
+ethnicity_grouped_hispanic   -0.278457
+ethnicity_grouped_white      -0.223362
+admission_type_EMERGENCY      0.741611
+admission_type_URGENT         0.329535
+oasis_score_2.0               0.600771
+oasis_score_3.0               1.278586
+icd_alzheimer_1               0.400866
+icd_cancer_1                  0.223215
+icd_diabetes_1                0.008931
+icd_heart_1                  -0.213007
+icd_transplant_1             -0.198510
+age_st_(30, 45]              -0.141633
+age_st_(45, 60]              -0.056046
+age_st_(60, 75]              -0.079281
+age_st_(75, 90]               0.096394
+Name: coef, dtype: float64
+
+C-Index all dataset: 0.7347069004847006
+
+########## Final: 06/06/2020, 06:17:04
+########## Init: 06/06/2020, 06:17:04
+
+Best Parameters: {'l1_ratio': 0.01, 'penalizer': 0.01}
+C-Index test sample: 0.6444360647461633
+Coeficients:
+first_hosp_stay               0.046561
+first_icu_stay                0.567932
+gender_1                     -0.029575
+insurance_Public             -0.129320
+insurance_Self-Pay            1.468437
+ethnicity_grouped_black      -0.295540
+ethnicity_grouped_hispanic   -0.278457
+ethnicity_grouped_white      -0.223362
+admission_type_EMERGENCY      0.741611
+admission_type_URGENT         0.329535
+oasis_score_2.0               0.600771
+oasis_score_3.0               1.278586
+icd_alzheimer_1               0.400866
+icd_cancer_1                  0.223215
+icd_diabetes_1                0.008931
+icd_heart_1                  -0.213007
+icd_transplant_1             -0.198510
+age_st_(30, 45]              -0.141633
+age_st_(45, 60]              -0.056046
+age_st_(60, 75]              -0.079281
+age_st_(75, 90]               0.096394
+Name: coef, dtype: float64
+
+C-Index all dataset: 0.7347069004847006
+
+########## Final: 06/06/2020, 06:53:32
+########## Init: 06/06/2020, 06:53:32
+
+Best Parameters: {'l1_ratio': 0.1, 'penalizer': 0.001}
+C-Index test sample: 0.6449524840230374
+Coeficients:
+first_hosp_stay               0.046027
+first_icu_stay                0.592411
+gender_1                     -0.031220
+insurance_Public             -0.140064
+insurance_Self-Pay            1.484786
+ethnicity_grouped_black      -0.387947
+ethnicity_grouped_hispanic   -0.370456
+ethnicity_grouped_white      -0.302497
+admission_type_EMERGENCY      0.802159
+admission_type_URGENT         0.405679
+oasis_score_2.0               0.677169
+oasis_score_3.0               1.359444
+icd_alzheimer_1               0.403763
+icd_cancer_1                  0.245837
+icd_diabetes_1                0.026585
+icd_heart_1                  -0.222475
+icd_transplant_1             -0.194157
+age_st_(30, 45]              -0.181950
+age_st_(45, 60]              -0.102740
+age_st_(60, 75]              -0.130771
+age_st_(75, 90]               0.042509
+Name: coef, dtype: float64
+
+C-Index all dataset: 0.7351611860149887
+
+########## Final: 06/06/2020, 07:29:53
+########## Init: 06/06/2020, 07:29:53
+
+Best Parameters: {'l1_ratio': 0.5, 'penalizer': 0.0001}
+C-Index test sample: 0.6447193620176324
+Coeficients:
+first_hosp_stay               0.046291
+first_icu_stay                0.595255
+gender_1                     -0.031455
+insurance_Public             -0.141562
+insurance_Self-Pay            1.480717
+ethnicity_grouped_black      -0.402258
+ethnicity_grouped_hispanic   -0.385913
+ethnicity_grouped_white      -0.314469
+admission_type_EMERGENCY      0.809743
+admission_type_URGENT         0.416200
+oasis_score_2.0               0.686047
+oasis_score_3.0               1.368647
+icd_alzheimer_1               0.404883
+icd_cancer_1                  0.249411
+icd_diabetes_1                0.029811
+icd_heart_1                  -0.223291
+icd_transplant_1             -0.193955
+age_st_(30, 45]              -0.212524
+age_st_(45, 60]              -0.134264
+age_st_(60, 75]              -0.162913
+age_st_(75, 90]               0.010145
+Name: coef, dtype: float64
+
+C-Index all dataset: 0.7352772790508032
+
+########## Final: 06/06/2020, 08:06:09
+########## Init: 06/06/2020, 08:06:09
+
+Best Parameters: {'l1_ratio': 0, 'penalizer': 0.001}
+C-Index test sample: 0.6446398535191001
+Coeficients:
+first_hosp_stay               0.046421
+first_icu_stay                0.592736
+gender_1                     -0.031541
+insurance_Public             -0.140901
+insurance_Self-Pay            1.483338
+ethnicity_grouped_black      -0.392107
+ethnicity_grouped_hispanic   -0.375702
+ethnicity_grouped_white      -0.306201
+admission_type_EMERGENCY      0.803587
+admission_type_URGENT         0.408962
+oasis_score_2.0               0.677413
+oasis_score_3.0               1.359527
+icd_alzheimer_1               0.404946
+icd_cancer_1                  0.246991
+icd_diabetes_1                0.028058
+icd_heart_1                  -0.222781
+icd_transplant_1             -0.194010
+age_st_(30, 45]              -0.193776
+age_st_(45, 60]              -0.114238
+age_st_(60, 75]              -0.142090
+age_st_(75, 90]               0.031789
+Name: coef, dtype: float64
+
+C-Index all dataset: 0.7351837839075073
+
+########## Final: 06/06/2020, 08:42:20
+########## Init: 06/06/2020, 08:42:20
+
+Best Parameters: {'l1_ratio': 0.5, 'penalizer': 0.001}
+C-Index test sample: 0.644983361109846
+Coeficients:
+first_hosp_stay               0.044391
+first_icu_stay                0.591085
+gender_1                     -0.029918
+insurance_Public             -0.136724
+insurance_Self-Pay            1.492388
+ethnicity_grouped_black      -0.370862
+ethnicity_grouped_hispanic   -0.348823
+ethnicity_grouped_white      -0.287398
+admission_type_EMERGENCY      0.796466
+admission_type_URGENT         0.392482
+oasis_score_2.0               0.676146
+oasis_score_3.0               1.359059
+icd_alzheimer_1               0.398945
+icd_cancer_1                  0.240989
+icd_diabetes_1                0.020415
+icd_heart_1                  -0.221337
+icd_transplant_1             -0.194665
+age_st_(30, 45]              -0.126142
+age_st_(45, 60]              -0.048113
+age_st_(60, 75]              -0.076815
+age_st_(75, 90]               0.094123
+Name: coef, dtype: float64
+
+C-Index all dataset: 0.7351291804161426
+
+########## Final: 06/06/2020, 09:18:42
+########## Init: 06/06/2020, 09:18:42
+
+Best Parameters: {'l1_ratio': 0.1, 'penalizer': 0.01}
+C-Index test sample: 0.6439999258949917
+Coeficients:
+first_hosp_stay               0.043608
+first_icu_stay                0.565180
+gender_1                     -0.026368
+insurance_Public             -0.121994
+insurance_Self-Pay            1.465247
+ethnicity_grouped_black      -0.262537
+ethnicity_grouped_hispanic   -0.238030
+ethnicity_grouped_white      -0.192315
+admission_type_EMERGENCY      0.730006
+admission_type_URGENT         0.302040
+oasis_score_2.0               0.598457
+oasis_score_3.0               1.277810
+icd_alzheimer_1               0.390945
+icd_cancer_1                  0.216259
+icd_diabetes_1                0.000054
+icd_heart_1                  -0.209553
+icd_transplant_1             -0.199727
+age_st_(30, 45]              -0.100080
+age_st_(45, 60]              -0.018393
+age_st_(60, 75]              -0.043633
+age_st_(75, 90]               0.126324
+Name: coef, dtype: float64
+
+C-Index all dataset: 0.7346510361667147
+
+########## Final: 06/06/2020, 09:55:30
+########## Init: 06/06/2020, 09:55:30
+
+Best Parameters: {'l1_ratio': 0, 'penalizer': 0.0001}
+C-Index test sample: 0.6446985199840366
+Coeficients:
+first_hosp_stay               0.046502
+first_icu_stay                0.595425
+gender_1                     -0.031615
+insurance_Public             -0.141970
+insurance_Self-Pay            1.479569
+ethnicity_grouped_black      -0.404360
+ethnicity_grouped_hispanic   -0.388612
+ethnicity_grouped_white      -0.316304
+admission_type_EMERGENCY      0.810457
+admission_type_URGENT         0.417850
+oasis_score_2.0               0.686176
+oasis_score_3.0               1.368700
+icd_alzheimer_1               0.405494
+icd_cancer_1                  0.250029
+icd_diabetes_1                0.030591
+icd_heart_1                  -0.223420
+icd_transplant_1             -0.193920
+age_st_(30, 45]              -0.219989
+age_st_(45, 60]              -0.141594
+age_st_(60, 75]              -0.170167
+age_st_(75, 90]               0.003166
+Name: coef, dtype: float64
+
+C-Index all dataset: 0.7352729146509606
+
+########## Final: 06/06/2020, 10:31:43
+########## Init: 06/06/2020, 10:31:43
+
+Best Parameters: {'l1_ratio': 0.5, 'penalizer': 0.001}
+C-Index test sample: 0.644983361109846
+Coeficients:
+first_hosp_stay               0.044391
+first_icu_stay                0.591085
+gender_1                     -0.029918
+insurance_Public             -0.136724
+insurance_Self-Pay            1.492388
+ethnicity_grouped_black      -0.370862
+ethnicity_grouped_hispanic   -0.348823
+ethnicity_grouped_white      -0.287398
+admission_type_EMERGENCY      0.796466
+admission_type_URGENT         0.392482
+oasis_score_2.0               0.676146
+oasis_score_3.0               1.359059
+icd_alzheimer_1               0.398945
+icd_cancer_1                  0.240989
+icd_diabetes_1                0.020415
+icd_heart_1                  -0.221337
+icd_transplant_1             -0.194665
+age_st_(30, 45]              -0.126142
+age_st_(45, 60]              -0.048113
+age_st_(60, 75]              -0.076815
+age_st_(75, 90]               0.094123
+Name: coef, dtype: float64
+
+C-Index all dataset: 0.7351291804161426
+
+########## Final: 06/06/2020, 11:08:02
+########## Init: 06/06/2020, 11:08:02
+
+Best Parameters: {'l1_ratio': 0, 'penalizer': 0.001}
+C-Index test sample: 0.6446398535191001
+Coeficients:
+first_hosp_stay               0.046421
+first_icu_stay                0.592736
+gender_1                     -0.031541
+insurance_Public             -0.140901
+insurance_Self-Pay            1.483338
+ethnicity_grouped_black      -0.392107
+ethnicity_grouped_hispanic   -0.375702
+ethnicity_grouped_white      -0.306201
+admission_type_EMERGENCY      0.803587
+admission_type_URGENT         0.408962
+oasis_score_2.0               0.677413
+oasis_score_3.0               1.359527
+icd_alzheimer_1               0.404946
+icd_cancer_1                  0.246991
+icd_diabetes_1                0.028058
+icd_heart_1                  -0.222781
+icd_transplant_1             -0.194010
+age_st_(30, 45]              -0.193776
+age_st_(45, 60]              -0.114238
+age_st_(60, 75]              -0.142090
+age_st_(75, 90]               0.031789
+Name: coef, dtype: float64
+
+C-Index all dataset: 0.7351837839075073
+
+########## Final: 06/06/2020, 11:44:34
+########## Init: 06/06/2020, 11:44:34
+
+Best Parameters: {'l1_ratio': 0.5, 'penalizer': 1e-05}
+C-Index test sample: 0.6447355724882069
+Coeficients:
+first_hosp_stay               0.046517
+first_icu_stay                0.595699
+gender_1                     -0.031621
+insurance_Public             -0.142072
+insurance_Self-Pay            1.478926
+ethnicity_grouped_black      -0.405608
+ethnicity_grouped_hispanic   -0.389957
+ethnicity_grouped_white      -0.317315
+admission_type_EMERGENCY      0.811143
+admission_type_URGENT         0.418743
+oasis_score_2.0               0.687075
+oasis_score_3.0               1.369643
+icd_alzheimer_1               0.405556
+icd_cancer_1                  0.250352
+icd_diabetes_1                0.030862
+icd_heart_1                  -0.223468
+icd_transplant_1             -0.193938
+age_st_(30, 45]              -0.223606
+age_st_(45, 60]              -0.145345
+age_st_(60, 75]              -0.173998
+age_st_(75, 90]              -0.000733
+Name: coef, dtype: float64
+
+C-Index all dataset: 0.7352863957971412
+
+########## Final: 06/06/2020, 12:20:44
+########## Init: 06/06/2020, 12:20:44
+
+Best Parameters: {'l1_ratio': 0.5, 'penalizer': 0.001}
+C-Index test sample: 0.644983361109846
+Coeficients:
+first_hosp_stay               0.044391
+first_icu_stay                0.591085
+gender_1                     -0.029918
+insurance_Public             -0.136724
+insurance_Self-Pay            1.492388
+ethnicity_grouped_black      -0.370862
+ethnicity_grouped_hispanic   -0.348823
+ethnicity_grouped_white      -0.287398
+admission_type_EMERGENCY      0.796466
+admission_type_URGENT         0.392482
+oasis_score_2.0               0.676146
+oasis_score_3.0               1.359059
+icd_alzheimer_1               0.398945
+icd_cancer_1                  0.240989
+icd_diabetes_1                0.020415
+icd_heart_1                  -0.221337
+icd_transplant_1             -0.194665
+age_st_(30, 45]              -0.126142
+age_st_(45, 60]              -0.048113
+age_st_(60, 75]              -0.076815
+age_st_(75, 90]               0.094123
+Name: coef, dtype: float64
+
+C-Index all dataset: 0.7351291804161426
+
+########## Final: 06/06/2020, 12:57:07
+########## Init: 06/06/2020, 12:57:07
+
+Best Parameters: {'l1_ratio': 0.01, 'penalizer': 0.001}
+C-Index test sample: 0.6446413973734406
+Coeficients:
+first_hosp_stay               0.046404
+first_icu_stay                0.592700
+gender_1                     -0.031536
+insurance_Public             -0.140838
+insurance_Self-Pay            1.483553
+ethnicity_grouped_black      -0.391696
+ethnicity_grouped_hispanic   -0.375185
+ethnicity_grouped_white      -0.305847
+admission_type_EMERGENCY      0.803458
+admission_type_URGENT         0.408671
+oasis_score_2.0               0.677384
+oasis_score_3.0               1.359511
+icd_alzheimer_1               0.404842
+icd_cancer_1                  0.246907
+icd_diabetes_1                0.027964
+icd_heart_1                  -0.222763
+icd_transplant_1             -0.193983
+age_st_(30, 45]              -0.192345
+age_st_(45, 60]              -0.112825
+age_st_(60, 75]              -0.140681
+age_st_(75, 90]               0.033165
+Name: coef, dtype: float64
+
+C-Index all dataset: 0.7351867904940655
+
+########## Final: 06/06/2020, 13:33:22
+########## Init: 06/06/2020, 13:33:22
+
+Best Parameters: {'l1_ratio': 0, 'penalizer': 0.001}
+C-Index test sample: 0.6446398535191001
+Coeficients:
+first_hosp_stay               0.046421
+first_icu_stay                0.592736
+gender_1                     -0.031541
+insurance_Public             -0.140901
+insurance_Self-Pay            1.483338
+ethnicity_grouped_black      -0.392107
+ethnicity_grouped_hispanic   -0.375702
+ethnicity_grouped_white      -0.306201
+admission_type_EMERGENCY      0.803587
+admission_type_URGENT         0.408962
+oasis_score_2.0               0.677413
+oasis_score_3.0               1.359527
+icd_alzheimer_1               0.404946
+icd_cancer_1                  0.246991
+icd_diabetes_1                0.028058
+icd_heart_1                  -0.222781
+icd_transplant_1             -0.194010
+age_st_(30, 45]              -0.193776
+age_st_(45, 60]              -0.114238
+age_st_(60, 75]              -0.142090
+age_st_(75, 90]               0.031789
+Name: coef, dtype: float64
+
+C-Index all dataset: 0.7351837839075073
+
+########## Final: 06/06/2020, 14:09:43
+########## Init: 06/06/2020, 14:09:43
+
+Best Parameters: {'l1_ratio': 0.01, 'penalizer': 0.001}
+C-Index test sample: 0.6446413973734406
+Coeficients:
+first_hosp_stay               0.046404
+first_icu_stay                0.592700
+gender_1                     -0.031536
+insurance_Public             -0.140838
+insurance_Self-Pay            1.483553
+ethnicity_grouped_black      -0.391696
+ethnicity_grouped_hispanic   -0.375185
+ethnicity_grouped_white      -0.305847
+admission_type_EMERGENCY      0.803458
+admission_type_URGENT         0.408671
+oasis_score_2.0               0.677384
+oasis_score_3.0               1.359511
+icd_alzheimer_1               0.404842
+icd_cancer_1                  0.246907
+icd_diabetes_1                0.027964
+icd_heart_1                  -0.222763
+icd_transplant_1             -0.193983
+age_st_(30, 45]              -0.192345
+age_st_(45, 60]              -0.112825
+age_st_(60, 75]              -0.140681
+age_st_(75, 90]               0.033165
+Name: coef, dtype: float64
+
+C-Index all dataset: 0.7351867904940655
+
+########## Final: 06/06/2020, 14:46:01
+########## Init: 06/06/2020, 14:46:01
+
+Best Parameters: {'l1_ratio': 0.1, 'penalizer': 0.01}
+C-Index test sample: 0.6439999258949917
+Coeficients:
+first_hosp_stay               0.043608
+first_icu_stay                0.565180
+gender_1                     -0.026368
+insurance_Public             -0.121994
+insurance_Self-Pay            1.465247
+ethnicity_grouped_black      -0.262537
+ethnicity_grouped_hispanic   -0.238030
+ethnicity_grouped_white      -0.192315
+admission_type_EMERGENCY      0.730006
+admission_type_URGENT         0.302040
+oasis_score_2.0               0.598457
+oasis_score_3.0               1.277810
+icd_alzheimer_1               0.390945
+icd_cancer_1                  0.216259
+icd_diabetes_1                0.000054
+icd_heart_1                  -0.209553
+icd_transplant_1             -0.199727
+age_st_(30, 45]              -0.100080
+age_st_(45, 60]              -0.018393
+age_st_(60, 75]              -0.043633
+age_st_(75, 90]               0.126324
+Name: coef, dtype: float64
+
+C-Index all dataset: 0.7346510361667147
+
+########## Final: 06/06/2020, 15:22:27
+########## Init: 06/06/2020, 15:22:27
+
+Best Parameters: {'l1_ratio': 0, 'penalizer': 1e-05}
+C-Index test sample: 0.6447301689980154
+Coeficients:
+first_hosp_stay               0.046517
+first_icu_stay                0.595700
+gender_1                     -0.031621
+insurance_Public             -0.142073
+insurance_Self-Pay            1.478917
+ethnicity_grouped_black      -0.405619
+ethnicity_grouped_hispanic   -0.389970
+ethnicity_grouped_white      -0.317324
+admission_type_EMERGENCY      0.811149
+admission_type_URGENT         0.418750
+oasis_score_2.0               0.687070
+oasis_score_3.0               1.369636
+icd_alzheimer_1               0.405558
+icd_cancer_1                  0.250354
+icd_diabetes_1                0.030864
+icd_heart_1                  -0.223468
+icd_transplant_1             -0.193938
+age_st_(30, 45]              -0.223648
+age_st_(45, 60]              -0.145386
+age_st_(60, 75]              -0.174039
+age_st_(75, 90]              -0.000773
+Name: coef, dtype: float64
+
+C-Index all dataset: 0.7352865897704675
+
+########## Final: 06/06/2020, 15:58:57

@@ -1,4 +1,4 @@
-import time
+from time import localtime, strftime
 
 import cohort.get_cohort as sa_cohort
 import matplotlib.pyplot as plt
@@ -15,11 +15,6 @@ from sklearn_pandas import DataFrameMapper
 
 
 def cohort_samples(seed, size, cohort):
-    # _ = torch.manual_seed(seed)
-    # test_dataset = cohort.sample(frac=size)
-    # train_dataset = cohort.drop(test_dataset.index)
-    # valid_dataset = train_dataset.sample(frac=size)
-    # train_dataset = train_dataset.drop(valid_dataset.index)
 
     # Train / valid / test split
     train_dataset, valid_dataset, test_dataset = sa_cohort.train_test_split_nn(seed, size, cohort)
@@ -32,6 +27,7 @@ def cohort_samples(seed, size, cohort):
 
 
 def preprocess_input_features(train_dataset, valid_dataset, test_dataset):
+
     cols_categorical = ['insurance', 'ethnicity_grouped', 'age_st', 'oasis_score', 'admission_type']
     categorical = [(col, OrderedCategoricalLong()) for col in cols_categorical]
     x_mapper_long = DataFrameMapper(categorical)
@@ -104,6 +100,7 @@ def fit_and_predict(survival_analysis_model, train, val, test,
 
 
 def add_km_censor_modified(ev, durations, events):
+
     """
         Add censoring estimates obtained by Kaplan-Meier on the test set(durations, 1-events).
     """
@@ -119,6 +116,7 @@ def add_km_censor_modified(ev, durations, events):
 
 
 def evaluate(sample, surv):
+
     durations = sample[1][0]
     events = sample[1][1]
 
@@ -143,7 +141,7 @@ def evaluate(sample, surv):
     return cindex, bscore, nbll
 
 
-def main():
+def main(seed):
 
     ##################################################################################
     # PyCox Library
@@ -166,12 +164,12 @@ def main():
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
     cohort = sa_cohort.cox_neural_network()
-    train, val, test = cohort_samples(seed=settings.seed, size=settings.size, cohort=cohort)
+    train, val, test = cohort_samples(seed, size=settings.size, cohort=cohort)
 
     # Open file
-    _file = open("files/cox-mlp.txt", "a")
+    _file = open("files/cox-mlp/cox-mlp.txt", "a")
 
-    time_string = time.strftime("%d/%m/%Y, %H:%M:%S", time.localtime())
+    time_string = strftime("%d/%m/%Y, %H:%M:%S", localtime())
     _file.write("########## Init: " + time_string + "\n\n")
 
     # ---------------------
@@ -185,13 +183,13 @@ def main():
     # λ(penalty to the loss function)  {0.1, 0.01, 0.001, 0}
     # Learning Rate                    {0.01, 0.001, 0.0001}
 
-    # Best Parameters: {'batch': 1, 'dropout': 1, 'lr': 0, 'num_nodes': 2, 'shrink': 1, 'weight_decay': 5}
+    # Best Parameters: {'batch': 2, 'dropout': 6, 'lr': 0, 'num_nodes': 3, 'shrink': 2, 'weight_decay': 3}
     best = {'lr': 0.01,
-            'batch_size': 128,
-            'dropout': 0.01,
-            'weight_decay': 0,
-            'num_nodes': [256, 256],
-            'shrink': 0.01,
+            'batch_size': 256,
+            'dropout': 0.6,
+            'weight_decay': 0.05,
+            'num_nodes': [512, 512],
+            'shrink': 0.001,
             'epoch': settings.epochs}
 
     surv, surv_v, model, log = fit_and_predict(CoxCC, train, val, test,
@@ -199,21 +197,26 @@ def main():
                                                epoch=best['epoch'], weight_decay=best['weight_decay'],
                                                num_nodes=best['num_nodes'], shrink=best['shrink'], device=device)
 
-    model.save_net("files/cox-mlp-net.pt")
-    model.save_model_weights("files/cox-mlp-net-weights.pt")
-    model.print_weights("files/cox-mlp-net-weights.txt")
+    model.save_net("files/cox-mlp/cox-mlp-net.pt")
+    model.save_model_weights("files/cox-mlp/cox-mlp-net-weights.pt")
+    model.print_weights("files/cox-mlp/cox-mlp-net-weights.txt")
 
     # Train, Val Loss
     plt.ylabel("Loss")
     plt.xlabel("Epochs")
     plt.grid(True)
-    log.plot().get_figure().savefig("img/cox-mlp-train-val-loss.png", format="png", bbox_inches="tight")
+
+    fig_time = strftime("%d%m%Y%H%M%S", localtime())
+
+    name_loss = "img/cox-mlp/cox-mlp-train-val-loss-" + fig_time + ".png"
+    log.plot().get_figure().savefig(name_loss, format="png", bbox_inches="tight")
 
     # Survival estimates as a dataframe
     estimates = settings.estimates
     plt.ylabel('S(t | x)')
     plt.xlabel('Time')
-    surv.iloc[:, :estimates].plot().get_figure().savefig("img/cox-mlp-survival-estimates.png", format="png", bbox_inches="tight")
+    name_est = "img/cox-mlp/cox-mlp-survival-estimates-" + fig_time + ".png"
+    surv.iloc[:, :estimates].plot().get_figure().savefig(name_est, format="png", bbox_inches="tight")
 
     # Evaluate
     cindex_v, bscore_v, bll_v = evaluate(val, surv_v)
@@ -232,7 +235,7 @@ def main():
                 "Brier Score: " + str(bscore) + "\n" +
                 "Binomial Log-Likelihood: " + str(bll) + "\n")
 
-    time_string = time.strftime("%d/%m/%Y, %H:%M:%S", time.localtime())
+    time_string = strftime("%d/%m/%Y, %H:%M:%S", localtime())
     _file.write("\n########## Final: " + time_string + "\n")
 
     # Close file
@@ -240,4 +243,5 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    for seed in settings.seed:
+        main(seed)
