@@ -101,7 +101,7 @@ def experiment(params):
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
     cohort = sa_cohort.cox_neural_network()
-    train, val, test = cohort_samples(seed=settings.seed_fixed, size=settings.size, cohort=cohort)
+    train, val, test = cohort_samples(seed=params['seed'], size=settings.size, cohort=cohort)
 
     net = make_net(train, params['dropout'], params['num_nodes'])
     optimizer = tt.optim.AdamWR(decoupled_weight_decay=params['weight_decay'])
@@ -131,7 +131,7 @@ def experiment(params):
     return {'loss': -cindex, 'status': STATUS_OK}
 
 
-def main():
+def main(seed):
 
     ##################################################################################
     # PyCox Library
@@ -157,7 +157,7 @@ def main():
     time_string = strftime("%d/%m/%Y, %H:%M:%S", localtime())
     _file.write("########## Init: " + time_string + "\n\n")
 
-    trials, best = parameters.hyperopt(experiment, "cc")
+    trials, best = parameters.hyperopt(experiment, seed, "cc")
 
     # All parameters
     _file.write("All Parameters: \n" + str(trials.trials) + "\n\n")
@@ -173,4 +173,5 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    for seed in settings.seed:
+        main(seed)

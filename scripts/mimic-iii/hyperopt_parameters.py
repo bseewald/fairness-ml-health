@@ -12,14 +12,16 @@ from hyperopt import hp, fmin, tpe, Trials
 # λ(penalty to the loss function)  {0.1, 0.01, 0.001, 0} - CoxCC(net, optimizer, shrink)
 
 
-def hyperopt(experiment, parameters=None):
+def hyperopt(experiment, seed, parameters=None):
+
     space = {'num_nodes': hp.choice('num_nodes', [[64, 64], [128, 128], [256, 256], [512, 512],
                                                   [64, 64, 64, 64], [128, 128, 128, 128],
                                                   [256, 256, 256, 256], [512, 512, 512, 512]]),
              'dropout': hp.choice('dropout', [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7]),
              'weight_decay': hp.choice('weight_decay', [0.4, 0.2, 0.1, 0.05, 0.02, 0.01, 0]),
              'batch': hp.choice('batch', [64, 128, 256, 512, 1024]),
-             'lr': hp.choice('lr', [0.01, 0.001, 0.0001])}
+             'lr': hp.choice('lr', [0.01, 0.001, 0.0001]),
+             'seed': seed}
 
     if parameters == "cc":
             space['shrink'] = hp.choice('shrink', [0.1, 0.01, 0.001, 0])

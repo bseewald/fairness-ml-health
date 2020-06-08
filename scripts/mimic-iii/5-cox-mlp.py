@@ -1,5 +1,6 @@
 from time import localtime, strftime
 
+import best_parameters
 import cohort.get_cohort as sa_cohort
 import matplotlib.pyplot as plt
 import numpy as np
@@ -141,7 +142,7 @@ def evaluate(sample, surv):
     return cindex, bscore, nbll
 
 
-def main(seed):
+def main(seed, index):
 
     ##################################################################################
     # PyCox Library
@@ -172,41 +173,24 @@ def main(seed):
     time_string = strftime("%d/%m/%Y, %H:%M:%S", localtime())
     _file.write("########## Init: " + time_string + "\n\n")
 
-    # ---------------------
-    # Hyperparameter values
-    # ---------------------
-    # Layers                           {2, 4}
-    # Nodes per layer                  {64, 128, 256, 512}
-    # Dropout                          {0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7}
-    # Weigh decay                      {0.4, 0.2, 0.1, 0.05, 0.02, 0.01, 0}
-    # Batch size                       {64, 128, 256, 512, 1024}
-    # λ(penalty to the loss function)  {0.1, 0.01, 0.001, 0}
-    # Learning Rate                    {0.01, 0.001, 0.0001}
-
-    # Best Parameters: {'batch': 2, 'dropout': 6, 'lr': 0, 'num_nodes': 3, 'shrink': 2, 'weight_decay': 3}
-    best = {'lr': 0.01,
-            'batch_size': 256,
-            'dropout': 0.6,
-            'weight_decay': 0.05,
-            'num_nodes': [512, 512],
-            'shrink': 0.001,
-            'epoch': settings.epochs}
+    best = best_parameters.cox_mlp[index]
+    print(best)
 
     surv, surv_v, model, log = fit_and_predict(CoxCC, train, val, test,
-                                               lr=best['lr'], batch=best['batch_size'], dropout=best['dropout'],
+                                               lr=best['lr'], batch=best['batch'], dropout=best['dropout'],
                                                epoch=best['epoch'], weight_decay=best['weight_decay'],
                                                num_nodes=best['num_nodes'], shrink=best['shrink'], device=device)
 
-    model.save_net("files/cox-mlp/cox-mlp-net.pt")
-    model.save_model_weights("files/cox-mlp/cox-mlp-net-weights.pt")
-    model.print_weights("files/cox-mlp/cox-mlp-net-weights.txt")
+    fig_time = strftime("%d%m%Y%H%M%S", localtime())
+
+    model.save_net("files/cox-mlp/cox-mlp-net-" + fig_time + ".pt")
+    model.save_model_weights("files/cox-mlp/cox-mlp-net-weights-" + fig_time + ".pt")
+    model.print_weights("files/cox-mlp/cox-mlp-net-weights-" + fig_time + ".txt")
 
     # Train, Val Loss
     plt.ylabel("Loss")
     plt.xlabel("Epochs")
     plt.grid(True)
-
-    fig_time = strftime("%d%m%Y%H%M%S", localtime())
 
     name_loss = "img/cox-mlp/cox-mlp-train-val-loss-" + fig_time + ".png"
     log.plot().get_figure().savefig(name_loss, format="png", bbox_inches="tight")
@@ -243,5 +227,7 @@ def main(seed):
 
 
 if __name__ == "__main__":
+    i = 0
     for seed in settings.seed:
-        main(seed)
+        main(seed, i)
+        i+=1

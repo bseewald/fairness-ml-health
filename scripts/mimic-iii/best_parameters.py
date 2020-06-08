@@ -1,0 +1,63 @@
+# ---------------------
+# Hyperparameter values
+# ---------------------
+# Batch size                       {64, 128, 256, 512, 1024}
+# Dropout                          {0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7}
+# Learning Rate                    {0.01, 0.001, 0.0001}
+# Layers                           {2, 4}
+# Nodes per layer                  {64, 128, 256, 512}
+# λ(penalty to the loss function)  {0.1, 0.01, 0.001, 0}
+# Weigh decay                      {0.4, 0.2, 0.1, 0.05, 0.02, 0.01, 0}
+
+cox_mlp = [{'batch': 128, 'dropout': 0.1, 'lr': 0.01, 'num_nodes': [64, 64], 'shrink': 0.001, 'weight_decay': 0.01, 'epoch': 512},
+           {'batch': 64, 'dropout': 0.2, 'lr': 0.001, 'num_nodes': [64, 64], 'shrink': 0.001, 'weight_decay': 0.1, 'epoch': 512},
+           {'batch': 256, 'dropout': 0, 'lr': 0.01, 'num_nodes': [512, 512], 'shrink': 0.01, 'weight_decay': 0.4, 'epoch': 512},
+           {'batch': 128, 'dropout': 0.6, 'lr': 0.01, 'num_nodes': [64, 64], 'shrink': 0.1, 'weight_decay': 0, 'epoch': 512},
+           {'batch': 256, 'dropout': 0.4, 'lr': 0.01, 'num_nodes': [128, 128, 128, 128], 'shrink': 0.01, 'weight_decay': 0.02, 'epoch': 512},
+           {'batch': 1024, 'dropout': 0, 'lr': 0.01, 'num_nodes': [128, 128], 'shrink': 0.001, 'weight_decay': 0.02, 'epoch': 512},
+           {'batch': 64, 'dropout': 0.5, 'lr': 0.01, 'num_nodes': [512, 512], 'shrink': 0, 'weight_decay': 0, 'epoch': 512},
+           {'batch': 128, 'dropout': 0.3, 'lr': 0.01, 'num_nodes': [64, 64, 64, 64], 'shrink': 0, 'weight_decay': 0.01, 'epoch': 512},
+           {'batch': 64, 'dropout': 0.5, 'lr': 0.001, 'num_nodes': [64, 64], 'shrink': 0.001, 'weight_decay': 0.02, 'epoch': 512},
+           {'batch': 256, 'dropout': 0, 'lr': 0.001, 'num_nodes': [512, 512], 'shrink': 0.01, 'weight_decay': 0.02, 'epoch': 512},
+           {'batch': 256, 'dropout': 0.4, 'lr': 0.001, 'num_nodes': [512, 512], 'shrink': 0.01, 'weight_decay': 0, 'epoch': 512},
+           {'batch': 1024, 'dropout': 0.1, 'lr': 0.01, 'num_nodes': [256, 256], 'shrink': 0, 'weight_decay': 0.4, 'epoch': 512},
+           {'batch': 128, 'dropout': 0.5, 'lr': 0.01, 'num_nodes': [64, 64], 'shrink': 0, 'weight_decay': 0, 'epoch': 512},
+           {'batch': 1024, 'dropout': 0.4, 'lr': 0.01, 'num_nodes': [256, 256, 256, 256], 'shrink': 0.001, 'weight_decay': 0.2, 'epoch': 512},
+           {'batch': 128, 'dropout': 0.1, 'lr': 0.01, 'num_nodes': [256, 256], 'shrink': 0.01, 'weight_decay': 0.1, 'epoch': 512},
+           {'batch': 256, 'dropout': 0, 'lr': 0.01, 'num_nodes': [128, 128, 128, 128], 'shrink': 0, 'weight_decay': 0.02, 'epoch': 512},
+           {'batch': 1024, 'dropout': 0.3, 'lr': 0.01, 'num_nodes': [256, 256, 256, 256], 'shrink': 0.01, 'weight_decay': 0.1, 'epoch': 512},
+           {'batch': 64, 'dropout': 0.3, 'lr': 0.01, 'num_nodes': [512, 512], 'shrink': 0.001, 'weight_decay': 0.01, 'epoch': 512},
+           {'batch': 512, 'dropout': 0.1, 'lr': 0.001, 'num_nodes': [512, 512], 'shrink': 0.1, 'weight_decay': 0.01, 'epoch': 512},
+           {'batch': 128, 'dropout': 0.3, 'lr': 0.01, 'num_nodes': [512, 512], 'shrink': 0.001, 'weight_decay': 0.05, 'epoch': 512},
+           {'batch': 256, 'dropout': 0, 'lr': 0.01, 'num_nodes': [64, 64, 64, 64], 'shrink': 0.01, 'weight_decay': 0.1, 'epoch': 512},
+           {'batch': 256, 'dropout': 0.3, 'lr': 0.01, 'num_nodes': [64, 64], 'shrink': 0.1, 'weight_decay': 0, 'epoch': 512},
+           {'batch': 128, 'dropout': 0.1, 'lr': 0.01, 'num_nodes': [512, 512, 512, 512], 'shrink': 0, 'weight_decay': 0.1, 'epoch': 512},
+           {'batch': 256, 'dropout': 0.1, 'lr': 0.01, 'num_nodes': [128, 128, 128, 128], 'shrink': 0, 'weight_decay': 0.4, 'epoch': 512},
+           {'batch': 64, 'dropout': 0.7, 'lr': 0.01, 'num_nodes': [256, 256, 256, 256], 'shrink': 0.001, 'weight_decay': 0.1, 'epoch': 512},
+           {'batch': 1024, 'dropout': 0.5, 'lr': 0.0001, 'num_nodes': [64, 64, 64, 64], 'shrink': 0.01, 'weight_decay': 0.2, 'epoch': 512},
+           {'batch': 64, 'dropout': 0.7, 'lr': 0.01, 'num_nodes': [512, 512], 'shrink': 0.001, 'weight_decay': 0.01, 'epoch': 512},
+           {'batch': 256, 'dropout': 0.1, 'lr': 0.01, 'num_nodes': [512, 512, 512, 512], 'shrink': 0, 'weight_decay': 0.2, 'epoch': 512},
+           {'batch': 256, 'dropout': 0.6, 'lr': 0.001, 'num_nodes': [256, 256], 'shrink': 0.01, 'weight_decay': 0.01, 'epoch': 512},
+           {'batch': 64, 'dropout': 0.1, 'lr': 0.001, 'num_nodes': [128, 128], 'shrink': 0, 'weight_decay': 0.01, 'epoch': 512},
+           {'batch': 64, 'dropout': 0.5, 'lr': 0.01, 'num_nodes': [128, 128, 128, 128], 'shrink': 0, 'weight_decay': 3, 'epoch': 512},
+           {'batch': 64, 'dropout': 0.1, 'lr': 0.01, 'num_nodes': [512, 512, 512, 512], 'shrink': 0.01, 'weight_decay': 5, 'epoch': 512},
+           {'batch': 64, 'dropout': 0.5, 'lr': 0.01, 'num_nodes': [512, 512], 'shrink': 0, 'weight_decay': 0.05, 'epoch': 512},
+           {'batch': 1024, 'dropout': 0.5, 'lr': 0.01, 'num_nodes': [128, 128], 'shrink': 0.1, 'weight_decay': 0, 'epoch': 512},
+           {'batch': 256, 'dropout': 0.2, 'lr': 0.01, 'num_nodes': [512, 512, 512, 512], 'shrink': 0.001, 'weight_decay': 0, 'epoch': 512},
+           {'batch': 128, 'dropout': 0.5, 'lr': 0.01, 'num_nodes': [512, 512], 'shrink': 0.001, 'weight_decay': 0.1, 'epoch': 512},
+           {'batch': 128, 'dropout': 0.3, 'lr': 0.01, 'num_nodes': [128, 128], 'shrink': 0.01, 'weight_decay': 0.4, 'epoch': 512},
+           {'batch': 64, 'dropout': 0.2, 'lr': 0.01, 'num_nodes': [128, 128, 128, 128], 'shrink': 0.01, 'weight_decay': 0.1, 'epoch': 512},
+           {'batch': 512, 'dropout': 0.2, 'lr': 0.01, 'num_nodes': [64, 64], 'shrink': 0, 'weight_decay': 0.4, 'epoch': 512},
+           {'batch': 128, 'dropout': 0.3, 'lr': 0.01, 'num_nodes': [256, 256], 'shrink': 0.001, 'weight_decay': 0.2, 'epoch': 512},
+           {'batch': 128, 'dropout': 0.5, 'lr': 0.01, 'num_nodes': [256, 256], 'shrink': 0.1, 'weight_decay': 0.01, 'epoch': 512},
+           {'batch': 64, 'dropout': 0.1, 'lr': 0.01, 'num_nodes': [128, 128, 128, 128], 'shrink': 0, 'weight_decay': 0.4, 'epoch': 512},
+           {'batch': 128, 'dropout': 0, 'lr': 0.01, 'num_nodes': [64, 64], 'shrink': 0.001, 'weight_decay': 0.1, 'epoch': 512},
+           {'batch': 128, 'dropout': 0.6, 'lr': 0.01, 'num_nodes': [128, 128], 'shrink': 0.01, 'weight_decay': 0, 'epoch': 512},
+           {'batch': 256, 'dropout': 0.1, 'lr': 0.01, 'num_nodes': [128, 128, 128, 128], 'shrink': 0.001, 'weight_decay': 0.02, 'epoch': 512},
+           {'batch': 256, 'dropout': 0, 'lr': 0.01, 'num_nodes': [64, 64, 64, 64], 'shrink': 0.1, 'weight_decay': 0.4, 'epoch': 512},
+           {'batch': 1024, 'dropout': 0.4, 'lr': 0.01, 'num_nodes': [256, 256, 256, 256], 'shrink': 0.01, 'weight_decay': 0.1, 'epoch': 512},
+           {'batch': 1024, 'dropout': 0.6, 'lr': 0.01, 'num_nodes': [512, 512, 512, 512], 'shrink': 0.01, 'weight_decay': 0.4, 'epoch': 512},
+           {'batch': 128, 'dropout': 0.3, 'lr': 0.001, 'num_nodes': [512, 512], 'shrink': 0, 'weight_decay': 0.1, 'epoch': 512},
+           {'batch': 128, 'dropout': 0.7, 'lr': 0.001, 'num_nodes': [128, 128], 'shrink': 0.01, 'weight_decay': 0, 'epoch': 512}]
+
+cox_ph = []
