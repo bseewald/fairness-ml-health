@@ -174,7 +174,6 @@ def main(seed, index):
     _file.write("########## Init: " + time_string + "\n\n")
 
     best = best_parameters.cox_mlp[index]
-    print(best)
 
     surv, surv_v, model, log = fit_and_predict(CoxCC, train, val, test,
                                                lr=best['lr'], batch=best['batch'], dropout=best['dropout'],

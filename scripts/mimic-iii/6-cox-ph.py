@@ -1,10 +1,11 @@
-import time
+from time import localtime, strftime
 
 import cohort.get_cohort as sa_cohort
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import settings
+import best_parameters
 import torch
 import torchtuples as tt
 from pycox import utils
@@ -15,11 +16,6 @@ from sklearn_pandas import DataFrameMapper
 
 
 def cohort_samples(seed, size, cohort):
-    # _ = torch.manual_seed(seed)
-    # test_dataset = cohort.sample(frac=size)
-    # train_dataset = cohort.drop(test_dataset.index)
-    # valid_dataset = train_dataset.sample(frac=size)
-    # train_dataset = train_dataset.drop(valid_dataset.index)
 
     # Train / valid / test split
     train_dataset, valid_dataset, test_dataset = sa_cohort.train_test_split_nn(seed, size, cohort)
@@ -32,6 +28,7 @@ def cohort_samples(seed, size, cohort):
 
 
 def preprocess_input_features(train_dataset, valid_dataset, test_dataset):
+
     cols_categorical = ['insurance', 'ethnicity_grouped', 'age_st', 'oasis_score', 'admission_type']
     categorical = [(col, OrderedCategoricalLong()) for col in cols_categorical]
     x_mapper_long = DataFrameMapper(categorical)
@@ -72,6 +69,7 @@ def preprocess_target_features(x_train, x_val, x_test,
 
 
 def make_net(train, dropout, num_nodes):
+
     # Entity embedding
     num_embeddings = train[0][1].max(0) + 1
     embedding_dims = num_embeddings // 2
@@ -106,6 +104,7 @@ def fit_and_predict(survival_analysis_model, train, val, test,
 
 
 def add_km_censor_modified(ev, durations, events):
+
     """
         Add censoring estimates obtained by Kaplan-Meier on the test set(durations, 1-events).
     """
@@ -121,6 +120,7 @@ def add_km_censor_modified(ev, durations, events):
 
 
 def evaluate(sample, surv):
+
     durations = sample[1][0]
     events = sample[1][1]
 
@@ -144,7 +144,7 @@ def evaluate(sample, surv):
     return cindex, bscore, nbll
 
 
-def main():
+def main(seed, index):
 
     ##################################################################################
     # PyCox Library
@@ -169,53 +169,38 @@ def main():
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
     cohort = sa_cohort.cox_neural_network()
-    train, val, test = cohort_samples(seed=settings.seed, size=settings.size, cohort=cohort)
+    train, val, test = cohort_samples(seed=seed, size=settings.size, cohort=cohort)
 
     # Open file
     _file = open("files/cox-ph.txt", "a")
 
-    time_string = time.strftime("%d/%m/%Y, %H:%M:%S", time.localtime())
+    time_string = strftime("%d/%m/%Y, %H:%M:%S", localtime())
     _file.write("########## Init: " + time_string + "\n\n")
 
-    # ---------------------
-    # Hyperparameter values
-    # ---------------------
-    # Layers                           {2, 4}
-    # Nodes per layer                  {64, 128, 256, 512}
-    # Dropout                          {0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7}
-    # Weigh decay                      {0.4, 0.2, 0.1, 0.05, 0.02, 0.01, 0}
-    # Batch size                       {64, 128, 256, 512, 1024}
-    # Learning Rate                    {0.01, 0.001, 0.0001}
-
-    # Best Parameters: {'batch': 2, 'dropout': 4, 'lr': 2, 'num_nodes': 4, 'weight_decay': 5}
-
-    best = {'lr': 0.0001,
-            'batch_size': 256,
-            'dropout': 0.4,
-            'weight_decay': 0.01,
-            'num_nodes': [64, 64, 64, 64],
-            'epoch': 512}
+    best = best_parameters.cox_ph[index]
 
     surv, surv_v, model, log = fit_and_predict(CoxPH, train, val, test,
-                                               lr=best['lr'], batch=best['batch_size'], dropout=best['dropout'],
+                                               lr=best['lr'], batch=best['batch'], dropout=best['dropout'],
                                                epoch=best['epoch'], weight_decay=best['weight_decay'],
                                                num_nodes=best['num_nodes'], device=device)
 
-    model.save_net("files/cox-ph-net.pt")
-    model.save_model_weights("files/cox-ph-net-weights.txt")
-    model.print_weights("files/cox-ph-net-weights.txt")
+    fig_time = strftime("%d%m%Y%H%M%S", localtime())
+
+    model.save_net("files/cox-ph/cox-ph-net-" + fig_time + ".pt")
+    model.save_model_weights("files/cox-ph/cox-ph-net-weights-" + fig_time + ".txt")
+    model.print_weights("files/cox-ph/cox-ph-net-weights-" + fig_time + ".txt")
 
     # Train, Val Loss
     plt.ylabel("Loss")
     plt.xlabel("Epochs")
     plt.grid(True)
-    log.plot().get_figure().savefig("img/cox-ph-train-val-loss.png", format="png", bbox_inches="tight")
+    log.plot().get_figure().savefig("img/cox-ph/cox-ph-train-val-loss-" + fig_time + ".png", format="png", bbox_inches="tight")
 
     # Survival estimates as a dataframe
     estimates = settings.estimates
     plt.ylabel('S(t | x)')
     plt.xlabel('Time')
-    surv.iloc[:, :estimates].plot().get_figure().savefig("img/cox-ph-survival-estimates.png", format="png",
+    surv.iloc[:, :estimates].plot().get_figure().savefig("img/cox-ph/cox-ph-survival-estimates-" + fig_time + ".png", format="png",
                                                          bbox_inches="tight")
 
     # Evaluate
@@ -235,7 +220,7 @@ def main():
                 "Brier Score: " + str(bscore) + "\n" +
                 "Binomial Log-Likelihood: " + str(bll) + "\n")
 
-    time_string = time.strftime("%d/%m/%Y, %H:%M:%S", time.localtime())
+    time_string = strftime("%d/%m/%Y, %H:%M:%S", localtime())
     _file.write("\n########## Final: " + time_string + "\n")
 
     # Close file
@@ -243,4 +228,7 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    i = 0
+    for seed in settings.seed:
+        main(seed, i)
+        i+=1
