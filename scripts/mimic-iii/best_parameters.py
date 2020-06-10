@@ -9,6 +9,10 @@
 # λ(penalty to the loss function)  {0.1, 0.01, 0.001, 0}
 # Weigh decay                      {0.4, 0.2, 0.1, 0.05, 0.02, 0.01, 0}
 
+deep_hit = []
+
+cox_time = []
+
 cox_ph = [{'batch': 256, 'dropout': 0.6, 'lr': 0.01, 'num_nodes': [512, 512, 512, 512], 'weight_decay': 0, 'epoch': 512},
           {'batch': 256, 'dropout': 0.6, 'lr': 0.01, 'num_nodes': [256, 256, 256, 256], 'weight_decay': 0.1, 'epoch': 512},
           {'batch': 128, 'dropout': 0.3, 'lr': 0.01, 'num_nodes': [64, 64], 'weight_decay': 0.1, 'epoch': 512},

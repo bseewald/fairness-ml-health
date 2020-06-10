@@ -172,7 +172,7 @@ def main(seed, index):
     train, val, test = cohort_samples(seed=seed, size=settings.size, cohort=cohort)
 
     # Open file
-    _file = open("files/cox-ph.txt", "a")
+    _file = open("files/cox-ph/cox-ph.txt", "a")
 
     time_string = strftime("%d/%m/%Y, %H:%M:%S", localtime())
     _file.write("########## Init: " + time_string + "\n\n")

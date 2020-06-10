@@ -1,4 +1,4 @@
-import time
+from time import localtime, strftime
 
 import cohort.get_cohort as sa_cohort
 import hyperopt_parameters as parameters
@@ -16,11 +16,6 @@ from sklearn_pandas import DataFrameMapper
 
 
 def cohort_samples(seed, size, cohort, num_durations):
-    # _ = torch.manual_seed(seed)
-    # test_dataset = cohort.sample(frac=size)
-    # train_dataset = cohort.drop(test_dataset.index)
-    # valid_dataset = train_dataset.sample(frac=size)
-    # train_dataset = train_dataset.drop(valid_dataset.index)
 
     # Train / valid / test split
     train_dataset, valid_dataset, test_dataset = sa_cohort.train_test_split_nn(seed, size, cohort)
@@ -30,16 +25,17 @@ def cohort_samples(seed, size, cohort, num_durations):
     # DeepHit is a discrete-time method, meaning it requires discretization of the event times to be applied
     # to continuous-time data. We let 'num_durations' define the size of this (equidistant) discretization grid,
     # meaning our network will have 'num_durations' output nodes.
+
     labtrans = DeepHitSingle.label_transform(num_durations)
     x_train, x_val, x_test = preprocess_input_features(train_dataset, valid_dataset, test_dataset)
     train, val, test = deep_hit_preprocess_target_features(x_train, x_val, x_test,
                                                            train_dataset, valid_dataset, test_dataset,
                                                            labtrans)
-
     return train, val, test, labtrans
 
 
 def preprocess_input_features(train_dataset, valid_dataset, test_dataset):
+
     cols_categorical = ['insurance', 'ethnicity_grouped', 'age_st',
                         'oasis_score', 'admission_type']
     categorical = [(col, OrderedCategoricalLong()) for col in cols_categorical]
@@ -64,6 +60,7 @@ def preprocess_input_features(train_dataset, valid_dataset, test_dataset):
 
 
 def deep_hit_preprocess_target_features(x_train, x_val, x_test, train_dataset, valid_dataset, test_dataset, labtrans):
+
     get_target = lambda df: (df['los_hospital'].values, df['hospital_expire_flag'].values)
     y_train = labtrans.fit_transform(*get_target(train_dataset))
     y_val = labtrans.transform(*get_target(valid_dataset))
@@ -77,6 +74,7 @@ def deep_hit_preprocess_target_features(x_train, x_val, x_test, train_dataset, v
 
 
 def deep_hit_make_net(train, dropout, num_nodes, labtrans):
+
     num_embeddings = train[0][1].max(0) + 1
     embedding_dims = num_embeddings // 2
 
@@ -106,6 +104,7 @@ def deep_hit_fit_and_predict(survival_analysis_model, train, val, test,
 
 
 def add_km_censor_modified(ev, durations, events):
+
     """
         Add censoring estimates obtained by Kaplan-Meier on the test set(durations, 1-events).
     """
@@ -123,7 +122,7 @@ def experiment(params):
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
     cohort = sa_cohort.cox_neural_network()
-    train, val, test = cohort_samples(seed=settings.seed, size=settings, cohort=cohort, num_durations=params['num_durations'].size)
+    train, val, test, labtrans = cohort_samples(seed=settings.seed, size=settings, cohort=cohort, num_durations=params['num_durations'].size)
 
     net = deep_hit_make_net(train, params['dropout'], params['num_nodes'], labtrans)
     optimizer = tt.optim.AdamWR(decoupled_weight_decay=params['weight_decay'])
@@ -154,7 +153,7 @@ def experiment(params):
     return {'loss': -cindex, 'status': STATUS_OK}
 
 
-def main():
+def main(seed):
 
     ##################################################################################
     # PyCox Library
@@ -180,12 +179,12 @@ def main():
     ##################################################################################
 
     # Open file
-    _file = open("files/deep-hit-hyperopt.txt", "a")
+    _file = open("files/deep-hit/deep-hit-hyperopt.txt", "a")
 
-    time_string = time.strftime("%d/%m/%Y, %H:%M:%S", time.localtime())
+    time_string = strftime("%d/%m/%Y, %H:%M:%S", localtime())
     _file.write("########## Init: " + time_string + "\n\n")
 
-    trials, best = parameters.hyperopt(experiment, "deephit")
+    trials, best = parameters.hyperopt(experiment, seed, "deephit")
 
     # All parameters
     _file.write("All Parameters: \n" + str(trials.trials) + "\n\n")
@@ -193,7 +192,7 @@ def main():
     # Best Parameters
     _file.write("Best Parameters: " + str(best) + "\n")
 
-    time_string = time.strftime("%d/%m/%Y, %H:%M:%S", time.localtime())
+    time_string = strftime("%d/%m/%Y, %H:%M:%S", localtime())
     _file.write("\n########## Final: " + time_string + "\n")
 
     # Close file
@@ -201,4 +200,5 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    for seed in settings.seed:
+        main(seed)
