@@ -122,7 +122,7 @@ def experiment(params):
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
     cohort = sa_cohort.cox_neural_network()
-    train, val, test, labtrans = cohort_samples(seed=settings.seed, size=settings, cohort=cohort, num_durations=params['num_durations'].size)
+    train, val, test, labtrans = cohort_samples(seed=params['seed'], size=settings, cohort=cohort, num_durations=params['num_durations'].size)
 
     net = deep_hit_make_net(train, params['dropout'], params['num_nodes'], labtrans)
     optimizer = tt.optim.AdamWR(decoupled_weight_decay=params['weight_decay'])
