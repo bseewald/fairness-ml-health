@@ -28,14 +28,15 @@ def main(seed):
     _file.write("########## Init: " + time_string + "\n\n")
     print(strftime("%d/%m/%Y, %H:%M:%S", localtime()))
 
-    cohort_X, cohort_y = cohort.cox()
-
-    # Transformation
-    Xt = OneHotEncoder().fit_transform(cohort_X)
-    Xt = np.column_stack(Xt.values)
+    cohort_x, cohort_y = cohort.cox()
 
     # Train / test split
-    X_train, X_test, y_train, y_test = cohort.train_test_split(Xt.transpose(), cohort_y)
+    x_train, x_test, y_train, y_test = cohort.train_test_split(cohort_x, cohort_y)
+
+    # Transformation
+    x_train_t = OneHotEncoder().fit_transform(x_train)
+    x_train_t = np.column_stack(x_train_t.values)
+    x_train_t = x_train_t.transpose()
 
     y_train = Surv.from_dataframe("hospital_expire_flag", "los_hospital", y_train)
     y_test = Surv.from_dataframe("hospital_expire_flag", "los_hospital", y_test)
@@ -50,10 +51,10 @@ def main(seed):
     # Train model
     rsf = RandomSurvivalForest()
     gcv = GridSearchCV(rsf, param_grid=params, cv=cv)
-    gcv_fit = gcv.fit(X_train, y_train)
+    gcv_fit = gcv.fit(x_train_t, y_train)
 
     # C-index score
-    gcv_score = gcv.score(X_test, y_test)
+    gcv_score = gcv.score(x_test, y_test)
 
     _file.write("gcv_score: " + str(gcv_score) + " old_score: " + str(old_score) + "\n")
 
