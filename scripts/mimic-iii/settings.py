@@ -25,8 +25,9 @@ _l1_ratios_cn = [1, 0.9, 0.8, 0.7, 0.6, 0.5, 0.3, 0.1, 0.01, 0.001]
 split = [2, 4, 6, 8]
 leaf = [2, 8, 32, 64, 128]
 n_estimators = [500, 1000]
-max_features = ["auto", "sqrt"]
-n_jobs = [-1]
+max_features = ["auto"]
+max_depth = [6]
+n_jobs = [2]
 random_state_rsf = [seed]
 
 # neural network

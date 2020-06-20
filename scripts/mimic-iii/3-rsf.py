@@ -1,8 +1,10 @@
+import sys
 from time import localtime, strftime
 
 import cohort.get_cohort as cohort
 import numpy as np
 import settings
+import ram
 from sklearn.model_selection import GridSearchCV, KFold
 from sksurv.ensemble import RandomSurvivalForest
 from sksurv.preprocessing import OneHotEncoder
@@ -45,7 +47,8 @@ def main(seed):
     cv = KFold(n_splits=settings.k, shuffle=True, random_state=seed)
 
     # Params
-    params = {'n_estimators': settings.n_estimators, 'min_samples_split': settings.split, 'min_samples_leaf': settings.leaf,
+    params = {'n_estimators': settings.n_estimators, 'max_depth': settings.max_depth,
+              'min_samples_split': settings.split, 'min_samples_leaf': settings.leaf,
               'max_features': settings.max_features, 'n_jobs': settings.n_jobs, 'random_state': [seed]}
 
     # Train model
@@ -74,5 +77,11 @@ def main(seed):
 
 
 if __name__ == "__main__":
-    for seed in settings.seed:
-        main(seed)
+    # Only Unix systems
+    ram.memory_limit()
+    try:
+        for seed in settings.seed:
+            main(seed)
+    except MemoryError:
+        sys.stderr.write('\n\nERROR: Memory Exception\n')
+        sys.exit(1)
