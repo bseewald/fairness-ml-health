@@ -182,21 +182,23 @@ def main(seed, index):
                                                         num_nodes=best['num_nodes'], shrink=best['shrink'],
                                                         device=device, labtrans=labtrans)
 
-    model.save_net("files/cox-time/cox-time-net.pt")
-    model.save_model_weights("files/cox-time/cox-time-net-weights.pt")
-    model.print_weights("files/cox-time/cox-time-net-weights.txt")
+    fig_time = strftime("%d%m%Y%H%M%S", localtime())
+
+    model.save_net("files/cox-time/cox-time-net-" + fig_time + ".pt")
+    model.save_model_weights("files/cox-time/cox-time-net-weights-" + fig_time + ".pt")
+    model.print_weights("files/cox-time/cox-time-net-weights-" + fig_time + ".txt")
 
     # Train, Val Loss
     plt.ylabel("Loss")
     plt.xlabel("Epochs")
     plt.grid(True)
-    log.plot().get_figure().savefig("img/cox-time/cox-time-train-val-loss.png", format="png", bbox_inches="tight")
+    log.plot().get_figure().savefig("img/cox-time/cox-time-train-val-loss-" + fig_time + ".png", format="png", bbox_inches="tight")
 
     # Survival estimates as a dataframe
     estimates = settings.estimates
     plt.ylabel('S(t | x)')
     plt.xlabel('Time')
-    surv.iloc[:, :estimates].plot().get_figure().savefig("img/cox-time/cox-time-survival-estimates.png", format="png",
+    surv.iloc[:, :estimates].plot().get_figure().savefig("img/cox-time/cox-time-survival-estimates-" + fig_time + ".png", format="png",
                                                          bbox_inches="tight")
 
     # Evaluate
