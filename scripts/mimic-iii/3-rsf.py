@@ -40,6 +40,10 @@ def main(seed):
     x_train_t = np.column_stack(x_train_t.values)
     x_train_t = x_train_t.transpose()
 
+    x_test_t = OneHotEncoder().fit_transform(x_test)
+    x_test_t = np.column_stack(x_test_t.values)
+    x_test_t = x_test_t.transpose()
+
     y_train = Surv.from_dataframe("hospital_expire_flag", "los_hospital", y_train)
     y_test = Surv.from_dataframe("hospital_expire_flag", "los_hospital", y_test)
 
@@ -57,7 +61,7 @@ def main(seed):
     gcv_fit = gcv.fit(x_train_t, y_train)
 
     # C-index score
-    gcv_score = gcv.score(x_test, y_test)
+    gcv_score = gcv.score(x_test_t, y_test)
 
     _file.write("gcv_score: " + str(gcv_score) + " old_score: " + str(old_score) + "\n")
 
