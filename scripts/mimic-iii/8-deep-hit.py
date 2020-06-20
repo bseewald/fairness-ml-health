@@ -171,6 +171,10 @@ def main(seed, index):
     #
     ##################################################################################
 
+    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+
+    cohort = sa_cohort.cox_neural_network()
+
     # Open file
     _file = open("files/deep-hit/deep-hit.txt", "a")
 
@@ -179,11 +183,7 @@ def main(seed, index):
 
     best = best_parameters.deep_hit[index]
 
-    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-
-    cohort = sa_cohort.cox_neural_network()
     train, val, test, labtrans = cohort_samples(seed=seed, size=settings.size, cohort=cohort, num_durations=best['num_durations'])
-
     surv, surv_v, model, log = deep_hit_fit_and_predict(DeepHitSingle, train, val, test,
                                                         lr=best['lr'], batch=best['batch'],
                                                         dropout=best['dropout'], epoch=best['epoch'],
@@ -191,21 +191,23 @@ def main(seed, index):
                                                         alpha=best['alpha'], sigma=best['sigma'], device=device,
                                                         labtrans=labtrans)
 
-    model.save_net("files/deep-hit/deep-hit-net.pt")
-    model.save_model_weights("files/deep-hit/deep-hit-net-weights.pt")
-    model.print_weights("files/deep-hit/deep-hit-net-weights.txt")
+    fig_time = strftime("%d%m%Y%H%M%S", localtime())
+
+    model.save_net("files/deep-hit/deep-hit-net-" + fig_time + ".pt")
+    model.save_model_weights("files/deep-hit/deep-hit-net-weights-" + fig_time + ".pt")
+    model.print_weights("files/deep-hit/deep-hit-net-weights-" + fig_time + ".txt")
 
     # Train, Val Loss
     plt.ylabel("Loss")
     plt.xlabel("Epochs")
     plt.grid(True)
-    log.plot().get_figure().savefig("img/deep-hit/deep-hit-train-val-loss.png", format="png", bbox_inches="tight")
+    log.plot().get_figure().savefig("img/deep-hit/deep-hit-train-val-loss-" + fig_time + ".png", format="png", bbox_inches="tight")
 
     # Survival estimates as a dataframe
     estimates = settings.estimates
     plt.ylabel('S(t | x)')
     plt.xlabel('Time')
-    surv.iloc[:, :estimates].plot().get_figure().savefig("img/deep-hit/deep-hit-survival-estimates.png", format="png",
+    surv.iloc[:, :estimates].plot().get_figure().savefig("img/deep-hit/deep-hit-survival-estimates-" + fig_time + ".png", format="png",
                                                          bbox_inches="tight")
 
     # Evaluate
