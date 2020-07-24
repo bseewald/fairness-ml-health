@@ -1,7 +1,6 @@
 import psycopg2
 import pandas as pd
 import numpy as np
-from torch import manual_seed
 
 
 def get_cohort():
@@ -17,7 +16,7 @@ def get_cohort():
     return cohort
 
 
-def train_test_split(cohort_x, cohort_y):
+def train_test_split(seed, size, cohort_x, cohort_y):
 
     ########################################################
     # Cohort
@@ -44,18 +43,32 @@ def train_test_split(cohort_x, cohort_y):
     # id_test = cohort_x.index.intersection(cohort_test.index)
     # print(id_train, id_test)
 
-    x_train = cohort_x.drop(cohort_test.index)
-    x_test = cohort_x.drop(cohort_train.index)
-    y_train = cohort_y.drop(cohort_test.index)
+    # Duration + Event -> test
     y_test = cohort_y.drop(cohort_train.index)
+    y_train_val = cohort_y.drop(cohort_test.index)
 
-    return x_train, x_test, y_train, y_test
+    # Features
+    x_test = cohort_x.drop(cohort_train.index)
+    x_train_val = cohort_x.drop(cohort_test.index)
+
+    cohort_val = cohort_train.sample(frac=size, random_state=seed)
+    cohort_train = cohort_train.drop(cohort_val.index)
+
+    x_val = x_train_val.drop(cohort_train.index)
+    x_train = x_train_val.drop(x_val.index)
+
+    x_train_val_concat = pd.concat([x_train, x_val])
+
+    # Duration + Event -> train + val (this order is very important!!)
+    y_val = y_train_val.drop(cohort_train.index)
+    y_train = y_train_val.drop(y_val.index)
+
+    y_train_val_concat = pd.concat([y_train, y_val])
+
+    return len(x_train), x_train_val_concat, x_val, x_test, y_train_val_concat, y_val, y_test
 
 
 def train_test_split_nn(seed, size, sa_cohort):
-
-    _ = manual_seed(seed)
-
     cohort = get_cohort()
     cohort = cohort.loc[cohort['los_hospital'] > 0]
     cohort_train = cohort.groupby("subject_id").filter(lambda x: len(x) < 2)
@@ -63,7 +76,7 @@ def train_test_split_nn(seed, size, sa_cohort):
 
     test_dataset = sa_cohort.drop(cohort_train.index)
     train_dataset = sa_cohort.drop(cohort_test.index)
-    valid_dataset = train_dataset.sample(frac=size)
+    valid_dataset = train_dataset.sample(frac=size, random_state=seed)
     train_dataset = train_dataset.drop(valid_dataset.index)
 
     return train_dataset, valid_dataset, test_dataset
@@ -130,8 +143,6 @@ def cox():
     cohort_x = cohort[cohort.columns.difference(["los_hospital", "hospital_expire_flag"])]
     cohort_y = cohort[["hospital_expire_flag", "los_hospital"]]
     cohort_y['hospital_expire_flag'] = cohort_y['hospital_expire_flag'].astype(bool)
-    # cohort_y = Surv.from_dataframe("hospital_expire_flag", "los_hospital", cohort_y)
-
     return cohort_x, cohort_y
 
 

@@ -8,6 +8,7 @@ seed = [3538733006, 1740342141, 2034474633, 1427421568, 2892461105, 3895719990, 
 
 seed_fixed = 42
 
+# validation dataset size - 20%
 size = 0.2
 
 # k fold

@@ -10,10 +10,11 @@ from time import localtime, strftime
 
 import cohort.get_cohort as cohort
 import settings
+import numpy as np
 from lifelines import CoxPHFitter
 from lifelines.utils import concordance_index
 from lifelines.utils.sklearn_adapter import sklearn_adapter
-from sklearn.model_selection import GridSearchCV, KFold
+from sklearn.model_selection import GridSearchCV, KFold, PredefinedSplit
 
 
 def main(seed):
@@ -37,31 +38,36 @@ def main(seed):
 
     cohort_x, cohort_y, cohort_df = cohort.cox_classical()
 
-    # Train / test samples
-    X_train, X_test, y_train, y_test = cohort.train_test_split(cohort_x, cohort_y)
+    # Train / validation / test datasets
+    train_size, x_train, x_val, x_test, y_train, y_val, y_test = cohort.train_test_split(seed, settings.size, cohort_x, cohort_y)
 
     cox = sklearn_adapter(CoxPHFitter, event_col='hospital_expire_flag')
     cx = cox()
 
     # KFold
-    cv = KFold(n_splits=settings.k, shuffle=True, random_state=seed)
+    # cv = KFold(n_splits=settings.k, shuffle=True, random_state=seed)
+
+    fold = [-1 for _ in range(train_size)] + [0 for _ in range(x_train.shape[0] - train_size)]
+    cv = list(PredefinedSplit(test_fold=fold).split())
 
     # Training ML model
     gcv = GridSearchCV(cx, {"penalizer": settings._alphas, "l1_ratio": settings._l1_ratios}, cv=cv)
 
     # Fit
     print(strftime("%d/%m/%Y, %H:%M:%S", localtime()))
-    gcv_fit = gcv.fit(X_train, y_train)
+    gcv_fit = gcv.fit(x_train, y_train)
 
     # Score
     print(strftime("%d/%m/%Y, %H:%M:%S", localtime()))
-    gcv_score = gcv.score(X_test, y_test)
+    gcv_score_val = gcv.score(x_val, y_val)
+    gcv_score_test = gcv.score(x_test, y_test)
 
     # Best Parameters
     _file.write("Best Parameters: " + str(gcv_fit.best_params_) + "\n")
 
     # C-Index
-    _file.write("C-Index test sample: " + str(gcv_score) + "\n")
+    _file.write("C-Index validation sample: " + str(gcv_score_val) + "\n")
+    _file.write("C-Index test sample: " + str(gcv_score_test) + "\n")
 
     cph = CoxPHFitter(penalizer=gcv_fit.best_params_['penalizer'], l1_ratio=gcv_fit.best_params_['l1_ratio'])
     cph.fit(cohort_df, duration_col="los_hospital", event_col="hospital_expire_flag")
