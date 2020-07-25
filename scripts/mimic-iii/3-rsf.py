@@ -5,7 +5,7 @@ import cohort.get_cohort as cohort
 import numpy as np
 import settings
 import ram
-from sklearn.model_selection import GridSearchCV, KFold
+from sklearn.model_selection import GridSearchCV, KFold, PredefinedSplit
 from sksurv.ensemble import RandomSurvivalForest
 from sksurv.preprocessing import OneHotEncoder
 from sksurv.util import Surv
@@ -21,8 +21,6 @@ def main(seed):
     #
     #############################################################
 
-    old_score = 0
-
     # Open file
     _file = open("files/cox-rsf.txt", "a")
 
@@ -32,23 +30,31 @@ def main(seed):
 
     cohort_x, cohort_y = cohort.cox()
 
-    # Train / test split
-    x_train, x_test, y_train, y_test = cohort.train_test_split(cohort_x, cohort_y)
+    # Train / validation / test datasets
+    train_size, x_train, x_val, x_test, y_train, y_val, y_test = cohort.train_test_split(seed, settings.size, cohort_x, cohort_y)
 
     # Transformation
     x_train_t = OneHotEncoder().fit_transform(x_train)
     x_train_t = np.column_stack(x_train_t.values)
     x_train_t = x_train_t.transpose()
 
+    x_val_t = OneHotEncoder().fit_transform(x_val)
+    x_val_t = np.column_stack(x_val_t.values)
+    x_val_t = x_val_t.transpose()
+
     x_test_t = OneHotEncoder().fit_transform(x_test)
     x_test_t = np.column_stack(x_test_t.values)
     x_test_t = x_test_t.transpose()
 
     y_train = Surv.from_dataframe("hospital_expire_flag", "los_hospital", y_train)
+    y_val = Surv.from_dataframe("hospital_expire_flag", "los_hospital", y_val)
     y_test = Surv.from_dataframe("hospital_expire_flag", "los_hospital", y_test)
 
     # KFold
-    cv = KFold(n_splits=settings.k, shuffle=True, random_state=seed)
+    # cv = KFold(n_splits=settings.k, shuffle=True, random_state=seed)
+
+    fold = [-1 for _ in range(train_size)] + [0 for _ in range(x_train.shape[0] - train_size)]
+    cv = PredefinedSplit(test_fold=fold)
 
     # Params
     params = {'n_estimators': settings.n_estimators, 'max_depth': settings.max_depth,
@@ -61,15 +67,15 @@ def main(seed):
     gcv_fit = gcv.fit(x_train_t, y_train)
 
     # C-index score
-    gcv_score = gcv.score(x_test_t, y_test)
-
-    _file.write("gcv_score: " + str(gcv_score) + " old_score: " + str(old_score) + "\n")
+    gcv_score_val = gcv.score(x_val_t, y_val)
+    gcv_score_test = gcv.score(x_test_t, y_test)
 
     # Best Parameters
     _file.write("Best Parameters: " + str(gcv_fit.best_params_) + "\n")
 
     # C-Index
-    _file.write("C-Index: " + str(gcv_score) + "\n")
+    _file.write("C-Index Validation: " + str(gcv_score_val) + "\n")
+    _file.write("C-Index Test: " + str(gcv_score_test) + "\n")
 
     time_string = strftime("%d/%m/%Y, %H:%M:%S", localtime())
     _file.write("\n########## Final: " + time_string + "\n")
@@ -81,11 +87,13 @@ def main(seed):
 
 
 if __name__ == "__main__":
+    for seed in settings.seed:
+        main(seed)
     # Only Unix systems
-    ram.memory_limit()
-    try:
-        for seed in settings.seed:
-            main(seed)
-    except MemoryError:
-        sys.stderr.write('\n\nERROR: Memory Exception\n')
-        sys.exit(1)
+    # ram.memory_limit()
+    # try:
+    #     for seed in settings.seed:
+    #         main(seed)
+    # except MemoryError:
+    #     sys.stderr.write('\n\nERROR: Memory Exception\n')
+    #     sys.exit(1)

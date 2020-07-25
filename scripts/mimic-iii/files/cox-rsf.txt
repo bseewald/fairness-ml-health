@@ -1,359 +1,350 @@
-########## Init: 04/12/2020, 18:24:16
+########## Init: 24/07/2020, 15:59:20
 
-Best Parameters: {'max_features': 'auto', 'min_samples_leaf': 50, 'min_samples_split': 2, 'n_estimators': 500, 'n_jobs': -1, 'random_state': 20}
-C-Index: 0.7179498265621758
+Best Parameters: {'max_depth': 6, 'max_features': 'auto', 'min_samples_leaf': 2, 'min_samples_split': 6, 'n_estimators': 1000, 'n_jobs': 2, 'random_state': 3538733006}
+C-Index Validation: 0.7811004760751714
+C-Index Test: 0.6388102595296339
 
-########## Final: 04/12/2020, 22:23:46
+########## Final: 24/07/2020, 16:10:03
+########## Init: 24/07/2020, 16:10:03
 
-*** The last one is the best configuration! ***
-
-########## Init: 20/06/2020, 18:25:49
-
-gcv_score: 0.6392379071819332 old_score: 0
-Best Parameters: {'max_depth': 6, 'max_features': 'auto', 'min_samples_leaf': 2, 'min_samples_split': 8, 'n_estimators': 1000, 'n_jobs': 2, 'random_state': 3538733006}
-C-Index: 0.6392379071819332
-
-########## Final: 20/06/2020, 19:45:45
-########## Init: 20/06/2020, 19:45:45
-
-gcv_score: 0.6376315267407151 old_score: 0
 Best Parameters: {'max_depth': 6, 'max_features': 'auto', 'min_samples_leaf': 2, 'min_samples_split': 8, 'n_estimators': 1000, 'n_jobs': 2, 'random_state': 1740342141}
-C-Index: 0.6376315267407151
+C-Index Validation: 0.7708221602219155
+C-Index Test: 0.640986322222471
 
-########## Final: 20/06/2020, 21:05:29
-########## Init: 20/06/2020, 21:05:29
+########## Final: 24/07/2020, 16:20:26
+########## Init: 24/07/2020, 16:20:27
 
-gcv_score: 0.639014820229741 old_score: 0
-Best Parameters: {'max_depth': 6, 'max_features': 'auto', 'min_samples_leaf': 2, 'min_samples_split': 8, 'n_estimators': 500, 'n_jobs': 2, 'random_state': 2034474633}
-C-Index: 0.639014820229741
+Best Parameters: {'max_depth': 6, 'max_features': 'auto', 'min_samples_leaf': 2, 'min_samples_split': 2, 'n_estimators': 500, 'n_jobs': 2, 'random_state': 2034474633}
+C-Index Validation: 0.7576057061685858
+C-Index Test: 0.6381718757598658
 
-########## Final: 20/06/2020, 22:25:15
-########## Init: 20/06/2020, 22:25:15
+########## Final: 24/07/2020, 16:30:36
+########## Init: 24/07/2020, 16:30:36
 
-gcv_score: 0.6427710178400088 old_score: 0
 Best Parameters: {'max_depth': 6, 'max_features': 'auto', 'min_samples_leaf': 2, 'min_samples_split': 8, 'n_estimators': 500, 'n_jobs': 2, 'random_state': 1427421568}
-C-Index: 0.6427710178400088
+C-Index Validation: 0.7666448591839654
+C-Index Test: 0.6428018949268175
 
-########## Final: 20/06/2020, 23:44:47
-########## Init: 20/06/2020, 23:44:47
+########## Final: 24/07/2020, 16:40:21
+########## Init: 24/07/2020, 16:40:22
 
-gcv_score: 0.6429910170835202 old_score: 0
-Best Parameters: {'max_depth': 6, 'max_features': 'auto', 'min_samples_leaf': 2, 'min_samples_split': 2, 'n_estimators': 500, 'n_jobs': 2, 'random_state': 2892461105}
-C-Index: 0.6429910170835202
+Best Parameters: {'max_depth': 6, 'max_features': 'auto', 'min_samples_leaf': 2, 'min_samples_split': 8, 'n_estimators': 500, 'n_jobs': 2, 'random_state': 2892461105}
+C-Index Validation: 0.7719482102188014
+C-Index Test: 0.6401788864024257
 
-########## Final: 21/06/2020, 01:04:30
-########## Init: 21/06/2020, 01:04:30
+########## Final: 24/07/2020, 16:50:31
+########## Init: 24/07/2020, 16:50:31
 
-gcv_score: 0.640312429802873 old_score: 0
-Best Parameters: {'max_depth': 6, 'max_features': 'auto', 'min_samples_leaf': 2, 'min_samples_split': 6, 'n_estimators': 500, 'n_jobs': 2, 'random_state': 3895719990}
-C-Index: 0.640312429802873
+Best Parameters: {'max_depth': 6, 'max_features': 'auto', 'min_samples_leaf': 2, 'min_samples_split': 6, 'n_estimators': 1000, 'n_jobs': 2, 'random_state': 3895719990}
+C-Index Validation: 0.7729539678786518
+C-Index Test: 0.6371838089819901
 
-########## Final: 21/06/2020, 02:24:06
-########## Init: 21/06/2020, 02:24:06
+########## Final: 24/07/2020, 17:01:12
+########## Init: 24/07/2020, 17:01:12
 
-gcv_score: 0.642327159717135 old_score: 0
-Best Parameters: {'max_depth': 6, 'max_features': 'auto', 'min_samples_leaf': 2, 'min_samples_split': 2, 'n_estimators': 1000, 'n_jobs': 2, 'random_state': 2754073253}
-C-Index: 0.642327159717135
+Best Parameters: {'max_depth': 6, 'max_features': 'auto', 'min_samples_leaf': 2, 'min_samples_split': 8, 'n_estimators': 1000, 'n_jobs': 2, 'random_state': 2754073253}
+C-Index Validation: 0.7752034968732268
+C-Index Test: 0.6403216929289155
 
-########## Final: 21/06/2020, 03:44:09
-########## Init: 21/06/2020, 03:44:09
+########## Final: 24/07/2020, 17:11:32
+########## Init: 24/07/2020, 17:11:32
 
-gcv_score: 0.6413182509056635 old_score: 0
-Best Parameters: {'max_depth': 6, 'max_features': 'auto', 'min_samples_leaf': 2, 'min_samples_split': 6, 'n_estimators': 1000, 'n_jobs': 2, 'random_state': 2888635065}
-C-Index: 0.6413182509056635
+Best Parameters: {'max_depth': 6, 'max_features': 'auto', 'min_samples_leaf': 2, 'min_samples_split': 8, 'n_estimators': 500, 'n_jobs': 2, 'random_state': 2888635065}
+C-Index Validation: 0.7714390300264007
+C-Index Test: 0.6407501125083851
 
-########## Final: 21/06/2020, 05:04:22
-########## Init: 21/06/2020, 05:04:22
+########## Final: 24/07/2020, 17:21:17
+########## Init: 24/07/2020, 17:21:17
 
-gcv_score: 0.6408728489284493 old_score: 0
-Best Parameters: {'max_depth': 6, 'max_features': 'auto', 'min_samples_leaf': 2, 'min_samples_split': 8, 'n_estimators': 1000, 'n_jobs': 2, 'random_state': 1033490874}
-C-Index: 0.6408728489284493
+Best Parameters: {'max_depth': 6, 'max_features': 'auto', 'min_samples_leaf': 2, 'min_samples_split': 2, 'n_estimators': 500, 'n_jobs': 2, 'random_state': 1033490874}
+C-Index Validation: 0.7684692133500343
+C-Index Test: 0.6398253437584671
 
-########## Final: 21/06/2020, 06:24:27
-########## Init: 21/06/2020, 06:24:27
+########## Final: 24/07/2020, 17:30:58
+########## Init: 24/07/2020, 17:30:58
 
-gcv_score: 0.6411229533315991 old_score: 0
-Best Parameters: {'max_depth': 6, 'max_features': 'auto', 'min_samples_leaf': 2, 'min_samples_split': 8, 'n_estimators': 1000, 'n_jobs': 2, 'random_state': 1353268974}
-C-Index: 0.6411229533315991
+Best Parameters: {'max_depth': 6, 'max_features': 'auto', 'min_samples_leaf': 2, 'min_samples_split': 6, 'n_estimators': 500, 'n_jobs': 2, 'random_state': 1353268974}
+C-Index Validation: 0.7674544448809113
+C-Index Test: 0.6453145178658684
 
-########## Final: 21/06/2020, 07:44:46
-########## Init: 21/06/2020, 07:44:46
+########## Final: 24/07/2020, 17:40:38
+########## Init: 24/07/2020, 17:40:38
 
-gcv_score: 0.6390742586218475 old_score: 0
-Best Parameters: {'max_depth': 6, 'max_features': 'auto', 'min_samples_leaf': 2, 'min_samples_split': 8, 'n_estimators': 500, 'n_jobs': 2, 'random_state': 745472848}
-C-Index: 0.6390742586218475
+Best Parameters: {'max_depth': 6, 'max_features': 'auto', 'min_samples_leaf': 2, 'min_samples_split': 2, 'n_estimators': 1000, 'n_jobs': 2, 'random_state': 745472848}
+C-Index Validation: 0.7735622517629894
+C-Index Test: 0.6447865196814411
 
-########## Final: 21/06/2020, 09:04:28
-########## Init: 21/06/2020, 09:04:28
+########## Final: 24/07/2020, 17:50:50
+########## Init: 24/07/2020, 17:50:50
 
-gcv_score: 0.6390071009580388 old_score: 0
-Best Parameters: {'max_depth': 6, 'max_features': 'auto', 'min_samples_leaf': 2, 'min_samples_split': 8, 'n_estimators': 500, 'n_jobs': 2, 'random_state': 2294877073}
-C-Index: 0.6390071009580388
+Best Parameters: {'max_depth': 6, 'max_features': 'auto', 'min_samples_leaf': 2, 'min_samples_split': 6, 'n_estimators': 500, 'n_jobs': 2, 'random_state': 2294877073}
+C-Index Validation: 0.7481421688412033
+C-Index Test: 0.6375172815195232
 
-########## Final: 21/06/2020, 10:23:58
-########## Init: 21/06/2020, 10:23:58
+########## Final: 24/07/2020, 18:00:35
+########## Init: 24/07/2020, 18:00:35
 
-gcv_score: 0.6379194555752054 old_score: 0
-Best Parameters: {'max_depth': 6, 'max_features': 'auto', 'min_samples_leaf': 2, 'min_samples_split': 2, 'n_estimators': 500, 'n_jobs': 2, 'random_state': 3158590767}
-C-Index: 0.6379194555752054
+Best Parameters: {'max_depth': 6, 'max_features': 'auto', 'min_samples_leaf': 2, 'min_samples_split': 8, 'n_estimators': 500, 'n_jobs': 2, 'random_state': 3158590767}
+C-Index Validation: 0.7798456622896481
+C-Index Test: 0.6391113111260179
 
-########## Final: 21/06/2020, 11:43:33
-########## Init: 21/06/2020, 11:43:33
+########## Final: 24/07/2020, 18:10:13
+########## Init: 24/07/2020, 18:10:13
 
-gcv_score: 0.641502741499345 old_score: 0
-Best Parameters: {'max_depth': 6, 'max_features': 'auto', 'min_samples_leaf': 2, 'min_samples_split': 8, 'n_estimators': 1000, 'n_jobs': 2, 'random_state': 2658318247}
-C-Index: 0.641502741499345
+Best Parameters: {'max_depth': 6, 'max_features': 'auto', 'min_samples_leaf': 2, 'min_samples_split': 8, 'n_estimators': 500, 'n_jobs': 2, 'random_state': 2658318247}
+C-Index Validation: 0.7742242439485186
+C-Index Test: 0.6376299828863746
 
-########## Final: 21/06/2020, 13:03:28
-########## Init: 21/06/2020, 13:03:28
+########## Final: 24/07/2020, 18:20:00
+########## Init: 24/07/2020, 18:20:00
 
-gcv_score: 0.6386165058099098 old_score: 0
-Best Parameters: {'max_depth': 6, 'max_features': 'auto', 'min_samples_leaf': 2, 'min_samples_split': 6, 'n_estimators': 1000, 'n_jobs': 2, 'random_state': 2901899183}
-C-Index: 0.6386165058099098
+Best Parameters: {'max_depth': 6, 'max_features': 'auto', 'min_samples_leaf': 2, 'min_samples_split': 8, 'n_estimators': 1000, 'n_jobs': 2, 'random_state': 2901899183}
+C-Index Validation: 0.7774345428557506
+C-Index Test: 0.638423524017356
 
-########## Final: 21/06/2020, 14:23:25
-########## Init: 21/06/2020, 14:23:25
+########## Final: 24/07/2020, 18:30:12
+########## Init: 24/07/2020, 18:30:12
 
-gcv_score: 0.6424367733753056 old_score: 0
 Best Parameters: {'max_depth': 6, 'max_features': 'auto', 'min_samples_leaf': 2, 'min_samples_split': 6, 'n_estimators': 1000, 'n_jobs': 2, 'random_state': 2417472731}
-C-Index: 0.6424367733753056
+C-Index Validation: 0.7771139661734672
+C-Index Test: 0.6396092041508068
 
-########## Final: 21/06/2020, 15:43:20
-########## Init: 21/06/2020, 15:43:20
+########## Final: 24/07/2020, 18:40:18
+########## Init: 24/07/2020, 18:40:18
 
-gcv_score: 0.6351459212526217 old_score: 0
-Best Parameters: {'max_depth': 6, 'max_features': 'auto', 'min_samples_leaf': 8, 'min_samples_split': 2, 'n_estimators': 500, 'n_jobs': 2, 'random_state': 3906059074}
-C-Index: 0.6351459212526217
+Best Parameters: {'max_depth': 6, 'max_features': 'auto', 'min_samples_leaf': 8, 'min_samples_split': 2, 'n_estimators': 1000, 'n_jobs': 2, 'random_state': 3906059074}
+C-Index Validation: 0.781700212163807
+C-Index Test: 0.6395435903413385
 
-########## Final: 21/06/2020, 17:02:59
-########## Init: 21/06/2020, 17:02:59
+########## Final: 24/07/2020, 18:50:40
+########## Init: 24/07/2020, 18:50:40
 
-gcv_score: 0.639014820229741 old_score: 0
 Best Parameters: {'max_depth': 6, 'max_features': 'auto', 'min_samples_leaf': 2, 'min_samples_split': 6, 'n_estimators': 500, 'n_jobs': 2, 'random_state': 3159426436}
-C-Index: 0.639014820229741
+C-Index Validation: 0.7617339030206677
+C-Index Test: 0.6387469615016762
 
-########## Final: 21/06/2020, 18:22:43
-########## Init: 21/06/2020, 18:22:43
+########## Final: 24/07/2020, 19:00:42
+########## Init: 24/07/2020, 19:00:42
 
-gcv_score: 0.6392942578653589 old_score: 0
-Best Parameters: {'max_depth': 6, 'max_features': 'auto', 'min_samples_leaf': 2, 'min_samples_split': 6, 'n_estimators': 1000, 'n_jobs': 2, 'random_state': 127000746}
-C-Index: 0.6392942578653589
+Best Parameters: {'max_depth': 6, 'max_features': 'auto', 'min_samples_leaf': 2, 'min_samples_split': 2, 'n_estimators': 500, 'n_jobs': 2, 'random_state': 127000746}
+C-Index Validation: 0.7484603669279377
+C-Index Test: 0.6345692916564708
 
-########## Final: 21/06/2020, 19:42:36
-########## Init: 21/06/2020, 19:42:36
+########## Final: 24/07/2020, 19:10:26
+########## Init: 24/07/2020, 19:10:26
 
-gcv_score: 0.6416138990118561 old_score: 0
 Best Parameters: {'max_depth': 6, 'max_features': 'auto', 'min_samples_leaf': 2, 'min_samples_split': 8, 'n_estimators': 500, 'n_jobs': 2, 'random_state': 896325390}
-C-Index: 0.6416138990118561
+C-Index Validation: 0.7814233959762268
+C-Index Test: 0.6382482965497172
 
-########## Final: 21/06/2020, 21:02:34
-########## Init: 21/06/2020, 21:02:34
+########## Final: 24/07/2020, 19:20:07
+########## Init: 24/07/2020, 19:20:07
 
-gcv_score: 0.6347367998524075 old_score: 0
-Best Parameters: {'max_depth': 6, 'max_features': 'auto', 'min_samples_leaf': 2, 'min_samples_split': 6, 'n_estimators': 500, 'n_jobs': 2, 'random_state': 519400573}
-C-Index: 0.6347367998524075
+Best Parameters: {'max_depth': 6, 'max_features': 'auto', 'min_samples_leaf': 2, 'min_samples_split': 2, 'n_estimators': 500, 'n_jobs': 2, 'random_state': 519400573}
+C-Index Validation: 0.766408909610145
+C-Index Test: 0.6357318139748152
 
-########## Final: 21/06/2020, 22:22:07
-########## Init: 21/06/2020, 22:22:07
+########## Final: 24/07/2020, 19:29:48
+########## Init: 24/07/2020, 19:29:48
 
-gcv_score: 0.6407709545419809 old_score: 0
 Best Parameters: {'max_depth': 6, 'max_features': 'auto', 'min_samples_leaf': 2, 'min_samples_split': 2, 'n_estimators': 1000, 'n_jobs': 2, 'random_state': 530206849}
-C-Index: 0.6407709545419809
+C-Index Validation: 0.7626098861507422
+C-Index Test: 0.6385640147623352
 
-########## Final: 21/06/2020, 23:41:36
-########## Init: 21/06/2020, 23:41:36
+########## Final: 24/07/2020, 19:39:50
+########## Init: 24/07/2020, 19:39:50
 
-gcv_score: 0.6400607815453827 old_score: 0
-Best Parameters: {'max_depth': 6, 'max_features': 'auto', 'min_samples_leaf': 2, 'min_samples_split': 2, 'n_estimators': 1000, 'n_jobs': 2, 'random_state': 1982971951}
-C-Index: 0.6400607815453827
+Best Parameters: {'max_depth': 6, 'max_features': 'auto', 'min_samples_leaf': 2, 'min_samples_split': 2, 'n_estimators': 500, 'n_jobs': 2, 'random_state': 1982971951}
+C-Index Validation: 0.7641197261796684
+C-Index Test: 0.639982816901191
 
-########## Final: 22/06/2020, 01:02:35
-########## Init: 22/06/2020, 01:02:36
+########## Final: 24/07/2020, 19:49:23
+########## Init: 24/07/2020, 19:49:23
 
-gcv_score: 0.6385501200732713 old_score: 0
-Best Parameters: {'max_depth': 6, 'max_features': 'auto', 'min_samples_leaf': 2, 'min_samples_split': 8, 'n_estimators': 1000, 'n_jobs': 2, 'random_state': 3324488161}
-C-Index: 0.6385501200732713
+Best Parameters: {'max_depth': 6, 'max_features': 'auto', 'min_samples_leaf': 2, 'min_samples_split': 2, 'n_estimators': 1000, 'n_jobs': 2, 'random_state': 3324488161}
+C-Index Validation: 0.7614314032255033
+C-Index Test: 0.6391059076358264
 
-########## Final: 22/06/2020, 02:22:31
-########## Init: 22/06/2020, 02:22:31
+########## Final: 24/07/2020, 19:59:27
+########## Init: 24/07/2020, 19:59:27
 
-gcv_score: 0.6374393168753314 old_score: 0
-Best Parameters: {'max_depth': 6, 'max_features': 'auto', 'min_samples_leaf': 2, 'min_samples_split': 6, 'n_estimators': 1000, 'n_jobs': 2, 'random_state': 1436837179}
-C-Index: 0.6374393168753314
+Best Parameters: {'max_depth': 6, 'max_features': 'auto', 'min_samples_leaf': 2, 'min_samples_split': 6, 'n_estimators': 500, 'n_jobs': 2, 'random_state': 1436837179}
+C-Index Validation: 0.7704522573385711
+C-Index Test: 0.635505639313942
 
-########## Final: 22/06/2020, 03:42:29
-########## Init: 22/06/2020, 03:42:29
+########## Final: 24/07/2020, 20:09:11
+########## Init: 24/07/2020, 20:09:11
 
-gcv_score: 0.6358120944005174 old_score: 0
-Best Parameters: {'max_depth': 6, 'max_features': 'auto', 'min_samples_leaf': 8, 'min_samples_split': 2, 'n_estimators': 500, 'n_jobs': 2, 'random_state': 3862800656}
-C-Index: 0.6358120944005174
+Best Parameters: {'max_depth': 6, 'max_features': 'auto', 'min_samples_leaf': 2, 'min_samples_split': 6, 'n_estimators': 1000, 'n_jobs': 2, 'random_state': 3862800656}
+C-Index Validation: 0.7725502846378286
+C-Index Test: 0.6404259030968946
 
-########## Final: 22/06/2020, 05:02:22
-########## Init: 22/06/2020, 05:02:22
+########## Final: 24/07/2020, 20:19:28
+########## Init: 24/07/2020, 20:19:28
 
-gcv_score: 0.6379866132390142 old_score: 0
-Best Parameters: {'max_depth': 6, 'max_features': 'auto', 'min_samples_leaf': 2, 'min_samples_split': 2, 'n_estimators': 500, 'n_jobs': 2, 'random_state': 224796801}
-C-Index: 0.6379866132390142
+Best Parameters: {'max_depth': 6, 'max_features': 'auto', 'min_samples_leaf': 2, 'min_samples_split': 2, 'n_estimators': 1000, 'n_jobs': 2, 'random_state': 224796801}
+C-Index Validation: 0.7818450616305532
+C-Index Test: 0.6417165653254947
 
-########## Final: 22/06/2020, 06:21:56
-########## Init: 22/06/2020, 06:21:56
+########## Final: 24/07/2020, 20:29:41
+########## Init: 24/07/2020, 20:29:41
 
-gcv_score: 0.6359556728541775 old_score: 0
-Best Parameters: {'max_depth': 6, 'max_features': 'auto', 'min_samples_leaf': 2, 'min_samples_split': 6, 'n_estimators': 1000, 'n_jobs': 2, 'random_state': 2556449784}
-C-Index: 0.6359556728541775
+Best Parameters: {'max_depth': 6, 'max_features': 'auto', 'min_samples_leaf': 2, 'min_samples_split': 8, 'n_estimators': 1000, 'n_jobs': 2, 'random_state': 2556449784}
+C-Index Validation: 0.7618081988012425
+C-Index Test: 0.6400028870076166
 
-########## Final: 22/06/2020, 07:42:04
-########## Init: 22/06/2020, 07:42:04
+########## Final: 24/07/2020, 20:39:54
+########## Init: 24/07/2020, 20:39:54
 
-gcv_score: 0.6310477599059484 old_score: 0
-Best Parameters: {'max_depth': 6, 'max_features': 'auto', 'min_samples_leaf': 2, 'min_samples_split': 6, 'n_estimators': 500, 'n_jobs': 2, 'random_state': 4057789202}
-C-Index: 0.6310477599059484
+Best Parameters: {'max_depth': 6, 'max_features': 'auto', 'min_samples_leaf': 2, 'min_samples_split': 2, 'n_estimators': 500, 'n_jobs': 2, 'random_state': 4057789202}
+C-Index Validation: 0.7696008602049266
+C-Index Test: 0.6372540543544798
 
-########## Final: 22/06/2020, 09:01:42
-########## Init: 22/06/2020, 09:01:42
+########## Final: 24/07/2020, 20:49:34
+########## Init: 24/07/2020, 20:49:34
 
-gcv_score: 0.6372687209707139 old_score: 0
-Best Parameters: {'max_depth': 6, 'max_features': 'auto', 'min_samples_leaf': 2, 'min_samples_split': 2, 'n_estimators': 500, 'n_jobs': 2, 'random_state': 2934705183}
-C-Index: 0.6372687209707139
+Best Parameters: {'max_depth': 6, 'max_features': 'auto', 'min_samples_leaf': 2, 'min_samples_split': 6, 'n_estimators': 500, 'n_jobs': 2, 'random_state': 2934705183}
+C-Index Validation: 0.7773237242076788
+C-Index Test: 0.6361571458456038
 
-########## Final: 22/06/2020, 10:21:14
-########## Init: 22/06/2020, 10:21:14
+########## Final: 24/07/2020, 20:59:18
+########## Init: 24/07/2020, 20:59:18
 
-gcv_score: 0.6399990273717655 old_score: 0
-Best Parameters: {'max_depth': 6, 'max_features': 'auto', 'min_samples_leaf': 2, 'min_samples_split': 8, 'n_estimators': 1000, 'n_jobs': 2, 'random_state': 3006649751}
-C-Index: 0.6399990273717655
+Best Parameters: {'max_depth': 6, 'max_features': 'auto', 'min_samples_leaf': 2, 'min_samples_split': 8, 'n_estimators': 500, 'n_jobs': 2, 'random_state': 3006649751}
+C-Index Validation: 0.7737123010811765
+C-Index Test: 0.6417713721545799
 
-########## Final: 22/06/2020, 11:41:23
-########## Init: 22/06/2020, 11:41:23
+########## Final: 24/07/2020, 21:08:58
+########## Init: 24/07/2020, 21:08:58
 
-gcv_score: 0.639459450279785 old_score: 0
-Best Parameters: {'max_depth': 6, 'max_features': 'auto', 'min_samples_leaf': 2, 'min_samples_split': 6, 'n_estimators': 500, 'n_jobs': 2, 'random_state': 777972479}
-C-Index: 0.639459450279785
+Best Parameters: {'max_depth': 6, 'max_features': 'auto', 'min_samples_leaf': 2, 'min_samples_split': 8, 'n_estimators': 500, 'n_jobs': 2, 'random_state': 777972479}
+C-Index Validation: 0.777607670777653
+C-Index Test: 0.6410218308723009
 
-########## Final: 22/06/2020, 13:00:52
-########## Init: 22/06/2020, 13:00:52
+########## Final: 24/07/2020, 21:18:26
+########## Init: 24/07/2020, 21:18:26
 
-gcv_score: 0.6364697763495409 old_score: 0
-Best Parameters: {'max_depth': 6, 'max_features': 'auto', 'min_samples_leaf': 8, 'min_samples_split': 2, 'n_estimators': 1000, 'n_jobs': 2, 'random_state': 1311426398}
-C-Index: 0.6364697763495409
+Best Parameters: {'max_depth': 6, 'max_features': 'auto', 'min_samples_leaf': 2, 'min_samples_split': 8, 'n_estimators': 500, 'n_jobs': 2, 'random_state': 1311426398}
+C-Index Validation: 0.7719350610965489
+C-Index Test: 0.6403278683462773
 
-########## Final: 22/06/2020, 14:20:56
-########## Init: 22/06/2020, 14:20:56
+########## Final: 24/07/2020, 21:28:08
+########## Init: 24/07/2020, 21:28:08
 
-gcv_score: 0.6427254741369661 old_score: 0
-Best Parameters: {'max_depth': 6, 'max_features': 'auto', 'min_samples_leaf': 2, 'min_samples_split': 6, 'n_estimators': 1000, 'n_jobs': 2, 'random_state': 915183445}
-C-Index: 0.6427254741369661
+Best Parameters: {'max_depth': 6, 'max_features': 'auto', 'min_samples_leaf': 2, 'min_samples_split': 2, 'n_estimators': 1000, 'n_jobs': 2, 'random_state': 915183445}
+C-Index Validation: 0.782349731656738
+C-Index Test: 0.639402327669189
 
-########## Final: 22/06/2020, 15:41:01
-########## Init: 22/06/2020, 15:41:01
+########## Final: 24/07/2020, 21:38:18
+########## Init: 24/07/2020, 21:38:19
 
-gcv_score: 0.6378793153623542 old_score: 0
-Best Parameters: {'max_depth': 6, 'max_features': 'auto', 'min_samples_leaf': 2, 'min_samples_split': 2, 'n_estimators': 1000, 'n_jobs': 2, 'random_state': 587257814}
-C-Index: 0.6378793153623542
+Best Parameters: {'max_depth': 6, 'max_features': 'auto', 'min_samples_leaf': 2, 'min_samples_split': 2, 'n_estimators': 500, 'n_jobs': 2, 'random_state': 587257814}
+C-Index Validation: 0.7823183612757237
+C-Index Test: 0.641151514636897
 
-########## Final: 22/06/2020, 17:01:12
-########## Init: 22/06/2020, 17:01:12
+########## Final: 24/07/2020, 21:48:00
+########## Init: 24/07/2020, 21:48:01
 
-gcv_score: 0.6361069705795398 old_score: 0
-Best Parameters: {'max_depth': 6, 'max_features': 'auto', 'min_samples_leaf': 2, 'min_samples_split': 6, 'n_estimators': 500, 'n_jobs': 2, 'random_state': 480461828}
-C-Index: 0.6361069705795398
+Best Parameters: {'max_depth': 6, 'max_features': 'auto', 'min_samples_leaf': 2, 'min_samples_split': 2, 'n_estimators': 500, 'n_jobs': 2, 'random_state': 480461828}
+C-Index Validation: 0.7750874175516596
+C-Index Test: 0.6372177737774797
 
-########## Final: 22/06/2020, 18:20:25
-########## Init: 22/06/2020, 18:20:25
+########## Final: 24/07/2020, 21:57:43
+########## Init: 24/07/2020, 21:57:43
 
-gcv_score: 0.6426011938625614 old_score: 0
-Best Parameters: {'max_depth': 6, 'max_features': 'auto', 'min_samples_leaf': 2, 'min_samples_split': 6, 'n_estimators': 1000, 'n_jobs': 2, 'random_state': 3346154147}
-C-Index: 0.6426011938625614
+Best Parameters: {'max_depth': 6, 'max_features': 'auto', 'min_samples_leaf': 8, 'min_samples_split': 2, 'n_estimators': 500, 'n_jobs': 2, 'random_state': 3346154147}
+C-Index Validation: 0.7798766486617138
+C-Index Test: 0.6420739676053043
 
-########## Final: 22/06/2020, 19:40:20
-########## Init: 22/06/2020, 19:40:20
+########## Final: 24/07/2020, 22:07:30
+########## Init: 24/07/2020, 22:07:30
 
-gcv_score: 0.6407879369397256 old_score: 0
-Best Parameters: {'max_depth': 6, 'max_features': 'auto', 'min_samples_leaf': 2, 'min_samples_split': 8, 'n_estimators': 1000, 'n_jobs': 2, 'random_state': 3472978784}
-C-Index: 0.6407879369397256
+Best Parameters: {'max_depth': 6, 'max_features': 'auto', 'min_samples_leaf': 2, 'min_samples_split': 2, 'n_estimators': 500, 'n_jobs': 2, 'random_state': 3472978784}
+C-Index Validation: 0.7663729413160477
+C-Index Test: 0.6455167627844648
 
-########## Final: 22/06/2020, 21:00:11
-########## Init: 22/06/2020, 21:00:11
+########## Final: 24/07/2020, 22:17:08
+########## Init: 24/07/2020, 22:17:09
 
-gcv_score: 0.6429037893132858 old_score: 0
 Best Parameters: {'max_depth': 6, 'max_features': 'auto', 'min_samples_leaf': 2, 'min_samples_split': 6, 'n_estimators': 1000, 'n_jobs': 2, 'random_state': 1680114710}
-C-Index: 0.6429037893132858
+C-Index Validation: 0.7767573677803437
+C-Index Test: 0.6396694144700836
 
-########## Final: 22/06/2020, 22:20:05
-########## Init: 22/06/2020, 22:20:05
+########## Final: 24/07/2020, 22:27:28
+########## Init: 24/07/2020, 22:27:28
 
-gcv_score: 0.6420098976501765 old_score: 0
-Best Parameters: {'max_depth': 6, 'max_features': 'auto', 'min_samples_leaf': 2, 'min_samples_split': 8, 'n_estimators': 500, 'n_jobs': 2, 'random_state': 3249445872}
-C-Index: 0.6420098976501765
+Best Parameters: {'max_depth': 6, 'max_features': 'auto', 'min_samples_leaf': 2, 'min_samples_split': 8, 'n_estimators': 1000, 'n_jobs': 2, 'random_state': 3249445872}
+C-Index Validation: 0.7769833410194554
+C-Index Test: 0.6412055495388121
 
-########## Final: 22/06/2020, 23:39:33
-########## Init: 22/06/2020, 23:39:33
+########## Final: 24/07/2020, 22:37:51
+########## Init: 24/07/2020, 22:37:51
 
-gcv_score: 0.6366936352289034 old_score: 0
-Best Parameters: {'max_depth': 6, 'max_features': 'auto', 'min_samples_leaf': 2, 'min_samples_split': 6, 'n_estimators': 500, 'n_jobs': 2, 'random_state': 3549818389}
-C-Index: 0.6366936352289034
+Best Parameters: {'max_depth': 6, 'max_features': 'auto', 'min_samples_leaf': 8, 'min_samples_split': 2, 'n_estimators': 500, 'n_jobs': 2, 'random_state': 3549818389}
+C-Index Validation: 0.7709478434334631
+C-Index Test: 0.6394270293386359
 
-########## Final: 23/06/2020, 00:59:04
-########## Init: 23/06/2020, 00:59:04
+########## Final: 24/07/2020, 22:47:29
+########## Init: 24/07/2020, 22:47:30
 
-gcv_score: 0.6402059038533833 old_score: 0
-Best Parameters: {'max_depth': 6, 'max_features': 'auto', 'min_samples_leaf': 2, 'min_samples_split': 8, 'n_estimators': 1000, 'n_jobs': 2, 'random_state': 3095040986}
-C-Index: 0.6402059038533833
+Best Parameters: {'max_depth': 6, 'max_features': 'auto', 'min_samples_leaf': 2, 'min_samples_split': 8, 'n_estimators': 500, 'n_jobs': 2, 'random_state': 3095040986}
+C-Index Validation: 0.7646694520994459
+C-Index Test: 0.6397643615120201
 
-########## Final: 23/06/2020, 02:18:59
-########## Init: 23/06/2020, 02:18:59
+########## Final: 24/07/2020, 22:57:07
+########## Init: 24/07/2020, 22:57:08
 
-gcv_score: 0.6401796583295959 old_score: 0
-Best Parameters: {'max_depth': 6, 'max_features': 'auto', 'min_samples_leaf': 2, 'min_samples_split': 2, 'n_estimators': 500, 'n_jobs': 2, 'random_state': 3467813425}
-C-Index: 0.6401796583295959
+Best Parameters: {'max_depth': 6, 'max_features': 'auto', 'min_samples_leaf': 2, 'min_samples_split': 8, 'n_estimators': 1000, 'n_jobs': 2, 'random_state': 3467813425}
+C-Index Validation: 0.7601104247297896
+C-Index Test: 0.6376523687743109
 
-########## Final: 23/06/2020, 03:38:21
-########## Init: 23/06/2020, 03:38:21
+########## Final: 24/07/2020, 23:07:21
+########## Init: 24/07/2020, 23:07:21
 
-gcv_score: 0.6373528610322673 old_score: 0
-Best Parameters: {'max_depth': 6, 'max_features': 'auto', 'min_samples_leaf': 2, 'min_samples_split': 6, 'n_estimators': 1000, 'n_jobs': 2, 'random_state': 567013934}
-C-Index: 0.6373528610322673
+Best Parameters: {'max_depth': 6, 'max_features': 'auto', 'min_samples_leaf': 2, 'min_samples_split': 2, 'n_estimators': 500, 'n_jobs': 2, 'random_state': 567013934}
+C-Index Validation: 0.7808269532245005
+C-Index Test: 0.6384049977652708
 
-########## Final: 23/06/2020, 04:58:27
-########## Init: 23/06/2020, 04:58:27
+########## Final: 24/07/2020, 23:17:04
+########## Init: 24/07/2020, 23:17:04
 
-gcv_score: 0.6397504668229562 old_score: 0
-Best Parameters: {'max_depth': 6, 'max_features': 'auto', 'min_samples_leaf': 2, 'min_samples_split': 8, 'n_estimators': 1000, 'n_jobs': 2, 'random_state': 2231759630}
-C-Index: 0.6397504668229562
+Best Parameters: {'max_depth': 6, 'max_features': 'auto', 'min_samples_leaf': 2, 'min_samples_split': 2, 'n_estimators': 500, 'n_jobs': 2, 'random_state': 2231759630}
+C-Index Validation: 0.7811282172402434
+C-Index Test: 0.638129419765504
 
-########## Final: 23/06/2020, 06:18:30
-########## Init: 23/06/2020, 06:18:30
+########## Final: 24/07/2020, 23:26:50
+########## Init: 24/07/2020, 23:26:50
 
-gcv_score: 0.638466751938888 old_score: 0
-Best Parameters: {'max_depth': 6, 'max_features': 'auto', 'min_samples_leaf': 2, 'min_samples_split': 8, 'n_estimators': 500, 'n_jobs': 2, 'random_state': 513264208}
-C-Index: 0.638466751938888
+Best Parameters: {'max_depth': 6, 'max_features': 'auto', 'min_samples_leaf': 2, 'min_samples_split': 8, 'n_estimators': 1000, 'n_jobs': 2, 'random_state': 513264208}
+C-Index Validation: 0.7812464840737491
+C-Index Test: 0.6402830965704048
 
-########## Final: 23/06/2020, 07:38:02
-########## Init: 23/06/2020, 07:38:02
+########## Final: 24/07/2020, 23:37:01
+########## Init: 24/07/2020, 23:37:01
 
-gcv_score: 0.6374084397885228 old_score: 0
 Best Parameters: {'max_depth': 6, 'max_features': 'auto', 'min_samples_leaf': 2, 'min_samples_split': 6, 'n_estimators': 1000, 'n_jobs': 2, 'random_state': 3071193438}
-C-Index: 0.6374084397885228
+C-Index Validation: 0.756554026366026
+C-Index Test: 0.6377341930543537
 
-########## Final: 23/06/2020, 08:57:47
-########## Init: 23/06/2020, 08:57:47
+########## Final: 24/07/2020, 23:47:04
+########## Init: 24/07/2020, 23:47:04
 
-gcv_score: 0.638570190179697 old_score: 0
-Best Parameters: {'max_depth': 6, 'max_features': 'auto', 'min_samples_leaf': 2, 'min_samples_split': 2, 'n_estimators': 1000, 'n_jobs': 2, 'random_state': 2186561917}
-C-Index: 0.638570190179697
+Best Parameters: {'max_depth': 6, 'max_features': 'auto', 'min_samples_leaf': 2, 'min_samples_split': 6, 'n_estimators': 1000, 'n_jobs': 2, 'random_state': 2186561917}
+C-Index Validation: 0.7621881462145098
+C-Index Test: 0.6401348865537234
 
-########## Final: 23/06/2020, 10:17:45
-########## Init: 23/06/2020, 10:17:45
+########## Final: 24/07/2020, 23:57:05
+########## Init: 24/07/2020, 23:57:05
 
-gcv_score: 0.6394216258484444 old_score: 0
-Best Parameters: {'max_depth': 6, 'max_features': 'auto', 'min_samples_leaf': 2, 'min_samples_split': 8, 'n_estimators': 500, 'n_jobs': 2, 'random_state': 1429000735}
-C-Index: 0.6394216258484444
+Best Parameters: {'max_depth': 6, 'max_features': 'auto', 'min_samples_leaf': 2, 'min_samples_split': 2, 'n_estimators': 1000, 'n_jobs': 2, 'random_state': 1429000735}
+C-Index Validation: 0.7643335831656827
+C-Index Test: 0.6398639401169779
 
-########## Final: 23/06/2020, 11:37:33
-########## Init: 23/06/2020, 11:37:33
+########## Final: 25/07/2020, 00:07:20
+########## Init: 25/07/2020, 00:07:20
 
-gcv_score: 0.6408450595503216 old_score: 0
 Best Parameters: {'max_depth': 6, 'max_features': 'auto', 'min_samples_leaf': 2, 'min_samples_split': 2, 'n_estimators': 500, 'n_jobs': 2, 'random_state': 1744536459}
-C-Index: 0.6408450595503216
+C-Index Validation: 0.7640156701257113
+C-Index Test: 0.6457529724985507
 
-########## Final: 23/06/2020, 12:57:04
+########## Final: 25/07/2020, 00:17:04
