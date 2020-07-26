@@ -91,17 +91,3 @@ def main(seed):
 if __name__ == "__main__":
     for seed in settings.seed:
         main(seed)
-
-
-#################################
-# FAIRNESS AND SURVIVAL ANALYSIS
-#################################
-
-# group fairness OK
-# P(S > sHR | G = m) = P(S > sHR | G = f)
-
-# group fairness NOK
-# P(S > s | G = asian) = P(S > s | G = not asian)
-
-# Conditional Statistical Parity
-# P(S > s | L1 = l1, L2 = l2, E = black) = P(S > s | L1 = l1, L2 = l2, E = not black)

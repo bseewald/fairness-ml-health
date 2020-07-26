@@ -89,6 +89,7 @@ def main(seed):
 if __name__ == "__main__":
     for seed in settings.seed:
         main(seed)
+
     # Only Unix systems
     # ram.memory_limit()
     # try:
