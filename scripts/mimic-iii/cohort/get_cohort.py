@@ -39,17 +39,26 @@ def train_test_split(seed, size, cohort_x, cohort_y):
     cohort_train = cohort.groupby("subject_id").filter(lambda x: len(x) < 2)
     cohort_test = cohort.groupby("subject_id").filter(lambda x: 1 < len(x) < 4)
 
+    # +4 admissions
+    cohort_rest = cohort.groupby("subject_id").filter(lambda x: len(x) > 3)
+
     # id_train = cohort_x.index.intersection(cohort_train.index)
     # id_test = cohort_x.index.intersection(cohort_test.index)
     # print(id_train, id_test)
 
     # Duration + Event -> test
     y_test = cohort_y.drop(cohort_train.index)
-    y_train_val = cohort_y.drop(cohort_test.index)
+    y_test = y_test.drop(cohort_rest.index)
 
-    # Features
+    y_train_val = cohort_y.drop(cohort_test.index)
+    y_train_val = y_train_val.drop(cohort_rest.index)
+
+    # Features - 2 admissions and 3 admissions
     x_test = cohort_x.drop(cohort_train.index)
+    x_test = x_test.drop(cohort_rest.index)
+
     x_train_val = cohort_x.drop(cohort_test.index)
+    x_train_val = x_train_val.drop(cohort_rest.index)
 
     cohort_val = cohort_train.sample(frac=size, random_state=seed)
     cohort_train = cohort_train.drop(cohort_val.index)
@@ -74,8 +83,17 @@ def train_test_split_nn(seed, size, sa_cohort):
     cohort_train = cohort.groupby("subject_id").filter(lambda x: len(x) < 2)
     cohort_test = cohort.groupby("subject_id").filter(lambda x: 1 < len(x) < 4)
 
+    # +4 admissions
+    cohort_rest = cohort.groupby("subject_id").filter(lambda x: len(x) > 3)
+
+    # 2 admissions and 3 admissions
     test_dataset = sa_cohort.drop(cohort_train.index)
+    test_dataset = test_dataset.drop(cohort_rest.index)
+
+    # Removed 2/3 admssions and +4 admissions
     train_dataset = sa_cohort.drop(cohort_test.index)
+    train_dataset = train_dataset.drop(cohort_rest.index)
+
     valid_dataset = train_dataset.sample(frac=size, random_state=seed)
     train_dataset = train_dataset.drop(valid_dataset.index)
 

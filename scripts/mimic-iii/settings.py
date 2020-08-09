@@ -37,3 +37,5 @@ epochs = 512
 
 # hyperopt
 evals = 25
+
+PATH="/Users/bruna/Desktop/Bruna/UFMG/Dissertation/repos/fairness-ml-health/scripts/mimic-iii/files/cox-time/net/"

@@ -129,7 +129,7 @@ def main():
     diabetes_patients_df = diabetes_patients_df.drop(['row_id', 'short_title'], axis=1)
 
     # 4. Heart
-    searchfor = ['heart', 'myocardial','stroke', 'artery', 'arterial']
+    searchfor = ['heart', 'myocardial', 'stroke', 'artery', 'arterial']
     heart_patients_df = eth_mortality_df[eth_mortality_df['long_title'].str.lower().str.contains('|'.join(searchfor))].copy()
     heart_patients_df = heart_patients_df.loc[heart_patients_df['dead'] > 1]
 
@@ -175,7 +175,7 @@ def main():
     cohort = cohort_df.copy()
     cohort.dropna(inplace=True)
 
-    cohort = pd.concat([cohort,pd.DataFrame(columns=["icd_alzheimer", "icd_cancer", "icd_diabetes", "icd_heart", "icd_transplant"])])
+    cohort = pd.concat([cohort, pd.DataFrame(columns=["icd_alzheimer", "icd_cancer", "icd_diabetes", "icd_heart", "icd_transplant"])])
     cohort.loc[(cohort['hadm_id'].isin(hadm_ids_list_alzheimer)), 'icd_alzheimer'] = '1'
     cohort.loc[(cohort['hadm_id'].isin(hadm_ids_list_cancer)), 'icd_cancer'] = '1'
     cohort.loc[(cohort['hadm_id'].isin(hadm_ids_list_diabetes)), 'icd_diabetes'] = '1'

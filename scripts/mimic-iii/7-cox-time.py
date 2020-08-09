@@ -192,13 +192,16 @@ def main(seed, index):
     plt.ylabel("Loss")
     plt.xlabel("Epochs")
     plt.grid(True)
-    log.plot().get_figure().savefig("img/cox-time/cox-time-train-val-loss-" + fig_time + ".png", format="png", bbox_inches="tight")
+    log.plot().get_figure().savefig("img/cox-time/cox-time-train-val-loss-" + fig_time + ".png",
+                                    format="png",
+                                    bbox_inches="tight")
 
     # Survival estimates as a dataframe
     estimates = settings.estimates
     plt.ylabel('S(t | x)')
     plt.xlabel('Time')
-    surv.iloc[:, :estimates].plot().get_figure().savefig("img/cox-time/cox-time-survival-estimates-" + fig_time + ".png", format="png",
+    surv.iloc[:, :estimates].plot().get_figure().savefig("img/cox-time/cox-time-survival-estimates-" + fig_time + ".png",
+                                                         format="png",
                                                          bbox_inches="tight")
 
     # Evaluate
