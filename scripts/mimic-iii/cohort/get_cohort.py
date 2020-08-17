@@ -90,7 +90,7 @@ def train_test_split_nn(seed, size, sa_cohort):
     test_dataset = sa_cohort.drop(cohort_train.index)
     test_dataset = test_dataset.drop(cohort_rest.index)
 
-    # Removed 2/3 admssions and +4 admissions
+    # Remove 2, 3 and +4 admissions
     train_dataset = sa_cohort.drop(cohort_test.index)
     train_dataset = train_dataset.drop(cohort_rest.index)
 
