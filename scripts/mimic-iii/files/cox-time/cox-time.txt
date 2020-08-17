@@ -1,0 +1,650 @@
+########## Init: 12/08/2020, 20:44:53
+
+Best Parameters: {'batch': 512, 'dropout': 0.1, 'lr': 0.01, 'num_nodes': [128, 128], 'shrink': 0, 'weight_decay': 0.4, 'epoch': 512}
+Validation
+C-Index: 0.6905720911025698
+Brier Score: 0.4956478353436224
+Binomial Log-Likelihood: 1.431529780590469
+Test
+C-Index: 0.6709615731165125
+Brier Score: 0.37347108852249494
+Binomial Log-Likelihood: 1.064968636117636
+
+########## Final: 12/08/2020, 20:46:00
+########## Init: 12/08/2020, 20:46:07
+
+Best Parameters: {'batch': 256, 'dropout': 0.7, 'lr': 0.01, 'num_nodes': [256, 256], 'shrink': 0.01, 'weight_decay': 0.2, 'epoch': 512}
+Validation
+C-Index: 0.7187970638486363
+Brier Score: 0.5009160276564673
+Binomial Log-Likelihood: 1.51268799269465
+Test
+C-Index: 0.700579886335823
+Brier Score: 0.3961927974651164
+Binomial Log-Likelihood: 1.1794272421240257
+
+########## Final: 12/08/2020, 20:48:22
+########## Init: 12/08/2020, 20:48:30
+
+Best Parameters: {'batch': 1024, 'dropout': 0.1, 'lr': 0.001, 'num_nodes': [256, 256], 'shrink': 0.1, 'weight_decay': 0.1, 'epoch': 512}
+Validation
+C-Index: 0.6918531901581991
+Brier Score: 0.5245144979400909
+Binomial Log-Likelihood: 1.5959156859564705
+Test
+C-Index: 0.7214770425796873
+Brier Score: 0.37686713121844273
+Binomial Log-Likelihood: 1.0792356489112076
+
+########## Final: 12/08/2020, 20:51:19
+########## Init: 12/08/2020, 20:51:26
+
+Best Parameters: {'batch': 64, 'dropout': 0.5, 'lr': 0.001, 'num_nodes': [256, 256], 'shrink': 0.1, 'weight_decay': 0.2, 'epoch': 512}
+Validation
+C-Index: 0.7223715611090256
+Brier Score: 0.4930649430678234
+Binomial Log-Likelihood: 1.4762786974998108
+Test
+C-Index: 0.7035909380656649
+Brier Score: 0.3960805217573079
+Binomial Log-Likelihood: 1.1860687526709432
+
+########## Final: 12/08/2020, 20:53:24
+########## Init: 12/08/2020, 20:53:30
+
+Best Parameters: {'batch': 1024, 'dropout': 0.3, 'lr': 0.01, 'num_nodes': [64, 64, 64, 64], 'shrink': 0.01, 'weight_decay': 0.1, 'epoch': 512}
+Validation
+C-Index: 0.7265074066346756
+Brier Score: 0.5092065349319562
+Binomial Log-Likelihood: 1.6319082832576555
+Test
+C-Index: 0.6741461066119414
+Brier Score: 0.40425788537533686
+Binomial Log-Likelihood: 1.2084128290834113
+
+########## Final: 12/08/2020, 20:54:28
+########## Init: 12/08/2020, 20:54:35
+
+Best Parameters: {'batch': 256, 'dropout': 0.3, 'lr': 0.01, 'num_nodes': [512, 512, 512, 512], 'shrink': 0.01, 'weight_decay': 0.05, 'epoch': 512}
+Validation
+C-Index: 0.7141436013305718
+Brier Score: 0.5245463057462041
+Binomial Log-Likelihood: 1.8292041448440346
+Test
+C-Index: 0.6924349846825014
+Brier Score: 0.4188732029322998
+Binomial Log-Likelihood: 1.437257905324639
+
+########## Final: 12/08/2020, 21:03:22
+########## Init: 12/08/2020, 21:03:28
+
+Best Parameters: {'batch': 256, 'dropout': 0.5, 'lr': 0.001, 'num_nodes': [64, 64, 64, 64], 'shrink': 0.01, 'weight_decay': 0.2, 'epoch': 512}
+Validation
+C-Index: 0.7224098452764302
+Brier Score: 0.5139781425414011
+Binomial Log-Likelihood: 1.5546064585452628
+Test
+C-Index: 0.7152115267202264
+Brier Score: 0.39823781451127477
+Binomial Log-Likelihood: 1.1798378362967783
+
+########## Final: 12/08/2020, 21:04:33
+########## Init: 12/08/2020, 21:04:39
+
+Best Parameters: {'batch': 1024, 'dropout': 0.6, 'lr': 0.01, 'num_nodes': [128, 128], 'shrink': 0.1, 'weight_decay': 0.4, 'epoch': 512}
+Validation
+C-Index: 0.6984402473285019
+Brier Score: 0.49585893754187016
+Binomial Log-Likelihood: 1.4344686607667487
+Test
+C-Index: 0.6765573686716138
+Brier Score: 0.3806535843494023
+Binomial Log-Likelihood: 1.0861798937084532
+
+########## Final: 12/08/2020, 21:05:28
+########## Init: 12/08/2020, 21:05:34
+
+Best Parameters: {'batch': 64, 'dropout': 0.6, 'lr': 0.001, 'num_nodes': [512, 512], 'shrink': 0.1, 'weight_decay': 0.4, 'epoch': 512}
+Validation
+C-Index: 0.7275159731456556
+Brier Score: 0.514744824666323
+Binomial Log-Likelihood: 1.6005939895859078
+Test
+C-Index: 0.722601312006283
+Brier Score: 0.3932498133609707
+Binomial Log-Likelihood: 1.1479141808433104
+
+########## Final: 12/08/2020, 21:09:36
+########## Init: 12/08/2020, 21:09:42
+
+Best Parameters: {'batch': 512, 'dropout': 0.6, 'lr': 0.01, 'num_nodes': [128, 128], 'shrink': 0, 'weight_decay': 0.4, 'epoch': 512}
+Validation
+C-Index: 0.728718811644073
+Brier Score: 0.5069675961112414
+Binomial Log-Likelihood: 1.7770849396047614
+Test
+C-Index: 0.7007641266605164
+Brier Score: 0.4131995075837356
+Binomial Log-Likelihood: 1.3020984427831812
+
+########## Final: 12/08/2020, 21:10:39
+########## Init: 12/08/2020, 21:10:45
+
+Best Parameters: {'batch': 1024, 'dropout': 0.5, 'lr': 0.01, 'num_nodes': [64, 64, 64, 64], 'shrink': 0, 'weight_decay': 0.1, 'epoch': 512}
+Validation
+C-Index: 0.7339897722580441
+Brier Score: 0.4708463379570844
+Binomial Log-Likelihood: 1.4339567188268936
+Test
+C-Index: 0.7203736178613598
+Brier Score: 0.38071213495680556
+Binomial Log-Likelihood: 1.1210323232522994
+
+########## Final: 12/08/2020, 21:11:39
+########## Init: 12/08/2020, 21:11:45
+
+Best Parameters: {'batch': 1024, 'dropout': 0.6, 'lr': 0.001, 'num_nodes': [512, 512], 'shrink': 0, 'weight_decay': 0, 'epoch': 512}
+Validation
+C-Index: 0.6752377972882123
+Brier Score: 0.4842795436081524
+Binomial Log-Likelihood: 1.434438435420754
+Test
+C-Index: 0.7035210074314747
+Brier Score: 0.3764408876204828
+Binomial Log-Likelihood: 1.110390393637952
+
+########## Final: 12/08/2020, 21:15:22
+########## Init: 12/08/2020, 21:15:28
+
+Best Parameters: {'batch': 512, 'dropout': 0.2, 'lr': 0.01, 'num_nodes': [128, 128], 'shrink': 0.01, 'weight_decay': 0, 'epoch': 512}
+Validation
+C-Index: 0.7311903654443285
+Brier Score: 0.4882855969349838
+Binomial Log-Likelihood: 1.5571488884489468
+Test
+C-Index: 0.7074451918654534
+Brier Score: 0.4078351215548795
+Binomial Log-Likelihood: 1.2638247845298383
+
+########## Final: 12/08/2020, 21:16:19
+########## Init: 12/08/2020, 21:16:25
+
+Best Parameters: {'batch': 1024, 'dropout': 0.7, 'lr': 0.01, 'num_nodes': [256, 256], 'shrink': 0.1, 'weight_decay': 0.4, 'epoch': 512}
+Validation
+C-Index: 0.7268512768282989
+Brier Score: 0.5011549583475499
+Binomial Log-Likelihood: 1.5637754401620017
+Test
+C-Index: 0.7332993542174896
+Brier Score: 0.38013774732732625
+Binomial Log-Likelihood: 1.089365969375556
+
+########## Final: 12/08/2020, 21:18:12
+########## Init: 12/08/2020, 21:18:18
+
+Best Parameters: {'batch': 256, 'dropout': 0.1, 'lr': 0.01, 'num_nodes': [256, 256], 'shrink': 0.001, 'weight_decay': 0.01, 'epoch': 512}
+Validation
+C-Index: 0.7313300371785604
+Brier Score: 0.4827354273528785
+Binomial Log-Likelihood: 1.6684773158906532
+Test
+C-Index: 0.7138660344220099
+Brier Score: 0.3777137499640186
+Binomial Log-Likelihood: 1.175391779046851
+
+########## Final: 12/08/2020, 21:19:51
+########## Init: 12/08/2020, 21:19:57
+
+Best Parameters: {'batch': 256, 'dropout': 0.5, 'lr': 0.01, 'num_nodes': [128, 128], 'shrink': 0.001, 'weight_decay': 0.05, 'epoch': 512}
+Validation
+C-Index: 0.7197625518180564
+Brier Score: 0.4892878741589119
+Binomial Log-Likelihood: 1.6594495964517668
+Test
+C-Index: 0.7078143449247842
+Brier Score: 0.3985787546421683
+Binomial Log-Likelihood: 1.2214430344532756
+
+########## Final: 12/08/2020, 21:20:51
+########## Init: 12/08/2020, 21:20:57
+
+Best Parameters: {'batch': 64, 'dropout': 0.2, 'lr': 0.01, 'num_nodes': [512, 512, 512, 512], 'shrink': 0.001, 'weight_decay': 0.4, 'epoch': 512}
+Validation
+C-Index: 0.7382256009910363
+Brier Score: 0.4868055805048175
+Binomial Log-Likelihood: 1.7297318414729026
+Test
+C-Index: 0.6968345629469845
+Brier Score: 0.4319094916547978
+Binomial Log-Likelihood: 1.4547550558097269
+
+########## Final: 12/08/2020, 21:29:22
+########## Init: 12/08/2020, 21:29:28
+
+Best Parameters: {'batch': 512, 'dropout': 0.1, 'lr': 0.01, 'num_nodes': [64, 64, 64, 64], 'shrink': 0, 'weight_decay': 0.4, 'epoch': 512}
+Validation
+C-Index: 0.6411695840883758
+Brier Score: 0.5029079909947337
+Binomial Log-Likelihood: 1.5673544856120976
+Test
+C-Index: 0.5728932724040269
+Brier Score: 0.3864560311692784
+Binomial Log-Likelihood: 1.102954581780085
+
+########## Final: 12/08/2020, 21:30:16
+########## Init: 12/08/2020, 21:30:22
+
+Best Parameters: {'batch': 1024, 'dropout': 0.7, 'lr': 0.01, 'num_nodes': [512, 512], 'shrink': 0, 'weight_decay': 0, 'epoch': 512}
+Validation
+C-Index: 0.6594368599627952
+Brier Score: 0.5251934598121092
+Binomial Log-Likelihood: 1.6288760101928244
+Test
+C-Index: 0.6610899227266492
+Brier Score: 0.42683800909398417
+Binomial Log-Likelihood: 1.3337866008751553
+
+########## Final: 12/08/2020, 21:34:02
+########## Init: 12/08/2020, 21:34:08
+
+Best Parameters: {'batch': 64, 'dropout': 0.2, 'lr': 0.01, 'num_nodes': [512, 512, 512, 512], 'shrink': 0.001, 'weight_decay': 0.01, 'epoch': 512}
+Validation
+C-Index: 0.7131048299018292
+Brier Score: 0.4942875117784644
+Binomial Log-Likelihood: 1.7724343253557477
+Test
+C-Index: 0.6806489831816824
+Brier Score: 0.4378136602236911
+Binomial Log-Likelihood: 1.5325404772814262
+
+########## Final: 12/08/2020, 21:42:41
+########## Init: 12/08/2020, 21:42:47
+
+Best Parameters: {'batch': 256, 'dropout': 0.6, 'lr': 0.01, 'num_nodes': [64, 64], 'shrink': 0.01, 'weight_decay': 0.4, 'epoch': 512}
+Validation
+C-Index: 0.7177191152310931
+Brier Score: 0.48484433681476596
+Binomial Log-Likelihood: 1.4569901107018879
+Test
+C-Index: 0.7287565526349056
+Brier Score: 0.373783446118054
+Binomial Log-Likelihood: 1.0968093979316835
+
+########## Final: 12/08/2020, 21:43:29
+########## Init: 12/08/2020, 21:43:35
+
+Best Parameters: {'batch': 512, 'dropout': 0.7, 'lr': 0.01, 'num_nodes': [128, 128], 'shrink': 0, 'weight_decay': 0.05, 'epoch': 512}
+Validation
+C-Index: 0.7011959973786359
+Brier Score: 0.5017440333973023
+Binomial Log-Likelihood: 1.6183441706211807
+Test
+C-Index: 0.6907304254741162
+Brier Score: 0.3881859764444905
+Binomial Log-Likelihood: 1.1527503108222907
+
+########## Final: 12/08/2020, 21:44:29
+########## Init: 12/08/2020, 21:44:35
+
+Best Parameters: {'batch': 1024, 'dropout': 0.6, 'lr': 0.01, 'num_nodes': [128, 128, 128, 128], 'shrink': 0.001, 'weight_decay': 0.02, 'epoch': 512}
+Validation
+C-Index: 0.6956217444892449
+Brier Score: 0.5019346957201695
+Binomial Log-Likelihood: 1.5384778814878672
+Test
+C-Index: 0.6813812376108468
+Brier Score: 0.38536162576999194
+Binomial Log-Likelihood: 1.1619250923232047
+
+########## Final: 12/08/2020, 21:46:01
+########## Init: 12/08/2020, 21:46:07
+
+Best Parameters: {'batch': 512, 'dropout': 0.1, 'lr': 0.01, 'num_nodes': [256, 256, 256, 256], 'shrink': 0, 'weight_decay': 0, 'epoch': 512}
+Validation
+C-Index: 0.7092792007821905
+Brier Score: 0.4770645421016443
+Binomial Log-Likelihood: 1.581332222527569
+Test
+C-Index: 0.6965387025715646
+Brier Score: 0.37188645215259564
+Binomial Log-Likelihood: 1.1136823038304877
+
+########## Final: 12/08/2020, 21:49:00
+########## Init: 12/08/2020, 21:49:06
+
+Best Parameters: {'batch': 1024, 'dropout': 0.3, 'lr': 0.01, 'num_nodes': [512, 512, 512, 512], 'shrink': 0.001, 'weight_decay': 0, 'epoch': 512}
+Validation
+C-Index: 0.7114363025628265
+Brier Score: 0.5134652984023181
+Binomial Log-Likelihood: 1.6337052696756424
+Test
+C-Index: 0.7068655744936081
+Brier Score: 0.41727002954105574
+Binomial Log-Likelihood: 1.3667276217264013
+
+########## Final: 12/08/2020, 21:57:42
+########## Init: 12/08/2020, 21:57:48
+
+Best Parameters: {'batch': 256, 'dropout': 0.4, 'lr': 0.001, 'num_nodes': [64, 64], 'shrink': 0.1, 'weight_decay': 0.02, 'epoch': 512}
+Validation
+C-Index: 0.728516151071811
+Brier Score: 0.46864904402922175
+Binomial Log-Likelihood: 1.365735617481412
+Test
+C-Index: 0.7142486356802233
+Brier Score: 0.37705564234539674
+Binomial Log-Likelihood: 1.077073297838156
+
+########## Final: 12/08/2020, 21:58:32
+########## Init: 12/08/2020, 21:58:38
+
+Best Parameters: {'batch': 64, 'dropout': 0.6, 'lr': 0.001, 'num_nodes': [64, 64], 'shrink': 0.1, 'weight_decay': 0.2, 'epoch': 512}
+Validation
+C-Index: 0.7333070065878089
+Brier Score: 0.485275782903957
+Binomial Log-Likelihood: 1.4547944144961271
+Test
+C-Index: 0.7347678975354831
+Brier Score: 0.37702409115467705
+Binomial Log-Likelihood: 1.0782005386096232
+
+########## Final: 12/08/2020, 21:59:35
+########## Init: 12/08/2020, 21:59:41
+
+Best Parameters: {'batch': 512, 'dropout': 0.5, 'lr': 0.01, 'num_nodes': [64, 64, 64, 64], 'shrink': 0.001, 'weight_decay': 0.01, 'epoch': 512}
+Validation
+C-Index: 0.7080325354273089
+Brier Score: 0.45363080563692026
+Binomial Log-Likelihood: 1.3919909098791718
+Test
+C-Index: 0.708815563331603
+Brier Score: 0.37771222013232747
+Binomial Log-Likelihood: 1.1640858227668538
+
+########## Final: 12/08/2020, 22:00:39
+########## Init: 12/08/2020, 22:00:45
+
+Best Parameters: {'batch': 64, 'dropout': 0.2, 'lr': 0.001, 'num_nodes': [64, 64], 'shrink': 0, 'weight_decay': 0.4, 'epoch': 512}
+Validation
+C-Index: 0.7086607368817397
+Brier Score: 0.523190337280868
+Binomial Log-Likelihood: 1.5860060437403853
+Test
+C-Index: 0.704337313103656
+Brier Score: 0.3807296972362436
+Binomial Log-Likelihood: 1.1188768965350118
+
+########## Final: 12/08/2020, 22:01:33
+########## Init: 12/08/2020, 22:01:39
+
+Best Parameters: {'batch': 512, 'dropout': 0.5, 'lr': 0.0001, 'num_nodes': [128, 128], 'shrink': 0.1, 'weight_decay': 0.2, 'epoch': 512}
+Validation
+C-Index: 0.6461382777306262
+Brier Score: 0.5199618370868955
+Binomial Log-Likelihood: 1.5419984327914964
+Test
+C-Index: 0.6122010129183398
+Brier Score: 0.38330439721304194
+Binomial Log-Likelihood: 1.0950255217836775
+
+########## Final: 12/08/2020, 22:02:41
+########## Init: 12/08/2020, 22:02:47
+
+Best Parameters: {'batch': 256, 'dropout': 0.6, 'lr': 0.01, 'num_nodes': [64, 64, 64, 64], 'shrink': 0.01, 'weight_decay': 0.1, 'epoch': 512}
+Validation
+C-Index: 0.7216555888990849
+Brier Score: 0.5085918772970435
+Binomial Log-Likelihood: 1.5434023312237208
+Test
+C-Index: 0.7098154369185335
+Brier Score: 0.3839808058837804
+Binomial Log-Likelihood: 1.1371831302370674
+
+########## Final: 12/08/2020, 22:03:41
+########## Init: 12/08/2020, 22:03:47
+
+Best Parameters: {'batch': 128, 'dropout': 0.5, 'lr': 0.01, 'num_nodes': [128, 128, 128, 128], 'shrink': 0, 'weight_decay': 0.2, 'epoch': 512}
+Validation
+C-Index: 0.7199221494774646
+Brier Score: 0.5358860114561963
+Binomial Log-Likelihood: 1.81818212645626
+Test
+C-Index: 0.7141276018902788
+Brier Score: 0.3970394323487781
+Binomial Log-Likelihood: 1.292290152100405
+
+########## Final: 12/08/2020, 22:05:12
+########## Init: 12/08/2020, 22:05:17
+
+Best Parameters: {'batch': 64, 'dropout': 0.5, 'lr': 0.01, 'num_nodes': [256, 256], 'shrink': 0.01, 'weight_decay': 0.4, 'epoch': 512}
+Validation
+C-Index: 0.7048580545774648
+Brier Score: 0.48400788547569235
+Binomial Log-Likelihood: 1.5996601351877748
+Test
+C-Index: 0.7315026748467578
+Brier Score: 0.36401408425049453
+Binomial Log-Likelihood: 1.0738206793927845
+
+########## Final: 12/08/2020, 22:07:02
+########## Init: 12/08/2020, 22:07:08
+
+Best Parameters: {'batch': 1024, 'dropout': 0.3, 'lr': 0.001, 'num_nodes': [256, 256], 'shrink': 0.1, 'weight_decay': 0, 'epoch': 512}
+Validation
+C-Index: 0.7132515849489687
+Brier Score: 0.4940391262073781
+Binomial Log-Likelihood: 1.4852962501219347
+Test
+C-Index: 0.6783789272102787
+Brier Score: 0.39633822278148734
+Binomial Log-Likelihood: 1.1714347728212697
+
+########## Final: 12/08/2020, 22:08:51
+########## Init: 12/08/2020, 22:08:57
+
+Best Parameters: {'batch': 512, 'dropout': 0.1, 'lr': 0.01, 'num_nodes': [512, 512, 512, 512], 'shrink': 0.001, 'weight_decay': 0.1, 'epoch': 512}
+Validation
+C-Index: 0.7300316595999775
+Brier Score: 0.5056074152163023
+Binomial Log-Likelihood: 1.6607572654768135
+Test
+C-Index: 0.7136085014134057
+Brier Score: 0.3811672222974095
+Binomial Log-Likelihood: 1.1437645790652953
+
+########## Final: 12/08/2020, 22:17:25
+########## Init: 12/08/2020, 22:17:31
+
+Best Parameters: {'batch': 512, 'dropout': 0.1, 'lr': 0.001, 'num_nodes': [256, 256, 256, 256], 'shrink': 0.1, 'weight_decay': 0.4, 'epoch': 512}
+Validation
+C-Index: 0.6123900208752225
+Brier Score: 0.5138726257773799
+Binomial Log-Likelihood: 1.5252600678217256
+Test
+C-Index: 0.7398654373219795
+Brier Score: 0.38234525859802443
+Binomial Log-Likelihood: 1.0889274510917395
+
+########## Final: 12/08/2020, 22:20:34
+########## Init: 12/08/2020, 22:20:40
+
+Best Parameters: {'batch': 64, 'dropout': 0.6, 'lr': 0.01, 'num_nodes': [512, 512], 'shrink': 0.01, 'weight_decay': 0.1, 'epoch': 512}
+Validation
+C-Index: 0.7274603299190247
+Brier Score: 0.4928999866315157
+Binomial Log-Likelihood: 1.6047612518721508
+Test
+C-Index: 0.6848454936430364
+Brier Score: 0.43202590467471474
+Binomial Log-Likelihood: 1.476981002056319
+
+########## Final: 12/08/2020, 22:24:31
+########## Init: 12/08/2020, 22:24:37
+
+Best Parameters: {'batch': 256, 'dropout': 0.7, 'lr': 0.01, 'num_nodes': [256, 256], 'shrink': 0.001, 'weight_decay': 0.2, 'epoch': 512}
+Validation
+C-Index: 0.7238839486212162
+Brier Score: 0.5058596274038423
+Binomial Log-Likelihood: 1.6950254567465615
+Test
+C-Index: 0.7180961653805705
+Brier Score: 0.398877349908805
+Binomial Log-Likelihood: 1.2290643253511875
+
+########## Final: 12/08/2020, 22:26:16
+########## Init: 12/08/2020, 22:26:22
+
+Best Parameters: {'batch': 64, 'dropout': 0.6, 'lr': 0.01, 'num_nodes': [128, 128], 'shrink': 0.1, 'weight_decay': 0.02, 'epoch': 512}
+Validation
+C-Index: 0.7363913595933926
+Brier Score: 0.5151789487067138
+Binomial Log-Likelihood: 1.6054804372443798
+Test
+C-Index: 0.7182333370091744
+Brier Score: 0.3778452535565361
+Binomial Log-Likelihood: 1.0928871086937766
+
+########## Final: 12/08/2020, 22:27:17
+########## Init: 12/08/2020, 22:27:23
+
+Best Parameters: {'batch': 256, 'dropout': 0.4, 'lr': 0.001, 'num_nodes': [64, 64, 64, 64], 'shrink': 0.001, 'weight_decay': 0.01, 'epoch': 512}
+Validation
+C-Index: 0.7245867484774944
+Brier Score: 0.504736642752301
+Binomial Log-Likelihood: 1.6301338951165298
+Test
+C-Index: 0.6655311904076687
+Brier Score: 0.3982976411604648
+Binomial Log-Likelihood: 1.2024296713140112
+
+########## Final: 12/08/2020, 22:28:35
+########## Init: 12/08/2020, 22:28:41
+
+Best Parameters: {'batch': 1024, 'dropout': 0, 'lr': 0.001, 'num_nodes': [256, 256, 256, 256], 'shrink': 0.1, 'weight_decay': 0.4, 'epoch': 512}
+Validation
+C-Index: 0.5353609581012881
+Brier Score: 0.5374609687166343
+Binomial Log-Likelihood: 1.6020695419649404
+Test
+C-Index: 0.5082746767725399
+Brier Score: 0.38615819380658817
+Binomial Log-Likelihood: 1.107230158340721
+
+########## Final: 12/08/2020, 22:31:29
+########## Init: 12/08/2020, 22:31:35
+
+Best Parameters: {'batch': 1024, 'dropout': 0.6, 'lr': 0.001, 'num_nodes': [512, 512, 512, 512], 'shrink': 0.001, 'weight_decay': 0.01, 'epoch': 512}
+Validation
+C-Index: 0.6880350068295457
+Brier Score: 0.5110220263435652
+Binomial Log-Likelihood: 1.5517749379297647
+Test
+C-Index: 0.7013040718456577
+Brier Score: 0.40138203718875765
+Binomial Log-Likelihood: 1.2229322921070869
+
+########## Final: 12/08/2020, 22:41:06
+########## Init: 12/08/2020, 22:41:12
+
+Best Parameters: {'batch': 1024, 'dropout': 0.3, 'lr': 0.001, 'num_nodes': [512, 512, 512, 512], 'shrink': 0.1, 'weight_decay': 0.05, 'epoch': 512}
+Validation
+C-Index: 0.6718290269084685
+Brier Score: 0.48080317447657595
+Binomial Log-Likelihood: 1.4269262027214509
+Test
+C-Index: 0.6951737103849681
+Brier Score: 0.3819510444892416
+Binomial Log-Likelihood: 1.0894167696236865
+
+########## Final: 12/08/2020, 22:49:33
+########## Init: 12/08/2020, 22:49:39
+
+Best Parameters: {'batch': 64, 'dropout': 0.4, 'lr': 0.01, 'num_nodes': [512, 512], 'shrink': 0.01, 'weight_decay': 0.4, 'epoch': 512}
+Validation
+C-Index: 0.7466879325830824
+Brier Score: 0.5128604891533414
+Binomial Log-Likelihood: 1.681927370099942
+Test
+C-Index: 0.7218717472168953
+Brier Score: 0.4008774273443624
+Binomial Log-Likelihood: 1.3116813522286876
+
+########## Final: 12/08/2020, 22:53:39
+########## Init: 12/08/2020, 22:53:45
+
+Best Parameters: {'batch': 256, 'dropout': 0.6, 'lr': 0.01, 'num_nodes': [64, 64, 64, 64], 'shrink': 0.01, 'weight_decay': 0.1, 'epoch': 512}
+Validation
+C-Index: 0.7422924693635092
+Brier Score: 0.4956062064459441
+Binomial Log-Likelihood: 1.4776490368314195
+Test
+C-Index: 0.6916960061538958
+Brier Score: 0.3744853791506216
+Binomial Log-Likelihood: 1.0941235145617614
+
+########## Final: 12/08/2020, 22:54:38
+########## Init: 12/08/2020, 22:54:44
+
+Best Parameters: {'batch': 128, 'dropout': 0.2, 'lr': 0.001, 'num_nodes': [64, 64, 64, 64], 'shrink': 0.001, 'weight_decay': 0.02, 'epoch': 512}
+Validation
+C-Index: 0.7284203795326246
+Brier Score: 0.5204748816607376
+Binomial Log-Likelihood: 1.6481413526865702
+Test
+C-Index: 0.6394349604757434
+Brier Score: 0.4355266857659217
+Binomial Log-Likelihood: 1.3789308262356024
+
+########## Final: 12/08/2020, 22:55:42
+########## Init: 12/08/2020, 22:55:48
+
+Best Parameters: {'batch': 128, 'dropout': 0.6, 'lr': 0.001, 'num_nodes': [64, 64], 'shrink': 0, 'weight_decay': 0.2, 'epoch': 512}
+Validation
+C-Index: 0.686797541865879
+Brier Score: 0.5245418687409736
+Binomial Log-Likelihood: 1.5641881231207082
+Test
+C-Index: 0.7121937508909432
+Brier Score: 0.3928759489055919
+Binomial Log-Likelihood: 1.1553620573822403
+
+########## Final: 12/08/2020, 22:56:37
+########## Init: 12/08/2020, 22:56:43
+
+Best Parameters: {'batch': 64, 'dropout': 0.2, 'lr': 0.01, 'num_nodes': [512, 512, 512, 512], 'shrink': 0.001, 'weight_decay': 0.01, 'epoch': 512}
+Validation
+C-Index: 0.7116392687048702
+Brier Score: 0.5018651679595381
+Binomial Log-Likelihood: 1.7820649149568317
+Test
+C-Index: 0.6824806278695095
+Brier Score: 0.4234679233673695
+Binomial Log-Likelihood: 1.5229863476522052
+
+########## Final: 12/08/2020, 23:05:20
+########## Init: 12/08/2020, 23:05:26
+
+Best Parameters: {'batch': 1024, 'dropout': 0.6, 'lr': 0.01, 'num_nodes': [64, 64], 'shrink': 0.001, 'weight_decay': 0, 'epoch': 512}
+Validation
+C-Index: 0.7108621667612025
+Brier Score: 0.49010288010567166
+Binomial Log-Likelihood: 1.4302813904367453
+Test
+C-Index: 0.7028499423072267
+Brier Score: 0.37678202660113935
+Binomial Log-Likelihood: 1.08009827095352
+
+########## Final: 12/08/2020, 23:06:03
+########## Init: 12/08/2020, 23:06:09
+
+Best Parameters: {'batch': 64, 'dropout': 0, 'lr': 0.001, 'num_nodes': [128, 128, 128, 128], 'shrink': 0.1, 'weight_decay': 0.4, 'epoch': 512}
+Validation
+C-Index: 0.7022092780238524
+Brier Score: 0.47665696575172484
+Binomial Log-Likelihood: 1.4084218652889524
+Test
+C-Index: 0.6621758647864292
+Brier Score: 0.40901091872417034
+Binomial Log-Likelihood: 1.2166174078937253
+
+########## Final: 12/08/2020, 23:07:42
