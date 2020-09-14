@@ -12,7 +12,6 @@ import torchtuples as tt
 from pycox import utils
 from pycox.evaluation import EvalSurv
 from pycox.models import CoxTime
-from pycox.models.cox_time import MixedInputMLPCoxTime
 from pycox.preprocessing.feature_transforms import OrderedCategoricalLong
 from sklearn_pandas import DataFrameMapper
 
@@ -148,7 +147,7 @@ def main(seed, file, index):
     best = best_parameters.cox_time[index]
     model = cox_time_reload_model(file, weight_decay=best['weight_decay'], shrink=best['shrink'], device=device)
 
-    # Predict survival 
+    # Predict survival
     surv_women = model.predict_surv_df(test_women[0])
     surv_men = model.predict_surv_df(test_men[0])
     surv_black = model.predict_surv_df(test_black[0])
