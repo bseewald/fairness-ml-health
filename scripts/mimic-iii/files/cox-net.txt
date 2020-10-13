@@ -4,65 +4,6 @@ Tuning hyper-parameters
 
 Alphas: [100, 10, 1, 0.1, 0.01, 0.001, 0.0001, 1e-05, 1e-06, 1e-07]
 
-
-L1 Ratio: 1
-gcv_score: 0.7447648635942007 old_score: 0
-Best Parameters: {'alphas': [1e-05]}
-C-Index Validation: 0.7447648635942007
-C-Index Test: 0.7020754516514716
-Coeficients:
-admission_type=EMERGENCY      0.796705
-admission_type=URGENT         0.367991
-age_st=(30, 45]              -0.471019
-age_st=(45, 60]              -0.707132
-age_st=(60, 75]              -0.665155
-age_st=(75, 90]              -0.603129
-ethnicity_grouped=black      -0.422031
-ethnicity_grouped=hispanic   -0.465580
-ethnicity_grouped=white      -0.423475
-first_hosp_stay               0.120341
-first_icu_stay                0.635741
-gender                       -0.059320
-icd_alzheimer                 0.249377
-icd_cancer                    0.084274
-icd_diabetes                  0.020439
-icd_heart                    -0.250069
-icd_transplant               -0.104858
-insurance=Public             -0.058793
-insurance=Self-Pay            0.952973
-oasis_score                   0.683755
-dtype: float64
-
-
-L1 Ratio: 0.9
-gcv_score: 0.7448029835194856 old_score: 0.7447648635942007
-Best Parameters: {'alphas': [1e-05]}
-C-Index Validation: 0.7448029835194856
-C-Index Test: 0.7020646924412514
-Coeficients:
-admission_type=EMERGENCY      0.796760
-admission_type=URGENT         0.368174
-age_st=(30, 45]              -0.471081
-age_st=(45, 60]              -0.707153
-age_st=(60, 75]              -0.665184
-age_st=(75, 90]              -0.603163
-ethnicity_grouped=black      -0.422184
-ethnicity_grouped=hispanic   -0.465778
-ethnicity_grouped=white      -0.423610
-first_hosp_stay               0.120373
-first_icu_stay                0.635750
-gender                       -0.059332
-icd_alzheimer                 0.249523
-icd_cancer                    0.084309
-icd_diabetes                  0.020483
-icd_heart                    -0.250073
-icd_transplant               -0.104869
-insurance=Public             -0.058815
-insurance=Self-Pay            0.952987
-oasis_score                   0.683755
-dtype: float64
-
-
 L1 Ratio: 0.8
 gcv_score: 0.7448029835194856 old_score: 0.7448029835194856
 
@@ -121,36 +62,6 @@ gcv_score: 0.744390017662232 old_score: 0.7449046366535789
 Tuning hyper-parameters
 
 Alphas: [100, 10, 1, 0.1, 0.01, 0.001, 0.0001, 1e-05, 1e-06, 1e-07]
-
-
-L1 Ratio: 1
-gcv_score: 0.7313472978104038 old_score: 0
-Best Parameters: {'alphas': [1e-06]}
-C-Index Validation: 0.7313472978104038
-C-Index Test: 0.7019557554377721
-Coeficients:
-admission_type=EMERGENCY      0.797854
-admission_type=URGENT         0.370751
-age_st=(30, 45]              -0.491076
-age_st=(45, 60]              -0.726681
-age_st=(60, 75]              -0.684721
-age_st=(75, 90]              -0.622800
-ethnicity_grouped=black      -0.424716
-ethnicity_grouped=hispanic   -0.469093
-ethnicity_grouped=white      -0.425459
-first_hosp_stay               0.120819
-first_icu_stay                0.636127
-gender                       -0.059488
-icd_alzheimer                 0.251265
-icd_cancer                    0.084719
-icd_diabetes                  0.021076
-icd_heart                    -0.250009
-icd_transplant               -0.104986
-insurance=Public             -0.058815
-insurance=Self-Pay            0.950235
-oasis_score                   0.683825
-dtype: float64
-
 
 L1 Ratio: 0.9
 gcv_score: 0.7313472978104038 old_score: 0.7313472978104038
@@ -214,129 +125,6 @@ gcv_score: 0.7313409694975319 old_score: 0.7313536261232755
 Tuning hyper-parameters
 
 Alphas: [100, 10, 1, 0.1, 0.01, 0.001, 0.0001, 1e-05, 1e-06, 1e-07]
-
-
-L1 Ratio: 1
-gcv_score: 0.6989497541977909 old_score: 0
-Best Parameters: {'alphas': [0.0001]}
-C-Index Validation: 0.6989497541977909
-C-Index Test: 0.7027008307455191
-Coeficients:
-admission_type=EMERGENCY      0.785271
-admission_type=URGENT         0.341577
-age_st=(30, 45]              -0.046486
-age_st=(45, 60]              -0.286325
-age_st=(60, 75]              -0.245466
-age_st=(75, 90]              -0.182489
-ethnicity_grouped=black      -0.392263
-ethnicity_grouped=hispanic   -0.426864
-ethnicity_grouped=white      -0.403447
-first_hosp_stay               0.114227
-first_icu_stay                0.630977
-gender                       -0.057120
-icd_alzheimer                 0.229740
-icd_cancer                    0.078636
-icd_diabetes                  0.012691
-icd_heart                    -0.251298
-icd_transplant               -0.103169
-insurance=Public             -0.058881
-insurance=Self-Pay            1.041057
-oasis_score                   0.682733
-dtype: float64
-
-
-L1 Ratio: 0.9
-gcv_score: 0.6989497541977909 old_score: 0.6989497541977909
-
-L1 Ratio: 0.8
-gcv_score: 0.6989625231437144 old_score: 0.6989497541977909
-Best Parameters: {'alphas': [0.0001]}
-C-Index Validation: 0.6989625231437144
-C-Index Test: 0.7026887266340214
-Coeficients:
-admission_type=EMERGENCY      0.786437
-admission_type=URGENT         0.345124
-age_st=(30, 45]              -0.095613
-age_st=(45, 60]              -0.334567
-age_st=(60, 75]              -0.293616
-age_st=(75, 90]              -0.230831
-ethnicity_grouped=black      -0.395841
-ethnicity_grouped=hispanic   -0.431576
-ethnicity_grouped=white      -0.406098
-first_hosp_stay               0.115161
-first_icu_stay                0.631369
-gender                       -0.057485
-icd_alzheimer                 0.232923
-icd_cancer                    0.079539
-icd_diabetes                  0.013838
-icd_heart                    -0.251230
-icd_transplant               -0.103507
-insurance=Public             -0.059222
-insurance=Self-Pay            1.027514
-oasis_score                   0.682809
-dtype: float64
-
-
-L1 Ratio: 0.7
-gcv_score: 0.6989433697248292 old_score: 0.6989625231437144
-
-L1 Ratio: 0.6
-gcv_score: 0.6989689076166763 old_score: 0.6989625231437144
-Best Parameters: {'alphas': [0.0001]}
-C-Index Validation: 0.6989689076166763
-C-Index Test: 0.702599963149705
-Coeficients:
-admission_type=EMERGENCY      0.787586
-admission_type=URGENT         0.348657
-age_st=(30, 45]              -0.137634
-age_st=(45, 60]              -0.375747
-age_st=(60, 75]              -0.334732
-age_st=(75, 90]              -0.272105
-ethnicity_grouped=black      -0.399365
-ethnicity_grouped=hispanic   -0.436193
-ethnicity_grouped=white      -0.408749
-first_hosp_stay               0.116060
-first_icu_stay                0.631738
-gender                       -0.057831
-icd_alzheimer                 0.236048
-icd_cancer                    0.080410
-icd_diabetes                  0.014956
-icd_heart                    -0.251181
-icd_transplant               -0.103827
-insurance=Public             -0.059569
-insurance=Self-Pay            1.015807
-oasis_score                   0.682881
-dtype: float64
-
-
-L1 Ratio: 0.5
-gcv_score: 0.698975292089638 old_score: 0.6989689076166763
-Best Parameters: {'alphas': [0.0001]}
-C-Index Validation: 0.698975292089638
-C-Index Test: 0.7025676855190445
-Coeficients:
-admission_type=EMERGENCY      0.788154
-admission_type=URGENT         0.350411
-age_st=(30, 45]              -0.157715
-age_st=(45, 60]              -0.395431
-age_st=(60, 75]              -0.354383
-age_st=(75, 90]              -0.291821
-ethnicity_grouped=black      -0.401112
-ethnicity_grouped=hispanic   -0.438476
-ethnicity_grouped=white      -0.410062
-first_hosp_stay               0.116506
-first_icu_stay                0.631920
-gender                       -0.058002
-icd_alzheimer                 0.237595
-icd_cancer                    0.080841
-icd_diabetes                  0.015512
-icd_heart                    -0.251160
-icd_transplant               -0.103985
-insurance=Public             -0.059742
-insurance=Self-Pay            1.010178
-oasis_score                   0.682918
-dtype: float64
-
 
 L1 Ratio: 0.3
 gcv_score: 0.6989880610355615 old_score: 0.698975292089638
@@ -453,65 +241,6 @@ Tuning hyper-parameters
 
 Alphas: [100, 10, 1, 0.1, 0.01, 0.001, 0.0001, 1e-05, 1e-06, 1e-07]
 
-
-L1 Ratio: 1
-gcv_score: 0.7224710505268283 old_score: 0
-Best Parameters: {'alphas': [0.0001]}
-C-Index Validation: 0.7224710505268283
-C-Index Test: 0.7027008307455191
-Coeficients:
-admission_type=EMERGENCY      0.785271
-admission_type=URGENT         0.341577
-age_st=(30, 45]              -0.046486
-age_st=(45, 60]              -0.286325
-age_st=(60, 75]              -0.245466
-age_st=(75, 90]              -0.182489
-ethnicity_grouped=black      -0.392263
-ethnicity_grouped=hispanic   -0.426864
-ethnicity_grouped=white      -0.403447
-first_hosp_stay               0.114227
-first_icu_stay                0.630977
-gender                       -0.057120
-icd_alzheimer                 0.229740
-icd_cancer                    0.078636
-icd_diabetes                  0.012691
-icd_heart                    -0.251298
-icd_transplant               -0.103169
-insurance=Public             -0.058881
-insurance=Self-Pay            1.041057
-oasis_score                   0.682733
-dtype: float64
-
-
-L1 Ratio: 0.9
-gcv_score: 0.7224849601836074 old_score: 0.7224710505268283
-Best Parameters: {'alphas': [0.0001]}
-C-Index Validation: 0.7224849601836074
-C-Index Test: 0.7026725878186911
-Coeficients:
-admission_type=EMERGENCY      0.785857
-admission_type=URGENT         0.343357
-age_st=(30, 45]              -0.071011
-age_st=(45, 60]              -0.310395
-age_st=(60, 75]              -0.269493
-age_st=(75, 90]              -0.206618
-ethnicity_grouped=black      -0.394051
-ethnicity_grouped=hispanic   -0.429221
-ethnicity_grouped=white      -0.404776
-first_hosp_stay               0.114692
-first_icu_stay                0.631172
-gender                       -0.057303
-icd_alzheimer                 0.231336
-icd_cancer                    0.079088
-icd_diabetes                  0.013263
-icd_heart                    -0.251264
-icd_transplant               -0.103338
-insurance=Public             -0.059053
-insurance=Self-Pay            1.034320
-oasis_score                   0.682770
-dtype: float64
-
-
 L1 Ratio: 0.8
 gcv_score: 0.7225475536391139 old_score: 0.7224849601836074
 Best Parameters: {'alphas': [0.0001]}
@@ -572,103 +301,6 @@ Tuning hyper-parameters
 
 Alphas: [100, 10, 1, 0.1, 0.01, 0.001, 0.0001, 1e-05, 1e-06, 1e-07]
 
-
-L1 Ratio: 1
-gcv_score: 0.7227815683591421 old_score: 0
-Best Parameters: {'alphas': [1e-05]}
-C-Index Validation: 0.7227815683591421
-C-Index Test: 0.7020754516514716
-Coeficients:
-admission_type=EMERGENCY      0.796705
-admission_type=URGENT         0.367991
-age_st=(30, 45]              -0.471019
-age_st=(45, 60]              -0.707132
-age_st=(60, 75]              -0.665155
-age_st=(75, 90]              -0.603129
-ethnicity_grouped=black      -0.422031
-ethnicity_grouped=hispanic   -0.465580
-ethnicity_grouped=white      -0.423475
-first_hosp_stay               0.120341
-first_icu_stay                0.635741
-gender                       -0.059320
-icd_alzheimer                 0.249377
-icd_cancer                    0.084274
-icd_diabetes                  0.020439
-icd_heart                    -0.250069
-icd_transplant               -0.104858
-insurance=Public             -0.058793
-insurance=Self-Pay            0.952973
-oasis_score                   0.683755
-dtype: float64
-
-
-L1 Ratio: 0.9
-gcv_score: 0.7228380609240929 old_score: 0.7227815683591421
-Best Parameters: {'alphas': [1e-05]}
-C-Index Validation: 0.7228380609240929
-C-Index Test: 0.7020646924412514
-Coeficients:
-admission_type=EMERGENCY      0.796760
-admission_type=URGENT         0.368174
-age_st=(30, 45]              -0.471081
-age_st=(45, 60]              -0.707153
-age_st=(60, 75]              -0.665184
-age_st=(75, 90]              -0.603163
-ethnicity_grouped=black      -0.422184
-ethnicity_grouped=hispanic   -0.465778
-ethnicity_grouped=white      -0.423610
-first_hosp_stay               0.120373
-first_icu_stay                0.635750
-gender                       -0.059332
-icd_alzheimer                 0.249523
-icd_cancer                    0.084309
-icd_diabetes                  0.020483
-icd_heart                    -0.250073
-icd_transplant               -0.104869
-insurance=Public             -0.058815
-insurance=Self-Pay            0.952987
-oasis_score                   0.683755
-dtype: float64
-
-
-L1 Ratio: 0.8
-gcv_score: 0.7228380609240929 old_score: 0.7228380609240929
-
-L1 Ratio: 0.7
-gcv_score: 0.7228380609240929 old_score: 0.7228380609240929
-
-L1 Ratio: 0.6
-gcv_score: 0.7228380609240929 old_score: 0.7228380609240929
-
-L1 Ratio: 0.5
-gcv_score: 0.72287572263406 old_score: 0.7228380609240929
-Best Parameters: {'alphas': [1e-05]}
-C-Index Validation: 0.72287572263406
-C-Index Test: 0.7020270352054807
-Coeficients:
-admission_type=EMERGENCY      0.796980
-admission_type=URGENT         0.368872
-age_st=(30, 45]              -0.475687
-age_st=(45, 60]              -0.711623
-age_st=(60, 75]              -0.669651
-age_st=(75, 90]              -0.607643
-ethnicity_grouped=black      -0.422815
-ethnicity_grouped=hispanic   -0.466616
-ethnicity_grouped=white      -0.424109
-first_hosp_stay               0.120538
-first_icu_stay                0.635814
-gender                       -0.059392
-icd_alzheimer                 0.250121
-icd_cancer                    0.084476
-icd_diabetes                  0.020691
-icd_heart                    -0.250069
-icd_transplant               -0.104929
-insurance=Public             -0.058891
-insurance=Self-Pay            0.951484
-oasis_score                   0.683760
-dtype: float64
-
-
 L1 Ratio: 0.3
 gcv_score: 0.7228945534890436 old_score: 0.72287572263406
 Best Parameters: {'alphas': [1e-05]}
@@ -716,34 +348,6 @@ gcv_score: 0.7228694456823987 old_score: 0.7228945534890436
 Tuning hyper-parameters
 
 Alphas: [100, 10, 1, 0.1, 0.01, 0.001, 0.0001, 1e-05, 1e-06, 1e-07]
-
-
-L1 Ratio: 1
-gcv_score: 0.7218781719754459 old_score: 0
-Best Parameters: {'alphas': [0.001]}
-C-Index Validation: 0.7218781719754459
-C-Index Test: 0.7055130193168171
-Coeficients:
-admission_type=EMERGENCY      0.686438
-admission_type=URGENT         0.046784
-age_st=(30, 45]               0.044619
-age_st=(45, 60]              -0.103716
-age_st=(60, 75]              -0.058248
-ethnicity_grouped=black      -0.098546
-ethnicity_grouped=hispanic   -0.066563
-ethnicity_grouped=white      -0.154316
-first_hosp_stay               0.077372
-first_icu_stay                0.608205
-gender                       -0.045806
-icd_alzheimer                 0.037172
-icd_cancer                    0.070191
-icd_heart                    -0.251290
-icd_transplant               -0.080293
-insurance=Public             -0.053696
-insurance=Self-Pay            0.536286
-oasis_score                   0.675058
-dtype: float64
-
 
 L1 Ratio: 0.9
 gcv_score: 0.7219083812654067 old_score: 0.7218781719754459
@@ -873,36 +477,6 @@ Tuning hyper-parameters
 
 Alphas: [100, 10, 1, 0.1, 0.01, 0.001, 0.0001, 1e-05, 1e-06, 1e-07]
 
-
-L1 Ratio: 1
-gcv_score: 0.7265783123151175 old_score: 0
-Best Parameters: {'alphas': [1e-06]}
-C-Index Validation: 0.7265783123151175
-C-Index Test: 0.7019557554377721
-Coeficients:
-admission_type=EMERGENCY      0.797854
-admission_type=URGENT         0.370751
-age_st=(30, 45]              -0.491076
-age_st=(45, 60]              -0.726681
-age_st=(60, 75]              -0.684721
-age_st=(75, 90]              -0.622800
-ethnicity_grouped=black      -0.424716
-ethnicity_grouped=hispanic   -0.469093
-ethnicity_grouped=white      -0.425459
-first_hosp_stay               0.120819
-first_icu_stay                0.636127
-gender                       -0.059488
-icd_alzheimer                 0.251265
-icd_cancer                    0.084719
-icd_diabetes                  0.021076
-icd_heart                    -0.250009
-icd_transplant               -0.104986
-insurance=Public             -0.058815
-insurance=Self-Pay            0.950235
-oasis_score                   0.683825
-dtype: float64
-
-
 L1 Ratio: 0.9
 gcv_score: 0.7265783123151175 old_score: 0.7265783123151175
 
@@ -966,65 +540,6 @@ Tuning hyper-parameters
 
 Alphas: [100, 10, 1, 0.1, 0.01, 0.001, 0.0001, 1e-05, 1e-06, 1e-07]
 
-
-L1 Ratio: 1
-gcv_score: 0.7244386041205796 old_score: 0
-Best Parameters: {'alphas': [0.0001]}
-C-Index Validation: 0.7244386041205796
-C-Index Test: 0.7027008307455191
-Coeficients:
-admission_type=EMERGENCY      0.785271
-admission_type=URGENT         0.341577
-age_st=(30, 45]              -0.046486
-age_st=(45, 60]              -0.286325
-age_st=(60, 75]              -0.245466
-age_st=(75, 90]              -0.182489
-ethnicity_grouped=black      -0.392263
-ethnicity_grouped=hispanic   -0.426864
-ethnicity_grouped=white      -0.403447
-first_hosp_stay               0.114227
-first_icu_stay                0.630977
-gender                       -0.057120
-icd_alzheimer                 0.229740
-icd_cancer                    0.078636
-icd_diabetes                  0.012691
-icd_heart                    -0.251298
-icd_transplant               -0.103169
-insurance=Public             -0.058881
-insurance=Self-Pay            1.041057
-oasis_score                   0.682733
-dtype: float64
-
-
-L1 Ratio: 0.9
-gcv_score: 0.7244512091361153 old_score: 0.7244386041205796
-Best Parameters: {'alphas': [0.0001]}
-C-Index Validation: 0.7244512091361153
-C-Index Test: 0.7026725878186911
-Coeficients:
-admission_type=EMERGENCY      0.785857
-admission_type=URGENT         0.343357
-age_st=(30, 45]              -0.071011
-age_st=(45, 60]              -0.310395
-age_st=(60, 75]              -0.269493
-age_st=(75, 90]              -0.206618
-ethnicity_grouped=black      -0.394051
-ethnicity_grouped=hispanic   -0.429221
-ethnicity_grouped=white      -0.404776
-first_hosp_stay               0.114692
-first_icu_stay                0.631172
-gender                       -0.057303
-icd_alzheimer                 0.231336
-icd_cancer                    0.079088
-icd_diabetes                  0.013263
-icd_heart                    -0.251264
-icd_transplant               -0.103338
-insurance=Public             -0.059053
-insurance=Self-Pay            1.034320
-oasis_score                   0.682770
-dtype: float64
-
-
 L1 Ratio: 0.8
 gcv_score: 0.7245079317060258 old_score: 0.7244512091361153
 Best Parameters: {'alphas': [0.0001]}
@@ -1084,36 +599,6 @@ gcv_score: 0.724066756162277 old_score: 0.7245079317060258
 Tuning hyper-parameters
 
 Alphas: [100, 10, 1, 0.1, 0.01, 0.001, 0.0001, 1e-05, 1e-06, 1e-07]
-
-
-L1 Ratio: 1
-gcv_score: 0.7370801649164935 old_score: 0
-Best Parameters: {'alphas': [1e-05]}
-C-Index Validation: 0.7370801649164935
-C-Index Test: 0.7020754516514716
-Coeficients:
-admission_type=EMERGENCY      0.796705
-admission_type=URGENT         0.367991
-age_st=(30, 45]              -0.471019
-age_st=(45, 60]              -0.707132
-age_st=(60, 75]              -0.665155
-age_st=(75, 90]              -0.603129
-ethnicity_grouped=black      -0.422031
-ethnicity_grouped=hispanic   -0.465580
-ethnicity_grouped=white      -0.423475
-first_hosp_stay               0.120341
-first_icu_stay                0.635741
-gender                       -0.059320
-icd_alzheimer                 0.249377
-icd_cancer                    0.084274
-icd_diabetes                  0.020439
-icd_heart                    -0.250069
-icd_transplant               -0.104858
-insurance=Public             -0.058793
-insurance=Self-Pay            0.952973
-oasis_score                   0.683755
-dtype: float64
-
 
 L1 Ratio: 0.9
 gcv_score: 0.7368514671596373 old_score: 0.7370801649164935
@@ -1178,71 +663,6 @@ Tuning hyper-parameters
 
 Alphas: [100, 10, 1, 0.1, 0.01, 0.001, 0.0001, 1e-05, 1e-06, 1e-07]
 
-
-L1 Ratio: 1
-gcv_score: 0.6831619237809952 old_score: 0
-Best Parameters: {'alphas': [1e-07]}
-C-Index Validation: 0.6831619237809952
-C-Index Test: 0.7019490309313845
-Coeficients:
-admission_type=EMERGENCY      0.797969
-admission_type=URGENT         0.371033
-age_st=(30, 45]              -0.492678
-age_st=(45, 60]              -0.728230
-age_st=(60, 75]              -0.686272
-age_st=(75, 90]              -0.624362
-ethnicity_grouped=black      -0.424931
-ethnicity_grouped=hispanic   -0.469389
-ethnicity_grouped=white      -0.425622
-first_hosp_stay               0.120864
-first_icu_stay                0.636163
-gender                       -0.059505
-icd_alzheimer                 0.251449
-icd_cancer                    0.084755
-icd_diabetes                  0.021130
-icd_heart                    -0.250006
-icd_transplant               -0.105002
-insurance=Public             -0.058819
-insurance=Self-Pay            0.950094
-oasis_score                   0.683831
-dtype: float64
-
-
-L1 Ratio: 0.9
-gcv_score: 0.6831619237809952 old_score: 0.6831619237809952
-
-L1 Ratio: 0.8
-gcv_score: 0.6831619237809952 old_score: 0.6831619237809952
-
-L1 Ratio: 0.7
-gcv_score: 0.6831818938259278 old_score: 0.6831619237809952
-Best Parameters: {'alphas': [1e-06]}
-C-Index Validation: 0.6831818938259278
-C-Index Test: 0.7019557554377721
-Coeficients:
-admission_type=EMERGENCY      0.797870
-admission_type=URGENT         0.370804
-age_st=(30, 45]              -0.491406
-age_st=(45, 60]              -0.727002
-age_st=(60, 75]              -0.685041
-age_st=(75, 90]              -0.623122
-ethnicity_grouped=black      -0.424763
-ethnicity_grouped=hispanic   -0.469155
-ethnicity_grouped=white      -0.425497
-first_hosp_stay               0.120831
-first_icu_stay                0.636132
-gender                       -0.059492
-icd_alzheimer                 0.251310
-icd_cancer                    0.084731
-icd_diabetes                  0.021092
-icd_heart                    -0.250009
-icd_transplant               -0.104990
-insurance=Public             -0.058821
-insurance=Self-Pay            0.950126
-oasis_score                   0.683825
-dtype: float64
-
-
 L1 Ratio: 0.6
 gcv_score: 0.6831818938259278 old_score: 0.6831818938259278
 
@@ -1296,65 +716,6 @@ gcv_score: 0.683188550507572 old_score: 0.683188550507572
 Tuning hyper-parameters
 
 Alphas: [100, 10, 1, 0.1, 0.01, 0.001, 0.0001, 1e-05, 1e-06, 1e-07]
-
-
-L1 Ratio: 1
-gcv_score: 0.7406153749449997 old_score: 0
-Best Parameters: {'alphas': [0.0001]}
-C-Index Validation: 0.7406153749449997
-C-Index Test: 0.7027008307455191
-Coeficients:
-admission_type=EMERGENCY      0.785271
-admission_type=URGENT         0.341577
-age_st=(30, 45]              -0.046486
-age_st=(45, 60]              -0.286325
-age_st=(60, 75]              -0.245466
-age_st=(75, 90]              -0.182489
-ethnicity_grouped=black      -0.392263
-ethnicity_grouped=hispanic   -0.426864
-ethnicity_grouped=white      -0.403447
-first_hosp_stay               0.114227
-first_icu_stay                0.630977
-gender                       -0.057120
-icd_alzheimer                 0.229740
-icd_cancer                    0.078636
-icd_diabetes                  0.012691
-icd_heart                    -0.251298
-icd_transplant               -0.103169
-insurance=Public             -0.058881
-insurance=Self-Pay            1.041057
-oasis_score                   0.682733
-dtype: float64
-
-
-L1 Ratio: 0.9
-gcv_score: 0.7407159469482683 old_score: 0.7406153749449997
-Best Parameters: {'alphas': [0.0001]}
-C-Index Validation: 0.7407159469482683
-C-Index Test: 0.7026725878186911
-Coeficients:
-admission_type=EMERGENCY      0.785857
-admission_type=URGENT         0.343357
-age_st=(30, 45]              -0.071011
-age_st=(45, 60]              -0.310395
-age_st=(60, 75]              -0.269493
-age_st=(75, 90]              -0.206618
-ethnicity_grouped=black      -0.394051
-ethnicity_grouped=hispanic   -0.429221
-ethnicity_grouped=white      -0.404776
-first_hosp_stay               0.114692
-first_icu_stay                0.631172
-gender                       -0.057303
-icd_alzheimer                 0.231336
-icd_cancer                    0.079088
-icd_diabetes                  0.013263
-icd_heart                    -0.251264
-icd_transplant               -0.103338
-insurance=Public             -0.059053
-insurance=Self-Pay            1.034320
-oasis_score                   0.682770
-dtype: float64
-
 
 L1 Ratio: 0.8
 gcv_score: 0.7407662329499026 old_score: 0.7407159469482683
@@ -1415,36 +776,6 @@ gcv_score: 0.7400622289270224 old_score: 0.7407662329499026
 Tuning hyper-parameters
 
 Alphas: [100, 10, 1, 0.1, 0.01, 0.001, 0.0001, 1e-05, 1e-06, 1e-07]
-
-
-L1 Ratio: 1
-gcv_score: 0.730313945905661 old_score: 0
-Best Parameters: {'alphas': [1e-06]}
-C-Index Validation: 0.730313945905661
-C-Index Test: 0.7019557554377721
-Coeficients:
-admission_type=EMERGENCY      0.797854
-admission_type=URGENT         0.370751
-age_st=(30, 45]              -0.491076
-age_st=(45, 60]              -0.726681
-age_st=(60, 75]              -0.684721
-age_st=(75, 90]              -0.622800
-ethnicity_grouped=black      -0.424716
-ethnicity_grouped=hispanic   -0.469093
-ethnicity_grouped=white      -0.425459
-first_hosp_stay               0.120819
-first_icu_stay                0.636127
-gender                       -0.059488
-icd_alzheimer                 0.251265
-icd_cancer                    0.084719
-icd_diabetes                  0.021076
-icd_heart                    -0.250009
-icd_transplant               -0.104986
-insurance=Public             -0.058815
-insurance=Self-Pay            0.950235
-oasis_score                   0.683825
-dtype: float64
-
 
 L1 Ratio: 0.9
 gcv_score: 0.730313945905661 old_score: 0.730313945905661
@@ -1509,74 +840,6 @@ Tuning hyper-parameters
 
 Alphas: [100, 10, 1, 0.1, 0.01, 0.001, 0.0001, 1e-05, 1e-06, 1e-07]
 
-
-L1 Ratio: 1
-gcv_score: 0.7392801585303667 old_score: 0
-Best Parameters: {'alphas': [1e-07]}
-C-Index Validation: 0.7392801585303667
-C-Index Test: 0.7019490309313845
-Coeficients:
-admission_type=EMERGENCY      0.797969
-admission_type=URGENT         0.371033
-age_st=(30, 45]              -0.492678
-age_st=(45, 60]              -0.728230
-age_st=(60, 75]              -0.686272
-age_st=(75, 90]              -0.624362
-ethnicity_grouped=black      -0.424931
-ethnicity_grouped=hispanic   -0.469389
-ethnicity_grouped=white      -0.425622
-first_hosp_stay               0.120864
-first_icu_stay                0.636163
-gender                       -0.059505
-icd_alzheimer                 0.251449
-icd_cancer                    0.084755
-icd_diabetes                  0.021130
-icd_heart                    -0.250006
-icd_transplant               -0.105002
-insurance=Public             -0.058819
-insurance=Self-Pay            0.950094
-oasis_score                   0.683831
-dtype: float64
-
-
-L1 Ratio: 0.9
-gcv_score: 0.7392801585303667 old_score: 0.7392801585303667
-
-L1 Ratio: 0.8
-gcv_score: 0.7392801585303667 old_score: 0.7392801585303667
-
-L1 Ratio: 0.7
-gcv_score: 0.7392801585303667 old_score: 0.7392801585303667
-
-L1 Ratio: 0.6
-gcv_score: 0.7392866133498577 old_score: 0.7392801585303667
-Best Parameters: {'alphas': [1e-06]}
-C-Index Validation: 0.7392866133498577
-C-Index Test: 0.7019557554377721
-Coeficients:
-admission_type=EMERGENCY      0.797876
-admission_type=URGENT         0.370821
-age_st=(30, 45]              -0.491517
-age_st=(45, 60]              -0.727109
-age_st=(60, 75]              -0.685148
-age_st=(75, 90]              -0.623229
-ethnicity_grouped=black      -0.424779
-ethnicity_grouped=hispanic   -0.469176
-ethnicity_grouped=white      -0.425509
-first_hosp_stay               0.120835
-first_icu_stay                0.636133
-gender                       -0.059494
-icd_alzheimer                 0.251325
-icd_cancer                    0.084736
-icd_diabetes                  0.021097
-icd_heart                    -0.250009
-icd_transplant               -0.104992
-insurance=Public             -0.058823
-insurance=Self-Pay            0.950090
-oasis_score                   0.683825
-dtype: float64
-
-
 L1 Ratio: 0.5
 gcv_score: 0.73943507419815 old_score: 0.7392866133498577
 Best Parameters: {'alphas': [0.0001]}
@@ -1628,122 +891,6 @@ Tuning hyper-parameters
 
 Alphas: [100, 10, 1, 0.1, 0.01, 0.001, 0.0001, 1e-05, 1e-06, 1e-07]
 
-
-L1 Ratio: 1
-gcv_score: 0.7212473002159827 old_score: 0
-Best Parameters: {'alphas': [0.001]}
-C-Index Validation: 0.7212473002159827
-C-Index Test: 0.7055130193168171
-Coeficients:
-admission_type=EMERGENCY      0.686438
-admission_type=URGENT         0.046784
-age_st=(30, 45]               0.044619
-age_st=(45, 60]              -0.103716
-age_st=(60, 75]              -0.058248
-ethnicity_grouped=black      -0.098546
-ethnicity_grouped=hispanic   -0.066563
-ethnicity_grouped=white      -0.154316
-first_hosp_stay               0.077372
-first_icu_stay                0.608205
-gender                       -0.045806
-icd_alzheimer                 0.037172
-icd_cancer                    0.070191
-icd_heart                    -0.251290
-icd_transplant               -0.080293
-insurance=Public             -0.053696
-insurance=Self-Pay            0.536286
-oasis_score                   0.675058
-dtype: float64
-
-
-L1 Ratio: 0.9
-gcv_score: 0.721205303575714 old_score: 0.7212473002159827
-
-L1 Ratio: 0.8
-gcv_score: 0.7214692824574034 old_score: 0.7212473002159827
-Best Parameters: {'alphas': [0.001]}
-C-Index Validation: 0.7214692824574034
-C-Index Test: 0.7046159701647101
-Coeficients:
-admission_type=EMERGENCY      0.698730
-admission_type=URGENT         0.102225
-age_st=(30, 45]               0.058317
-age_st=(45, 60]              -0.106872
-age_st=(60, 75]              -0.061029
-ethnicity_grouped=black      -0.155883
-ethnicity_grouped=hispanic   -0.136794
-ethnicity_grouped=white      -0.205611
-first_hosp_stay               0.084984
-first_icu_stay                0.609380
-gender                       -0.048204
-icd_alzheimer                 0.077751
-icd_cancer                    0.070196
-icd_heart                    -0.251586
-icd_transplant               -0.086463
-insurance=Public             -0.057060
-insurance=Self-Pay            0.597936
-oasis_score                   0.675816
-dtype: float64
-
-
-L1 Ratio: 0.7
-gcv_score: 0.7216672666186705 old_score: 0.7214692824574034
-Best Parameters: {'alphas': [0.001]}
-C-Index Validation: 0.7216672666186705
-C-Index Test: 0.7044330635909671
-Coeficients:
-admission_type=EMERGENCY      0.704541
-admission_type=URGENT         0.127376
-age_st=(30, 45]               0.064535
-age_st=(45, 60]              -0.108821
-age_st=(60, 75]              -0.062638
-ethnicity_grouped=black      -0.179446
-ethnicity_grouped=hispanic   -0.166345
-ethnicity_grouped=white      -0.226960
-first_hosp_stay               0.088852
-first_icu_stay                0.609912
-gender                       -0.049455
-icd_alzheimer                 0.096119
-icd_cancer                    0.070389
-icd_heart                    -0.251851
-icd_transplant               -0.089433
-insurance=Public             -0.059096
-insurance=Self-Pay            0.621458
-oasis_score                   0.676110
-dtype: float64
-
-
-L1 Ratio: 0.6
-gcv_score: 0.7215472762179026 old_score: 0.7216672666186705
-
-L1 Ratio: 0.5
-gcv_score: 0.721811255099592 old_score: 0.7216672666186705
-Best Parameters: {'alphas': [0.001]}
-C-Index Validation: 0.721811255099592
-C-Index Test: 0.7037606129522063
-Coeficients:
-admission_type=EMERGENCY      0.715319
-admission_type=URGENT         0.172909
-age_st=(30, 45]               0.059791
-age_st=(45, 60]              -0.130040
-age_st=(60, 75]              -0.082409
-age_st=(75, 90]              -0.015224
-ethnicity_grouped=black      -0.226861
-ethnicity_grouped=hispanic   -0.223771
-ethnicity_grouped=white      -0.268761
-first_hosp_stay               0.096526
-first_icu_stay                0.611294
-gender                       -0.051892
-icd_alzheimer                 0.129465
-icd_cancer                    0.070434
-icd_heart                    -0.252718
-icd_transplant               -0.095385
-insurance=Public             -0.063572
-insurance=Self-Pay            0.657525
-oasis_score                   0.676766
-dtype: float64
-
-
 L1 Ratio: 0.3
 gcv_score: 0.7221052315814734 old_score: 0.721811255099592
 Best Parameters: {'alphas': [0.001]}
@@ -1791,36 +938,6 @@ Tuning hyper-parameters
 
 Alphas: [100, 10, 1, 0.1, 0.01, 0.001, 0.0001, 1e-05, 1e-06, 1e-07]
 
-
-L1 Ratio: 1
-gcv_score: 0.7405902118334551 old_score: 0
-Best Parameters: {'alphas': [0.0001]}
-C-Index Validation: 0.7405902118334551
-C-Index Test: 0.7027008307455191
-Coeficients:
-admission_type=EMERGENCY      0.785271
-admission_type=URGENT         0.341577
-age_st=(30, 45]              -0.046486
-age_st=(45, 60]              -0.286325
-age_st=(60, 75]              -0.245466
-age_st=(75, 90]              -0.182489
-ethnicity_grouped=black      -0.392263
-ethnicity_grouped=hispanic   -0.426864
-ethnicity_grouped=white      -0.403447
-first_hosp_stay               0.114227
-first_icu_stay                0.630977
-gender                       -0.057120
-icd_alzheimer                 0.229740
-icd_cancer                    0.078636
-icd_diabetes                  0.012691
-icd_heart                    -0.251298
-icd_transplant               -0.103169
-insurance=Public             -0.058881
-insurance=Self-Pay            1.041057
-oasis_score                   0.682733
-dtype: float64
-
-
 L1 Ratio: 0.9
 gcv_score: 0.740572680788897 old_score: 0.7405902118334551
 
@@ -1832,35 +949,6 @@ gcv_score: 0.7405609934258582 old_score: 0.7405902118334551
 
 L1 Ratio: 0.6
 gcv_score: 0.740572680788897 old_score: 0.7405902118334551
-
-L1 Ratio: 0.5
-gcv_score: 0.7406077428780131 old_score: 0.7405902118334551
-Best Parameters: {'alphas': [0.0001]}
-C-Index Validation: 0.7406077428780131
-C-Index Test: 0.7025676855190445
-Coeficients:
-admission_type=EMERGENCY      0.788154
-admission_type=URGENT         0.350411
-age_st=(30, 45]              -0.157715
-age_st=(45, 60]              -0.395431
-age_st=(60, 75]              -0.354383
-age_st=(75, 90]              -0.291821
-ethnicity_grouped=black      -0.401112
-ethnicity_grouped=hispanic   -0.438476
-ethnicity_grouped=white      -0.410062
-first_hosp_stay               0.116506
-first_icu_stay                0.631920
-gender                       -0.058002
-icd_alzheimer                 0.237595
-icd_cancer                    0.080841
-icd_diabetes                  0.015512
-icd_heart                    -0.251160
-icd_transplant               -0.103985
-insurance=Public             -0.059742
-insurance=Self-Pay            1.010178
-oasis_score                   0.682918
-dtype: float64
-
 
 L1 Ratio: 0.3
 gcv_score: 0.7406311176040906 old_score: 0.7406077428780131
@@ -1975,36 +1063,6 @@ Tuning hyper-parameters
 
 Alphas: [100, 10, 1, 0.1, 0.01, 0.001, 0.0001, 1e-05, 1e-06, 1e-07]
 
-
-L1 Ratio: 1
-gcv_score: 0.6715244558163681 old_score: 0
-Best Parameters: {'alphas': [1e-05]}
-C-Index Validation: 0.6715244558163681
-C-Index Test: 0.7020754516514716
-Coeficients:
-admission_type=EMERGENCY      0.796705
-admission_type=URGENT         0.367991
-age_st=(30, 45]              -0.471019
-age_st=(45, 60]              -0.707132
-age_st=(60, 75]              -0.665155
-age_st=(75, 90]              -0.603129
-ethnicity_grouped=black      -0.422031
-ethnicity_grouped=hispanic   -0.465580
-ethnicity_grouped=white      -0.423475
-first_hosp_stay               0.120341
-first_icu_stay                0.635741
-gender                       -0.059320
-icd_alzheimer                 0.249377
-icd_cancer                    0.084274
-icd_diabetes                  0.020439
-icd_heart                    -0.250069
-icd_transplant               -0.104858
-insurance=Public             -0.058793
-insurance=Self-Pay            0.952973
-oasis_score                   0.683755
-dtype: float64
-
-
 L1 Ratio: 0.9
 gcv_score: 0.6715553577829693 old_score: 0.6715244558163681
 Best Parameters: {'alphas': [1e-05]}
@@ -2068,34 +1126,6 @@ Tuning hyper-parameters
 
 Alphas: [100, 10, 1, 0.1, 0.01, 0.001, 0.0001, 1e-05, 1e-06, 1e-07]
 
-
-L1 Ratio: 1
-gcv_score: 0.7341361727092864 old_score: 0
-Best Parameters: {'alphas': [0.001]}
-C-Index Validation: 0.7341361727092864
-C-Index Test: 0.7055130193168171
-Coeficients:
-admission_type=EMERGENCY      0.686438
-admission_type=URGENT         0.046784
-age_st=(30, 45]               0.044619
-age_st=(45, 60]              -0.103716
-age_st=(60, 75]              -0.058248
-ethnicity_grouped=black      -0.098546
-ethnicity_grouped=hispanic   -0.066563
-ethnicity_grouped=white      -0.154316
-first_hosp_stay               0.077372
-first_icu_stay                0.608205
-gender                       -0.045806
-icd_alzheimer                 0.037172
-icd_cancer                    0.070191
-icd_heart                    -0.251290
-icd_transplant               -0.080293
-insurance=Public             -0.053696
-insurance=Self-Pay            0.536286
-oasis_score                   0.675058
-dtype: float64
-
-
 L1 Ratio: 0.9
 gcv_score: 0.7342110683235241 old_score: 0.7341361727092864
 Best Parameters: {'alphas': [0.001]}
@@ -2157,61 +1187,6 @@ Tuning hyper-parameters
 
 Alphas: [100, 10, 1, 0.1, 0.01, 0.001, 0.0001, 1e-05, 1e-06, 1e-07]
 
-
-L1 Ratio: 1
-gcv_score: 0.712111746920213 old_score: 0
-Best Parameters: {'alphas': [0.001]}
-C-Index Validation: 0.712111746920213
-C-Index Test: 0.7055130193168171
-Coeficients:
-admission_type=EMERGENCY      0.686438
-admission_type=URGENT         0.046784
-age_st=(30, 45]               0.044619
-age_st=(45, 60]              -0.103716
-age_st=(60, 75]              -0.058248
-ethnicity_grouped=black      -0.098546
-ethnicity_grouped=hispanic   -0.066563
-ethnicity_grouped=white      -0.154316
-first_hosp_stay               0.077372
-first_icu_stay                0.608205
-gender                       -0.045806
-icd_alzheimer                 0.037172
-icd_cancer                    0.070191
-icd_heart                    -0.251290
-icd_transplant               -0.080293
-insurance=Public             -0.053696
-insurance=Self-Pay            0.536286
-oasis_score                   0.675058
-dtype: float64
-
-
-L1 Ratio: 0.9
-gcv_score: 0.7122741697693595 old_score: 0.712111746920213
-Best Parameters: {'alphas': [0.001]}
-C-Index Validation: 0.7122741697693595
-C-Index Test: 0.7050449936722395
-Coeficients:
-admission_type=EMERGENCY      0.692719
-admission_type=URGENT         0.075478
-age_st=(30, 45]               0.051591
-age_st=(45, 60]              -0.105228
-age_st=(60, 75]              -0.059609
-ethnicity_grouped=black      -0.128549
-ethnicity_grouped=hispanic   -0.103253
-ethnicity_grouped=white      -0.181186
-first_hosp_stay               0.081180
-first_icu_stay                0.608783
-gender                       -0.046994
-icd_alzheimer                 0.058116
-icd_cancer                    0.070162
-icd_heart                    -0.251412
-icd_transplant               -0.083384
-insurance=Public             -0.055327
-insurance=Self-Pay            0.569848
-oasis_score                   0.675441
-dtype: float64
-
-
 L1 Ratio: 0.8
 gcv_score: 0.7123428871286139 old_score: 0.7122741697693595
 Best Parameters: {'alphas': [0.001]}
@@ -2270,68 +1245,6 @@ Tuning hyper-parameters
 
 Alphas: [100, 10, 1, 0.1, 0.01, 0.001, 0.0001, 1e-05, 1e-06, 1e-07]
 
-
-L1 Ratio: 1
-gcv_score: 0.7106485420250946 old_score: 0
-Best Parameters: {'alphas': [1e-06]}
-C-Index Validation: 0.7106485420250946
-C-Index Test: 0.7019557554377721
-Coeficients:
-admission_type=EMERGENCY      0.797854
-admission_type=URGENT         0.370751
-age_st=(30, 45]              -0.491076
-age_st=(45, 60]              -0.726681
-age_st=(60, 75]              -0.684721
-age_st=(75, 90]              -0.622800
-ethnicity_grouped=black      -0.424716
-ethnicity_grouped=hispanic   -0.469093
-ethnicity_grouped=white      -0.425459
-first_hosp_stay               0.120819
-first_icu_stay                0.636127
-gender                       -0.059488
-icd_alzheimer                 0.251265
-icd_cancer                    0.084719
-icd_diabetes                  0.021076
-icd_heart                    -0.250009
-icd_transplant               -0.104986
-insurance=Public             -0.058815
-insurance=Self-Pay            0.950235
-oasis_score                   0.683825
-dtype: float64
-
-
-L1 Ratio: 0.9
-gcv_score: 0.7106485420250946 old_score: 0.7106485420250946
-
-L1 Ratio: 0.8
-gcv_score: 0.7106674481185286 old_score: 0.7106485420250946
-Best Parameters: {'alphas': [1e-05]}
-C-Index Validation: 0.7106674481185286
-C-Index Test: 0.7020620026386963
-Coeficients:
-admission_type=EMERGENCY      0.796815
-admission_type=URGENT         0.368348
-age_st=(30, 45]              -0.472240
-age_st=(45, 60]              -0.708278
-age_st=(60, 75]              -0.666308
-age_st=(75, 90]              -0.604291
-ethnicity_grouped=black      -0.422342
-ethnicity_grouped=hispanic   -0.465988
-ethnicity_grouped=white      -0.423734
-first_hosp_stay               0.120414
-first_icu_stay                0.635766
-gender                       -0.059347
-icd_alzheimer                 0.249673
-icd_cancer                    0.084351
-icd_diabetes                  0.020535
-icd_heart                    -0.250072
-icd_transplant               -0.104884
-insurance=Public             -0.058834
-insurance=Self-Pay            0.952608
-oasis_score                   0.683756
-dtype: float64
-
-
 L1 Ratio: 0.7
 gcv_score: 0.7106674481185286 old_score: 0.7106674481185286
 
@@ -2388,34 +1301,6 @@ gcv_score: 0.7106863542119625 old_score: 0.7106863542119625
 Tuning hyper-parameters
 
 Alphas: [100, 10, 1, 0.1, 0.01, 0.001, 0.0001, 1e-05, 1e-06, 1e-07]
-
-
-L1 Ratio: 1
-gcv_score: 0.7055489832954482 old_score: 0
-Best Parameters: {'alphas': [0.001]}
-C-Index Validation: 0.7055489832954482
-C-Index Test: 0.7055130193168171
-Coeficients:
-admission_type=EMERGENCY      0.686438
-admission_type=URGENT         0.046784
-age_st=(30, 45]               0.044619
-age_st=(45, 60]              -0.103716
-age_st=(60, 75]              -0.058248
-ethnicity_grouped=black      -0.098546
-ethnicity_grouped=hispanic   -0.066563
-ethnicity_grouped=white      -0.154316
-first_hosp_stay               0.077372
-first_icu_stay                0.608205
-gender                       -0.045806
-icd_alzheimer                 0.037172
-icd_cancer                    0.070191
-icd_heart                    -0.251290
-icd_transplant               -0.080293
-insurance=Public             -0.053696
-insurance=Self-Pay            0.536286
-oasis_score                   0.675058
-dtype: float64
-
 
 L1 Ratio: 0.9
 gcv_score: 0.7057595708967935 old_score: 0.7055489832954482
@@ -2477,36 +1362,6 @@ gcv_score: 0.7054839488891504 old_score: 0.7057595708967935
 Tuning hyper-parameters
 
 Alphas: [100, 10, 1, 0.1, 0.01, 0.001, 0.0001, 1e-05, 1e-06, 1e-07]
-
-
-L1 Ratio: 1
-gcv_score: 0.7174471198616469 old_score: 0
-Best Parameters: {'alphas': [0.0001]}
-C-Index Validation: 0.7174471198616469
-C-Index Test: 0.7027008307455191
-Coeficients:
-admission_type=EMERGENCY      0.785271
-admission_type=URGENT         0.341577
-age_st=(30, 45]              -0.046486
-age_st=(45, 60]              -0.286325
-age_st=(60, 75]              -0.245466
-age_st=(75, 90]              -0.182489
-ethnicity_grouped=black      -0.392263
-ethnicity_grouped=hispanic   -0.426864
-ethnicity_grouped=white      -0.403447
-first_hosp_stay               0.114227
-first_icu_stay                0.630977
-gender                       -0.057120
-icd_alzheimer                 0.229740
-icd_cancer                    0.078636
-icd_diabetes                  0.012691
-icd_heart                    -0.251298
-icd_transplant               -0.103169
-insurance=Public             -0.058881
-insurance=Self-Pay            1.041057
-oasis_score                   0.682733
-dtype: float64
-
 
 L1 Ratio: 0.9
 gcv_score: 0.7175335905281363 old_score: 0.7174471198616469
@@ -2571,61 +1426,6 @@ Tuning hyper-parameters
 
 Alphas: [100, 10, 1, 0.1, 0.01, 0.001, 0.0001, 1e-05, 1e-06, 1e-07]
 
-
-L1 Ratio: 1
-gcv_score: 0.7273196645848367 old_score: 0
-Best Parameters: {'alphas': [0.001]}
-C-Index Validation: 0.7273196645848367
-C-Index Test: 0.7055130193168171
-Coeficients:
-admission_type=EMERGENCY      0.686438
-admission_type=URGENT         0.046784
-age_st=(30, 45]               0.044619
-age_st=(45, 60]              -0.103716
-age_st=(60, 75]              -0.058248
-ethnicity_grouped=black      -0.098546
-ethnicity_grouped=hispanic   -0.066563
-ethnicity_grouped=white      -0.154316
-first_hosp_stay               0.077372
-first_icu_stay                0.608205
-gender                       -0.045806
-icd_alzheimer                 0.037172
-icd_cancer                    0.070191
-icd_heart                    -0.251290
-icd_transplant               -0.080293
-insurance=Public             -0.053696
-insurance=Self-Pay            0.536286
-oasis_score                   0.675058
-dtype: float64
-
-
-L1 Ratio: 0.9
-gcv_score: 0.7277799895493792 old_score: 0.7273196645848367
-Best Parameters: {'alphas': [0.001]}
-C-Index Validation: 0.7277799895493792
-C-Index Test: 0.7050449936722395
-Coeficients:
-admission_type=EMERGENCY      0.692719
-admission_type=URGENT         0.075478
-age_st=(30, 45]               0.051591
-age_st=(45, 60]              -0.105228
-age_st=(60, 75]              -0.059609
-ethnicity_grouped=black      -0.128549
-ethnicity_grouped=hispanic   -0.103253
-ethnicity_grouped=white      -0.181186
-first_hosp_stay               0.081180
-first_icu_stay                0.608783
-gender                       -0.046994
-icd_alzheimer                 0.058116
-icd_cancer                    0.070162
-icd_heart                    -0.251412
-icd_transplant               -0.083384
-insurance=Public             -0.055327
-insurance=Self-Pay            0.569848
-oasis_score                   0.675441
-dtype: float64
-
-
 L1 Ratio: 0.8
 gcv_score: 0.7280972405384558 old_score: 0.7277799895493792
 Best Parameters: {'alphas': [0.001]}
@@ -2684,109 +1484,6 @@ Tuning hyper-parameters
 
 Alphas: [100, 10, 1, 0.1, 0.01, 0.001, 0.0001, 1e-05, 1e-06, 1e-07]
 
-
-L1 Ratio: 1
-gcv_score: 0.7372739934826028 old_score: 0
-Best Parameters: {'alphas': [1e-06]}
-C-Index Validation: 0.7372739934826028
-C-Index Test: 0.7019557554377721
-Coeficients:
-admission_type=EMERGENCY      0.797854
-admission_type=URGENT         0.370751
-age_st=(30, 45]              -0.491076
-age_st=(45, 60]              -0.726681
-age_st=(60, 75]              -0.684721
-age_st=(75, 90]              -0.622800
-ethnicity_grouped=black      -0.424716
-ethnicity_grouped=hispanic   -0.469093
-ethnicity_grouped=white      -0.425459
-first_hosp_stay               0.120819
-first_icu_stay                0.636127
-gender                       -0.059488
-icd_alzheimer                 0.251265
-icd_cancer                    0.084719
-icd_diabetes                  0.021076
-icd_heart                    -0.250009
-icd_transplant               -0.104986
-insurance=Public             -0.058815
-insurance=Self-Pay            0.950235
-oasis_score                   0.683825
-dtype: float64
-
-
-L1 Ratio: 0.9
-gcv_score: 0.7372739934826028 old_score: 0.7372739934826028
-
-L1 Ratio: 0.8
-gcv_score: 0.7372739934826028 old_score: 0.7372739934826028
-
-L1 Ratio: 0.7
-gcv_score: 0.7372805634395039 old_score: 0.7372739934826028
-Best Parameters: {'alphas': [1e-06]}
-C-Index Validation: 0.7372805634395039
-C-Index Test: 0.7019557554377721
-Coeficients:
-admission_type=EMERGENCY      0.797870
-admission_type=URGENT         0.370804
-age_st=(30, 45]              -0.491406
-age_st=(45, 60]              -0.727002
-age_st=(60, 75]              -0.685041
-age_st=(75, 90]              -0.623122
-ethnicity_grouped=black      -0.424763
-ethnicity_grouped=hispanic   -0.469155
-ethnicity_grouped=white      -0.425497
-first_hosp_stay               0.120831
-first_icu_stay                0.636132
-gender                       -0.059492
-icd_alzheimer                 0.251310
-icd_cancer                    0.084731
-icd_diabetes                  0.021092
-icd_heart                    -0.250009
-icd_transplant               -0.104990
-insurance=Public             -0.058821
-insurance=Self-Pay            0.950126
-oasis_score                   0.683825
-dtype: float64
-
-
-L1 Ratio: 0.6
-gcv_score: 0.7372805634395039 old_score: 0.7372805634395039
-
-L1 Ratio: 0.5
-gcv_score: 0.7372805634395039 old_score: 0.7372805634395039
-
-L1 Ratio: 0.3
-gcv_score: 0.7372805634395039 old_score: 0.7372805634395039
-
-L1 Ratio: 0.1
-gcv_score: 0.7373265531378114 old_score: 0.7372805634395039
-Best Parameters: {'alphas': [1e-05]}
-C-Index Validation: 0.7373265531378114
-C-Index Test: 0.7020324148105909
-Coeficients:
-admission_type=EMERGENCY      0.797199
-admission_type=URGENT         0.369568
-age_st=(30, 45]              -0.480196
-age_st=(45, 60]              -0.715996
-age_st=(60, 75]              -0.674022
-age_st=(75, 90]              -0.612026
-ethnicity_grouped=black      -0.423444
-ethnicity_grouped=hispanic   -0.467450
-ethnicity_grouped=white      -0.424607
-first_hosp_stay               0.120703
-first_icu_stay                0.635878
-gender                       -0.059452
-icd_alzheimer                 0.250718
-icd_cancer                    0.084643
-icd_diabetes                  0.020899
-icd_heart                    -0.250066
-icd_transplant               -0.104989
-insurance=Public             -0.058968
-insurance=Self-Pay            0.950016
-oasis_score                   0.683765
-dtype: float64
-
-
 L1 Ratio: 0.01
 gcv_score: 0.7374316724482287 old_score: 0.7373265531378114
 Best Parameters: {'alphas': [1e-05]}
@@ -2828,77 +1525,6 @@ gcv_score: 0.7374316724482287 old_score: 0.7374316724482287
 Tuning hyper-parameters
 
 Alphas: [100, 10, 1, 0.1, 0.01, 0.001, 0.0001, 1e-05, 1e-06, 1e-07]
-
-
-L1 Ratio: 1
-gcv_score: 0.7416576865616811 old_score: 0
-Best Parameters: {'alphas': [0.001]}
-C-Index Validation: 0.7416576865616811
-C-Index Test: 0.7055130193168171
-Coeficients:
-admission_type=EMERGENCY      0.686438
-admission_type=URGENT         0.046784
-age_st=(30, 45]               0.044619
-age_st=(45, 60]              -0.103716
-age_st=(60, 75]              -0.058248
-ethnicity_grouped=black      -0.098546
-ethnicity_grouped=hispanic   -0.066563
-ethnicity_grouped=white      -0.154316
-first_hosp_stay               0.077372
-first_icu_stay                0.608205
-gender                       -0.045806
-icd_alzheimer                 0.037172
-icd_cancer                    0.070191
-icd_heart                    -0.251290
-icd_transplant               -0.080293
-insurance=Public             -0.053696
-insurance=Self-Pay            0.536286
-oasis_score                   0.675058
-dtype: float64
-
-
-L1 Ratio: 0.9
-gcv_score: 0.7415964585731429 old_score: 0.7416576865616811
-
-L1 Ratio: 0.8
-gcv_score: 0.7415780901765815 old_score: 0.7416576865616811
-
-L1 Ratio: 0.7
-gcv_score: 0.7415964585731429 old_score: 0.7416576865616811
-
-L1 Ratio: 0.6
-gcv_score: 0.7415842129754353 old_score: 0.7416576865616811
-
-L1 Ratio: 0.5
-gcv_score: 0.7415780901765815 old_score: 0.7416576865616811
-
-L1 Ratio: 0.3
-gcv_score: 0.7417678969410497 old_score: 0.7416576865616811
-Best Parameters: {'alphas': [0.001]}
-C-Index Validation: 0.7417678969410497
-C-Index Test: 0.7030794204551415
-Coeficients:
-admission_type=EMERGENCY      0.724991
-admission_type=URGENT         0.212379
-age_st=(30, 45]               0.014851
-age_st=(45, 60]              -0.194366
-age_st=(60, 75]              -0.147840
-age_st=(75, 90]              -0.082297
-ethnicity_grouped=black      -0.264935
-ethnicity_grouped=hispanic   -0.272080
-ethnicity_grouped=white      -0.301324
-first_hosp_stay               0.104250
-first_icu_stay                0.612809
-gender                       -0.054568
-icd_alzheimer                 0.162296
-icd_cancer                    0.071492
-icd_heart                    -0.251883
-icd_transplant               -0.102655
-insurance=Public             -0.064475
-insurance=Self-Pay            0.677724
-oasis_score                   0.678059
-dtype: float64
-
 
 L1 Ratio: 0.1
 gcv_score: 0.7417587127427689 old_score: 0.7417678969410497
@@ -2944,7 +1570,6 @@ gcv_score: 0.7398024785089761 old_score: 0.7418046337341726
 Tuning hyper-parameters
 
 Alphas: [100, 10, 1, 0.1, 0.01, 0.001, 0.0001, 1e-05, 1e-06, 1e-07]
-
 
 L1 Ratio: 1
 gcv_score: 0.7140258661938135 old_score: 0
@@ -3012,36 +1637,6 @@ Tuning hyper-parameters
 
 Alphas: [100, 10, 1, 0.1, 0.01, 0.001, 0.0001, 1e-05, 1e-06, 1e-07]
 
-
-L1 Ratio: 1
-gcv_score: 0.7145621658991864 old_score: 0
-Best Parameters: {'alphas': [1e-07]}
-C-Index Validation: 0.7145621658991864
-C-Index Test: 0.7019490309313845
-Coeficients:
-admission_type=EMERGENCY      0.797969
-admission_type=URGENT         0.371033
-age_st=(30, 45]              -0.492678
-age_st=(45, 60]              -0.728230
-age_st=(60, 75]              -0.686272
-age_st=(75, 90]              -0.624362
-ethnicity_grouped=black      -0.424931
-ethnicity_grouped=hispanic   -0.469389
-ethnicity_grouped=white      -0.425622
-first_hosp_stay               0.120864
-first_icu_stay                0.636163
-gender                       -0.059505
-icd_alzheimer                 0.251449
-icd_cancer                    0.084755
-icd_diabetes                  0.021130
-icd_heart                    -0.250006
-icd_transplant               -0.105002
-insurance=Public             -0.058819
-insurance=Self-Pay            0.950094
-oasis_score                   0.683831
-dtype: float64
-
-
 L1 Ratio: 0.9
 gcv_score: 0.7146732756385724 old_score: 0.7145621658991864
 Best Parameters: {'alphas': [1e-05]}
@@ -3105,96 +1700,6 @@ Tuning hyper-parameters
 
 Alphas: [100, 10, 1, 0.1, 0.01, 0.001, 0.0001, 1e-05, 1e-06, 1e-07]
 
-
-L1 Ratio: 1
-gcv_score: 0.7451948187610989 old_score: 0
-Best Parameters: {'alphas': [0.0001]}
-C-Index Validation: 0.7451948187610989
-C-Index Test: 0.7027008307455191
-Coeficients:
-admission_type=EMERGENCY      0.785271
-admission_type=URGENT         0.341577
-age_st=(30, 45]              -0.046486
-age_st=(45, 60]              -0.286325
-age_st=(60, 75]              -0.245466
-age_st=(75, 90]              -0.182489
-ethnicity_grouped=black      -0.392263
-ethnicity_grouped=hispanic   -0.426864
-ethnicity_grouped=white      -0.403447
-first_hosp_stay               0.114227
-first_icu_stay                0.630977
-gender                       -0.057120
-icd_alzheimer                 0.229740
-icd_cancer                    0.078636
-icd_diabetes                  0.012691
-icd_heart                    -0.251298
-icd_transplant               -0.103169
-insurance=Public             -0.058881
-insurance=Self-Pay            1.041057
-oasis_score                   0.682733
-dtype: float64
-
-
-L1 Ratio: 0.9
-gcv_score: 0.7452666353285281 old_score: 0.7451948187610989
-Best Parameters: {'alphas': [0.0001]}
-C-Index Validation: 0.7452666353285281
-C-Index Test: 0.7026725878186911
-Coeficients:
-admission_type=EMERGENCY      0.785857
-admission_type=URGENT         0.343357
-age_st=(30, 45]              -0.071011
-age_st=(45, 60]              -0.310395
-age_st=(60, 75]              -0.269493
-age_st=(75, 90]              -0.206618
-ethnicity_grouped=black      -0.394051
-ethnicity_grouped=hispanic   -0.429221
-ethnicity_grouped=white      -0.404776
-first_hosp_stay               0.114692
-first_icu_stay                0.631172
-gender                       -0.057303
-icd_alzheimer                 0.231336
-icd_cancer                    0.079088
-icd_diabetes                  0.013263
-icd_heart                    -0.251264
-icd_transplant               -0.103338
-insurance=Public             -0.059053
-insurance=Self-Pay            1.034320
-oasis_score                   0.682770
-dtype: float64
-
-
-L1 Ratio: 0.8
-gcv_score: 0.7452927504439569 old_score: 0.7452666353285281
-Best Parameters: {'alphas': [0.0001]}
-C-Index Validation: 0.7452927504439569
-C-Index Test: 0.7026887266340214
-Coeficients:
-admission_type=EMERGENCY      0.786437
-admission_type=URGENT         0.345124
-age_st=(30, 45]              -0.095613
-age_st=(45, 60]              -0.334567
-age_st=(60, 75]              -0.293616
-age_st=(75, 90]              -0.230831
-ethnicity_grouped=black      -0.395841
-ethnicity_grouped=hispanic   -0.431576
-ethnicity_grouped=white      -0.406098
-first_hosp_stay               0.115161
-first_icu_stay                0.631369
-gender                       -0.057485
-icd_alzheimer                 0.232923
-icd_cancer                    0.079539
-icd_diabetes                  0.013838
-icd_heart                    -0.251230
-icd_transplant               -0.103507
-insurance=Public             -0.059222
-insurance=Self-Pay            1.027514
-oasis_score                   0.682809
-dtype: float64
-
-
-L1 Ratio: 0.7
-gcv_score: 0.7452927504439569 old_score: 0.7452927504439569
 
 L1 Ratio: 0.6
 gcv_score: 0.7453123367805286 old_score: 0.7452927504439569
@@ -3316,186 +1821,6 @@ Tuning hyper-parameters
 Alphas: [100, 10, 1, 0.1, 0.01, 0.001, 0.0001, 1e-05, 1e-06, 1e-07]
 
 
-L1 Ratio: 1
-gcv_score: 0.7225249291721507 old_score: 0
-Best Parameters: {'alphas': [1e-05]}
-C-Index Validation: 0.7225249291721507
-C-Index Test: 0.7020754516514716
-Coeficients:
-admission_type=EMERGENCY      0.796705
-admission_type=URGENT         0.367991
-age_st=(30, 45]              -0.471019
-age_st=(45, 60]              -0.707132
-age_st=(60, 75]              -0.665155
-age_st=(75, 90]              -0.603129
-ethnicity_grouped=black      -0.422031
-ethnicity_grouped=hispanic   -0.465580
-ethnicity_grouped=white      -0.423475
-first_hosp_stay               0.120341
-first_icu_stay                0.635741
-gender                       -0.059320
-icd_alzheimer                 0.249377
-icd_cancer                    0.084274
-icd_diabetes                  0.020439
-icd_heart                    -0.250069
-icd_transplant               -0.104858
-insurance=Public             -0.058793
-insurance=Self-Pay            0.952973
-oasis_score                   0.683755
-dtype: float64
-
-
-L1 Ratio: 0.9
-gcv_score: 0.722558391148192 old_score: 0.7225249291721507
-Best Parameters: {'alphas': [1e-05]}
-C-Index Validation: 0.722558391148192
-C-Index Test: 0.7020646924412514
-Coeficients:
-admission_type=EMERGENCY      0.796760
-admission_type=URGENT         0.368174
-age_st=(30, 45]              -0.471081
-age_st=(45, 60]              -0.707153
-age_st=(60, 75]              -0.665184
-age_st=(75, 90]              -0.603163
-ethnicity_grouped=black      -0.422184
-ethnicity_grouped=hispanic   -0.465778
-ethnicity_grouped=white      -0.423610
-first_hosp_stay               0.120373
-first_icu_stay                0.635750
-gender                       -0.059332
-icd_alzheimer                 0.249523
-icd_cancer                    0.084309
-icd_diabetes                  0.020483
-icd_heart                    -0.250073
-icd_transplant               -0.104869
-insurance=Public             -0.058815
-insurance=Self-Pay            0.952987
-oasis_score                   0.683755
-dtype: float64
-
-
-L1 Ratio: 0.8
-gcv_score: 0.7225639681441988 old_score: 0.722558391148192
-Best Parameters: {'alphas': [1e-05]}
-C-Index Validation: 0.7225639681441988
-C-Index Test: 0.7020620026386963
-Coeficients:
-admission_type=EMERGENCY      0.796815
-admission_type=URGENT         0.368348
-age_st=(30, 45]              -0.472240
-age_st=(45, 60]              -0.708278
-age_st=(60, 75]              -0.666308
-age_st=(75, 90]              -0.604291
-ethnicity_grouped=black      -0.422342
-ethnicity_grouped=hispanic   -0.465988
-ethnicity_grouped=white      -0.423734
-first_hosp_stay               0.120414
-first_icu_stay                0.635766
-gender                       -0.059347
-icd_alzheimer                 0.249673
-icd_cancer                    0.084351
-icd_diabetes                  0.020535
-icd_heart                    -0.250072
-icd_transplant               -0.104884
-insurance=Public             -0.058834
-insurance=Self-Pay            0.952608
-oasis_score                   0.683756
-dtype: float64
-
-
-L1 Ratio: 0.7
-gcv_score: 0.7225639681441988 old_score: 0.7225639681441988
-
-L1 Ratio: 0.6
-gcv_score: 0.7225639681441988 old_score: 0.7225639681441988
-
-L1 Ratio: 0.5
-gcv_score: 0.7226030071162469 old_score: 0.7225639681441988
-Best Parameters: {'alphas': [1e-05]}
-C-Index Validation: 0.7226030071162469
-C-Index Test: 0.7020270352054807
-Coeficients:
-admission_type=EMERGENCY      0.796980
-admission_type=URGENT         0.368872
-age_st=(30, 45]              -0.475687
-age_st=(45, 60]              -0.711623
-age_st=(60, 75]              -0.669651
-age_st=(75, 90]              -0.607643
-ethnicity_grouped=black      -0.422815
-ethnicity_grouped=hispanic   -0.466616
-ethnicity_grouped=white      -0.424109
-first_hosp_stay               0.120538
-first_icu_stay                0.635814
-gender                       -0.059392
-icd_alzheimer                 0.250121
-icd_cancer                    0.084476
-icd_diabetes                  0.020691
-icd_heart                    -0.250069
-icd_transplant               -0.104929
-insurance=Public             -0.058891
-insurance=Self-Pay            0.951484
-oasis_score                   0.683760
-dtype: float64
-
-
-L1 Ratio: 0.3
-gcv_score: 0.7226197381042675 old_score: 0.7226030071162469
-Best Parameters: {'alphas': [1e-05]}
-C-Index Validation: 0.7226197381042675
-C-Index Test: 0.7020364495144233
-Coeficients:
-admission_type=EMERGENCY      0.797089
-admission_type=URGENT         0.369220
-age_st=(30, 45]              -0.477954
-age_st=(45, 60]              -0.713822
-age_st=(60, 75]              -0.671849
-age_st=(75, 90]              -0.609847
-ethnicity_grouped=black      -0.423130
-ethnicity_grouped=hispanic   -0.467033
-ethnicity_grouped=white      -0.424358
-first_hosp_stay               0.120621
-first_icu_stay                0.635846
-gender                       -0.059422
-icd_alzheimer                 0.250420
-icd_cancer                    0.084560
-icd_diabetes                  0.020795
-icd_heart                    -0.250068
-icd_transplant               -0.104959
-insurance=Public             -0.058929
-insurance=Self-Pay            0.950745
-oasis_score                   0.683763
-dtype: float64
-
-
-L1 Ratio: 0.1
-gcv_score: 0.7226364690922882 old_score: 0.7226197381042675
-Best Parameters: {'alphas': [1e-05]}
-C-Index Validation: 0.7226364690922882
-C-Index Test: 0.7020324148105909
-Coeficients:
-admission_type=EMERGENCY      0.797199
-admission_type=URGENT         0.369568
-age_st=(30, 45]              -0.480196
-age_st=(45, 60]              -0.715996
-age_st=(60, 75]              -0.674022
-age_st=(75, 90]              -0.612026
-ethnicity_grouped=black      -0.423444
-ethnicity_grouped=hispanic   -0.467450
-ethnicity_grouped=white      -0.424607
-first_hosp_stay               0.120703
-first_icu_stay                0.635878
-gender                       -0.059452
-icd_alzheimer                 0.250718
-icd_cancer                    0.084643
-icd_diabetes                  0.020899
-icd_heart                    -0.250066
-icd_transplant               -0.104989
-insurance=Public             -0.058968
-insurance=Self-Pay            0.950016
-oasis_score                   0.683765
-dtype: float64
-
-
 L1 Ratio: 0.01
 gcv_score: 0.722642046088295 old_score: 0.7226364690922882
 Best Parameters: {'alphas': [1e-05]}
@@ -3537,36 +1862,6 @@ gcv_score: 0.722642046088295 old_score: 0.722642046088295
 Tuning hyper-parameters
 
 Alphas: [100, 10, 1, 0.1, 0.01, 0.001, 0.0001, 1e-05, 1e-06, 1e-07]
-
-
-L1 Ratio: 1
-gcv_score: 0.711873525132356 old_score: 0
-Best Parameters: {'alphas': [1e-05]}
-C-Index Validation: 0.711873525132356
-C-Index Test: 0.7020754516514716
-Coeficients:
-admission_type=EMERGENCY      0.796705
-admission_type=URGENT         0.367991
-age_st=(30, 45]              -0.471019
-age_st=(45, 60]              -0.707132
-age_st=(60, 75]              -0.665155
-age_st=(75, 90]              -0.603129
-ethnicity_grouped=black      -0.422031
-ethnicity_grouped=hispanic   -0.465580
-ethnicity_grouped=white      -0.423475
-first_hosp_stay               0.120341
-first_icu_stay                0.635741
-gender                       -0.059320
-icd_alzheimer                 0.249377
-icd_cancer                    0.084274
-icd_diabetes                  0.020439
-icd_heart                    -0.250069
-icd_transplant               -0.104858
-insurance=Public             -0.058793
-insurance=Self-Pay            0.952973
-oasis_score                   0.683755
-dtype: float64
-
 
 L1 Ratio: 0.9
 gcv_score: 0.711873525132356 old_score: 0.711873525132356
@@ -3630,150 +1925,6 @@ gcv_score: 0.7118001638402192 old_score: 0.7118796385733674
 Tuning hyper-parameters
 
 Alphas: [100, 10, 1, 0.1, 0.01, 0.001, 0.0001, 1e-05, 1e-06, 1e-07]
-
-
-L1 Ratio: 1
-gcv_score: 0.7389476397694701 old_score: 0
-Best Parameters: {'alphas': [0.001]}
-C-Index Validation: 0.7389476397694701
-C-Index Test: 0.7055130193168171
-Coeficients:
-admission_type=EMERGENCY      0.686438
-admission_type=URGENT         0.046784
-age_st=(30, 45]               0.044619
-age_st=(45, 60]              -0.103716
-age_st=(60, 75]              -0.058248
-ethnicity_grouped=black      -0.098546
-ethnicity_grouped=hispanic   -0.066563
-ethnicity_grouped=white      -0.154316
-first_hosp_stay               0.077372
-first_icu_stay                0.608205
-gender                       -0.045806
-icd_alzheimer                 0.037172
-icd_cancer                    0.070191
-icd_heart                    -0.251290
-icd_transplant               -0.080293
-insurance=Public             -0.053696
-insurance=Self-Pay            0.536286
-oasis_score                   0.675058
-dtype: float64
-
-
-L1 Ratio: 0.9
-gcv_score: 0.7388248869139319 old_score: 0.7389476397694701
-
-L1 Ratio: 0.8
-gcv_score: 0.7390458420539008 old_score: 0.7389476397694701
-Best Parameters: {'alphas': [0.001]}
-C-Index Validation: 0.7390458420539008
-C-Index Test: 0.7046159701647101
-Coeficients:
-admission_type=EMERGENCY      0.698730
-admission_type=URGENT         0.102225
-age_st=(30, 45]               0.058317
-age_st=(45, 60]              -0.106872
-age_st=(60, 75]              -0.061029
-ethnicity_grouped=black      -0.155883
-ethnicity_grouped=hispanic   -0.136794
-ethnicity_grouped=white      -0.205611
-first_hosp_stay               0.084984
-first_icu_stay                0.609380
-gender                       -0.048204
-icd_alzheimer                 0.077751
-icd_cancer                    0.070196
-icd_heart                    -0.251586
-icd_transplant               -0.086463
-insurance=Public             -0.057060
-insurance=Self-Pay            0.597936
-oasis_score                   0.675816
-dtype: float64
-
-
-L1 Ratio: 0.7
-gcv_score: 0.7392913477649774 old_score: 0.7390458420539008
-Best Parameters: {'alphas': [0.001]}
-C-Index Validation: 0.7392913477649774
-C-Index Test: 0.7044330635909671
-Coeficients:
-admission_type=EMERGENCY      0.704541
-admission_type=URGENT         0.127376
-age_st=(30, 45]               0.064535
-age_st=(45, 60]              -0.108821
-age_st=(60, 75]              -0.062638
-ethnicity_grouped=black      -0.179446
-ethnicity_grouped=hispanic   -0.166345
-ethnicity_grouped=white      -0.226960
-first_hosp_stay               0.088852
-first_icu_stay                0.609912
-gender                       -0.049455
-icd_alzheimer                 0.096119
-icd_cancer                    0.070389
-icd_heart                    -0.251851
-icd_transplant               -0.089433
-insurance=Public             -0.059096
-insurance=Self-Pay            0.621458
-oasis_score                   0.676110
-dtype: float64
-
-
-L1 Ratio: 0.6
-gcv_score: 0.7392054207661005 old_score: 0.7392913477649774
-
-L1 Ratio: 0.5
-gcv_score: 0.7393803435852426 old_score: 0.7392913477649774
-Best Parameters: {'alphas': [0.001]}
-C-Index Validation: 0.7393803435852426
-C-Index Test: 0.7037606129522063
-Coeficients:
-admission_type=EMERGENCY      0.715319
-admission_type=URGENT         0.172909
-age_st=(30, 45]               0.059791
-age_st=(45, 60]              -0.130040
-age_st=(60, 75]              -0.082409
-age_st=(75, 90]              -0.015224
-ethnicity_grouped=black      -0.226861
-ethnicity_grouped=hispanic   -0.223771
-ethnicity_grouped=white      -0.268761
-first_hosp_stay               0.096526
-first_icu_stay                0.611294
-gender                       -0.051892
-icd_alzheimer                 0.129465
-icd_cancer                    0.070434
-icd_heart                    -0.252718
-icd_transplant               -0.095385
-insurance=Public             -0.063572
-insurance=Self-Pay            0.657525
-oasis_score                   0.676766
-dtype: float64
-
-
-L1 Ratio: 0.3
-gcv_score: 0.7398222538651805 old_score: 0.7393803435852426
-Best Parameters: {'alphas': [0.001]}
-C-Index Validation: 0.7398222538651805
-C-Index Test: 0.7030794204551415
-Coeficients:
-admission_type=EMERGENCY      0.724991
-admission_type=URGENT         0.212379
-age_st=(30, 45]               0.014851
-age_st=(45, 60]              -0.194366
-age_st=(60, 75]              -0.147840
-age_st=(75, 90]              -0.082297
-ethnicity_grouped=black      -0.264935
-ethnicity_grouped=hispanic   -0.272080
-ethnicity_grouped=white      -0.301324
-first_hosp_stay               0.104250
-first_icu_stay                0.612809
-gender                       -0.054568
-icd_alzheimer                 0.162296
-icd_cancer                    0.071492
-icd_heart                    -0.251883
-icd_transplant               -0.102655
-insurance=Public             -0.064475
-insurance=Self-Pay            0.677724
-oasis_score                   0.678059
-dtype: float64
-
 
 L1 Ratio: 0.1
 gcv_score: 0.7398161162224036 old_score: 0.7398222538651805
@@ -3888,160 +2039,6 @@ Tuning hyper-parameters
 Alphas: [100, 10, 1, 0.1, 0.01, 0.001, 0.0001, 1e-05, 1e-06, 1e-07]
 
 
-L1 Ratio: 1
-gcv_score: 0.738553260159582 old_score: 0
-Best Parameters: {'alphas': [1e-05]}
-C-Index Validation: 0.738553260159582
-C-Index Test: 0.7020754516514716
-Coeficients:
-admission_type=EMERGENCY      0.796705
-admission_type=URGENT         0.367991
-age_st=(30, 45]              -0.471019
-age_st=(45, 60]              -0.707132
-age_st=(60, 75]              -0.665155
-age_st=(75, 90]              -0.603129
-ethnicity_grouped=black      -0.422031
-ethnicity_grouped=hispanic   -0.465580
-ethnicity_grouped=white      -0.423475
-first_hosp_stay               0.120341
-first_icu_stay                0.635741
-gender                       -0.059320
-icd_alzheimer                 0.249377
-icd_cancer                    0.084274
-icd_diabetes                  0.020439
-icd_heart                    -0.250069
-icd_transplant               -0.104858
-insurance=Public             -0.058793
-insurance=Self-Pay            0.952973
-oasis_score                   0.683755
-dtype: float64
-
-
-L1 Ratio: 0.9
-gcv_score: 0.7386172978649829 old_score: 0.738553260159582
-Best Parameters: {'alphas': [1e-05]}
-C-Index Validation: 0.7386172978649829
-C-Index Test: 0.7020646924412514
-Coeficients:
-admission_type=EMERGENCY      0.796760
-admission_type=URGENT         0.368174
-age_st=(30, 45]              -0.471081
-age_st=(45, 60]              -0.707153
-age_st=(60, 75]              -0.665184
-age_st=(75, 90]              -0.603163
-ethnicity_grouped=black      -0.422184
-ethnicity_grouped=hispanic   -0.465778
-ethnicity_grouped=white      -0.423610
-first_hosp_stay               0.120373
-first_icu_stay                0.635750
-gender                       -0.059332
-icd_alzheimer                 0.249523
-icd_cancer                    0.084309
-icd_diabetes                  0.020483
-icd_heart                    -0.250073
-icd_transplant               -0.104869
-insurance=Public             -0.058815
-insurance=Self-Pay            0.952987
-oasis_score                   0.683755
-dtype: float64
-
-
-L1 Ratio: 0.8
-gcv_score: 0.738623701635523 old_score: 0.7386172978649829
-Best Parameters: {'alphas': [1e-05]}
-C-Index Validation: 0.738623701635523
-C-Index Test: 0.7020620026386963
-Coeficients:
-admission_type=EMERGENCY      0.796815
-admission_type=URGENT         0.368348
-age_st=(30, 45]              -0.472240
-age_st=(45, 60]              -0.708278
-age_st=(60, 75]              -0.666308
-age_st=(75, 90]              -0.604291
-ethnicity_grouped=black      -0.422342
-ethnicity_grouped=hispanic   -0.465988
-ethnicity_grouped=white      -0.423734
-first_hosp_stay               0.120414
-first_icu_stay                0.635766
-gender                       -0.059347
-icd_alzheimer                 0.249673
-icd_cancer                    0.084351
-icd_diabetes                  0.020535
-icd_heart                    -0.250072
-icd_transplant               -0.104884
-insurance=Public             -0.058834
-insurance=Self-Pay            0.952608
-oasis_score                   0.683756
-dtype: float64
-
-
-L1 Ratio: 0.7
-gcv_score: 0.738623701635523 old_score: 0.738623701635523
-
-L1 Ratio: 0.6
-gcv_score: 0.738623701635523 old_score: 0.738623701635523
-
-L1 Ratio: 0.5
-gcv_score: 0.738623701635523 old_score: 0.738623701635523
-
-L1 Ratio: 0.3
-gcv_score: 0.7386301054060631 old_score: 0.738623701635523
-Best Parameters: {'alphas': [1e-05]}
-C-Index Validation: 0.7386301054060631
-C-Index Test: 0.7020364495144233
-Coeficients:
-admission_type=EMERGENCY      0.797089
-admission_type=URGENT         0.369220
-age_st=(30, 45]              -0.477954
-age_st=(45, 60]              -0.713822
-age_st=(60, 75]              -0.671849
-age_st=(75, 90]              -0.609847
-ethnicity_grouped=black      -0.423130
-ethnicity_grouped=hispanic   -0.467033
-ethnicity_grouped=white      -0.424358
-first_hosp_stay               0.120621
-first_icu_stay                0.635846
-gender                       -0.059422
-icd_alzheimer                 0.250420
-icd_cancer                    0.084560
-icd_diabetes                  0.020795
-icd_heart                    -0.250068
-icd_transplant               -0.104959
-insurance=Public             -0.058929
-insurance=Self-Pay            0.950745
-oasis_score                   0.683763
-dtype: float64
-
-
-L1 Ratio: 0.1
-gcv_score: 0.7386429129471432 old_score: 0.7386301054060631
-Best Parameters: {'alphas': [1e-05]}
-C-Index Validation: 0.7386429129471432
-C-Index Test: 0.7020324148105909
-Coeficients:
-admission_type=EMERGENCY      0.797199
-admission_type=URGENT         0.369568
-age_st=(30, 45]              -0.480196
-age_st=(45, 60]              -0.715996
-age_st=(60, 75]              -0.674022
-age_st=(75, 90]              -0.612026
-ethnicity_grouped=black      -0.423444
-ethnicity_grouped=hispanic   -0.467450
-ethnicity_grouped=white      -0.424607
-first_hosp_stay               0.120703
-first_icu_stay                0.635878
-gender                       -0.059452
-icd_alzheimer                 0.250718
-icd_cancer                    0.084643
-icd_diabetes                  0.020899
-icd_heart                    -0.250066
-icd_transplant               -0.104989
-insurance=Public             -0.058968
-insurance=Self-Pay            0.950016
-oasis_score                   0.683765
-dtype: float64
-
-
 L1 Ratio: 0.01
 gcv_score: 0.7386493167176834 old_score: 0.7386429129471432
 Best Parameters: {'alphas': [1e-05]}
@@ -4083,35 +2080,6 @@ gcv_score: 0.7386493167176834 old_score: 0.7386493167176834
 Tuning hyper-parameters
 
 Alphas: [100, 10, 1, 0.1, 0.01, 0.001, 0.0001, 1e-05, 1e-06, 1e-07]
-
-
-L1 Ratio: 1
-gcv_score: 0.7410054294498594 old_score: 0
-Best Parameters: {'alphas': [1e-07]}
-C-Index Validation: 0.7410054294498594
-C-Index Test: 0.7019490309313845
-Coeficients:
-admission_type=EMERGENCY      0.797969
-admission_type=URGENT         0.371033
-age_st=(30, 45]              -0.492678
-age_st=(45, 60]              -0.728230
-age_st=(60, 75]              -0.686272
-age_st=(75, 90]              -0.624362
-ethnicity_grouped=black      -0.424931
-ethnicity_grouped=hispanic   -0.469389
-ethnicity_grouped=white      -0.425622
-first_hosp_stay               0.120864
-first_icu_stay                0.636163
-gender                       -0.059505
-icd_alzheimer                 0.251449
-icd_cancer                    0.084755
-icd_diabetes                  0.021130
-icd_heart                    -0.250006
-icd_transplant               -0.105002
-insurance=Public             -0.058819
-insurance=Self-Pay            0.950094
-oasis_score                   0.683831
-dtype: float64
 
 
 L1 Ratio: 0.9
@@ -4312,111 +2280,6 @@ Tuning hyper-parameters
 Alphas: [100, 10, 1, 0.1, 0.01, 0.001, 0.0001, 1e-05, 1e-06, 1e-07]
 
 
-L1 Ratio: 1
-gcv_score: 0.724474667857286 old_score: 0
-Best Parameters: {'alphas': [0.0001]}
-C-Index Validation: 0.724474667857286
-C-Index Test: 0.7027008307455191
-Coeficients:
-admission_type=EMERGENCY      0.785271
-admission_type=URGENT         0.341577
-age_st=(30, 45]              -0.046486
-age_st=(45, 60]              -0.286325
-age_st=(60, 75]              -0.245466
-age_st=(75, 90]              -0.182489
-ethnicity_grouped=black      -0.392263
-ethnicity_grouped=hispanic   -0.426864
-ethnicity_grouped=white      -0.403447
-first_hosp_stay               0.114227
-first_icu_stay                0.630977
-gender                       -0.057120
-icd_alzheimer                 0.229740
-icd_cancer                    0.078636
-icd_diabetes                  0.012691
-icd_heart                    -0.251298
-icd_transplant               -0.103169
-insurance=Public             -0.058881
-insurance=Self-Pay            1.041057
-oasis_score                   0.682733
-dtype: float64
-
-
-L1 Ratio: 0.9
-gcv_score: 0.724468943726066 old_score: 0.724474667857286
-
-L1 Ratio: 0.8
-gcv_score: 0.7244918402509459 old_score: 0.724474667857286
-Best Parameters: {'alphas': [0.0001]}
-C-Index Validation: 0.7244918402509459
-C-Index Test: 0.7026887266340214
-Coeficients:
-admission_type=EMERGENCY      0.786437
-admission_type=URGENT         0.345124
-age_st=(30, 45]              -0.095613
-age_st=(45, 60]              -0.334567
-age_st=(60, 75]              -0.293616
-age_st=(75, 90]              -0.230831
-ethnicity_grouped=black      -0.395841
-ethnicity_grouped=hispanic   -0.431576
-ethnicity_grouped=white      -0.406098
-first_hosp_stay               0.115161
-first_icu_stay                0.631369
-gender                       -0.057485
-icd_alzheimer                 0.232923
-icd_cancer                    0.079539
-icd_diabetes                  0.013838
-icd_heart                    -0.251230
-icd_transplant               -0.103507
-insurance=Public             -0.059222
-insurance=Self-Pay            1.027514
-oasis_score                   0.682809
-dtype: float64
-
-
-L1 Ratio: 0.7
-gcv_score: 0.7244803919885059 old_score: 0.7244918402509459
-
-L1 Ratio: 0.6
-gcv_score: 0.7244918402509459 old_score: 0.7244918402509459
-
-L1 Ratio: 0.5
-gcv_score: 0.7244403230699661 old_score: 0.7244918402509459
-
-L1 Ratio: 0.3
-gcv_score: 0.7243515990360563 old_score: 0.7244918402509459
-
-L1 Ratio: 0.1
-gcv_score: 0.7244861161197259 old_score: 0.7244918402509459
-
-L1 Ratio: 0.01
-gcv_score: 0.7245147367758259 old_score: 0.7244918402509459
-Best Parameters: {'alphas': [0.001]}
-C-Index Validation: 0.7245147367758259
-C-Index Test: 0.7020337597118683
-Coeficients:
-admission_type=EMERGENCY      0.737500
-admission_type=URGENT         0.262963
-age_st=(30, 45]              -0.040421
-age_st=(45, 60]              -0.280653
-age_st=(60, 75]              -0.235178
-age_st=(75, 90]              -0.170896
-ethnicity_grouped=black      -0.315012
-ethnicity_grouped=hispanic   -0.334030
-ethnicity_grouped=white      -0.342561
-first_hosp_stay               0.114339
-first_icu_stay                0.614873
-gender                       -0.058079
-icd_alzheimer                 0.204570
-icd_cancer                    0.080548
-icd_diabetes                  0.009797
-icd_heart                    -0.251427
-icd_transplant               -0.107344
-insurance=Public             -0.067055
-insurance=Self-Pay            0.701036
-oasis_score                   0.680172
-dtype: float64
-
-
 L1 Ratio: 0.001
 gcv_score: 0.7245204609070458 old_score: 0.7245147367758259
 Best Parameters: {'alphas': [0.001]}
@@ -4455,33 +2318,6 @@ dtype: float64
 Tuning hyper-parameters
 
 Alphas: [100, 10, 1, 0.1, 0.01, 0.001, 0.0001, 1e-05, 1e-06, 1e-07]
-
-
-L1 Ratio: 1
-gcv_score: 0.7281926071693209 old_score: 0
-Best Parameters: {'alphas': [0.001]}
-C-Index Validation: 0.7281926071693209
-C-Index Test: 0.7055130193168171
-Coeficients:
-admission_type=EMERGENCY      0.686438
-admission_type=URGENT         0.046784
-age_st=(30, 45]               0.044619
-age_st=(45, 60]              -0.103716
-age_st=(60, 75]              -0.058248
-ethnicity_grouped=black      -0.098546
-ethnicity_grouped=hispanic   -0.066563
-ethnicity_grouped=white      -0.154316
-first_hosp_stay               0.077372
-first_icu_stay                0.608205
-gender                       -0.045806
-icd_alzheimer                 0.037172
-icd_cancer                    0.070191
-icd_heart                    -0.251290
-icd_transplant               -0.080293
-insurance=Public             -0.053696
-insurance=Self-Pay            0.536286
-oasis_score                   0.675058
-dtype: float64
 
 
 L1 Ratio: 0.9
@@ -4680,35 +2516,6 @@ Tuning hyper-parameters
 Alphas: [100, 10, 1, 0.1, 0.01, 0.001, 0.0001, 1e-05, 1e-06, 1e-07]
 
 
-L1 Ratio: 1
-gcv_score: 0.7427746810028267 old_score: 0
-Best Parameters: {'alphas': [1e-06]}
-C-Index Validation: 0.7427746810028267
-C-Index Test: 0.7019557554377721
-Coeficients:
-admission_type=EMERGENCY      0.797854
-admission_type=URGENT         0.370751
-age_st=(30, 45]              -0.491076
-age_st=(45, 60]              -0.726681
-age_st=(60, 75]              -0.684721
-age_st=(75, 90]              -0.622800
-ethnicity_grouped=black      -0.424716
-ethnicity_grouped=hispanic   -0.469093
-ethnicity_grouped=white      -0.425459
-first_hosp_stay               0.120819
-first_icu_stay                0.636127
-gender                       -0.059488
-icd_alzheimer                 0.251265
-icd_cancer                    0.084719
-icd_diabetes                  0.021076
-icd_heart                    -0.250009
-icd_transplant               -0.104986
-insurance=Public             -0.058815
-insurance=Self-Pay            0.950235
-oasis_score                   0.683825
-dtype: float64
-
-
 L1 Ratio: 0.9
 gcv_score: 0.7427746810028267 old_score: 0.7427746810028267
 
@@ -4773,70 +2580,6 @@ Tuning hyper-parameters
 Alphas: [100, 10, 1, 0.1, 0.01, 0.001, 0.0001, 1e-05, 1e-06, 1e-07]
 
 
-L1 Ratio: 1
-gcv_score: 0.7459745442849359 old_score: 0
-Best Parameters: {'alphas': [1e-06]}
-C-Index Validation: 0.7459745442849359
-C-Index Test: 0.7019557554377721
-Coeficients:
-admission_type=EMERGENCY      0.797854
-admission_type=URGENT         0.370751
-age_st=(30, 45]              -0.491076
-age_st=(45, 60]              -0.726681
-age_st=(60, 75]              -0.684721
-age_st=(75, 90]              -0.622800
-ethnicity_grouped=black      -0.424716
-ethnicity_grouped=hispanic   -0.469093
-ethnicity_grouped=white      -0.425459
-first_hosp_stay               0.120819
-first_icu_stay                0.636127
-gender                       -0.059488
-icd_alzheimer                 0.251265
-icd_cancer                    0.084719
-icd_diabetes                  0.021076
-icd_heart                    -0.250009
-icd_transplant               -0.104986
-insurance=Public             -0.058815
-insurance=Self-Pay            0.950235
-oasis_score                   0.683825
-dtype: float64
-
-
-L1 Ratio: 0.9
-gcv_score: 0.7459745442849359 old_score: 0.7459745442849359
-
-L1 Ratio: 0.8
-gcv_score: 0.7459745442849359 old_score: 0.7459745442849359
-
-L1 Ratio: 0.7
-gcv_score: 0.7459811084198158 old_score: 0.7459745442849359
-Best Parameters: {'alphas': [1e-06]}
-C-Index Validation: 0.7459811084198158
-C-Index Test: 0.7019557554377721
-Coeficients:
-admission_type=EMERGENCY      0.797870
-admission_type=URGENT         0.370804
-age_st=(30, 45]              -0.491406
-age_st=(45, 60]              -0.727002
-age_st=(60, 75]              -0.685041
-age_st=(75, 90]              -0.623122
-ethnicity_grouped=black      -0.424763
-ethnicity_grouped=hispanic   -0.469155
-ethnicity_grouped=white      -0.425497
-first_hosp_stay               0.120831
-first_icu_stay                0.636132
-gender                       -0.059492
-icd_alzheimer                 0.251310
-icd_cancer                    0.084731
-icd_diabetes                  0.021092
-icd_heart                    -0.250009
-icd_transplant               -0.104990
-insurance=Public             -0.058821
-insurance=Self-Pay            0.950126
-oasis_score                   0.683825
-dtype: float64
-
-
 L1 Ratio: 0.6
 gcv_score: 0.7459811084198158 old_score: 0.7459811084198158
 
@@ -4889,35 +2632,6 @@ gcv_score: 0.7462436738150096 old_score: 0.7464012130521258
 Tuning hyper-parameters
 
 Alphas: [100, 10, 1, 0.1, 0.01, 0.001, 0.0001, 1e-05, 1e-06, 1e-07]
-
-
-L1 Ratio: 1
-gcv_score: 0.7518247467961968 old_score: 0
-Best Parameters: {'alphas': [0.0001]}
-C-Index Validation: 0.7518247467961968
-C-Index Test: 0.7027008307455191
-Coeficients:
-admission_type=EMERGENCY      0.785271
-admission_type=URGENT         0.341577
-age_st=(30, 45]              -0.046486
-age_st=(45, 60]              -0.286325
-age_st=(60, 75]              -0.245466
-age_st=(75, 90]              -0.182489
-ethnicity_grouped=black      -0.392263
-ethnicity_grouped=hispanic   -0.426864
-ethnicity_grouped=white      -0.403447
-first_hosp_stay               0.114227
-first_icu_stay                0.630977
-gender                       -0.057120
-icd_alzheimer                 0.229740
-icd_cancer                    0.078636
-icd_diabetes                  0.012691
-icd_heart                    -0.251298
-icd_transplant               -0.103169
-insurance=Public             -0.058881
-insurance=Self-Pay            1.041057
-oasis_score                   0.682733
-dtype: float64
 
 
 L1 Ratio: 0.9
@@ -4983,100 +2697,6 @@ Tuning hyper-parameters
 Alphas: [100, 10, 1, 0.1, 0.01, 0.001, 0.0001, 1e-05, 1e-06, 1e-07]
 
 
-L1 Ratio: 1
-gcv_score: 0.6857757973263906 old_score: 0
-Best Parameters: {'alphas': [0.001]}
-C-Index Validation: 0.6857757973263906
-C-Index Test: 0.7055130193168171
-Coeficients:
-admission_type=EMERGENCY      0.686438
-admission_type=URGENT         0.046784
-age_st=(30, 45]               0.044619
-age_st=(45, 60]              -0.103716
-age_st=(60, 75]              -0.058248
-ethnicity_grouped=black      -0.098546
-ethnicity_grouped=hispanic   -0.066563
-ethnicity_grouped=white      -0.154316
-first_hosp_stay               0.077372
-first_icu_stay                0.608205
-gender                       -0.045806
-icd_alzheimer                 0.037172
-icd_cancer                    0.070191
-icd_heart                    -0.251290
-icd_transplant               -0.080293
-insurance=Public             -0.053696
-insurance=Self-Pay            0.536286
-oasis_score                   0.675058
-dtype: float64
-
-
-L1 Ratio: 0.9
-gcv_score: 0.6858133480198267 old_score: 0.6857757973263906
-Best Parameters: {'alphas': [0.001]}
-C-Index Validation: 0.6858133480198267
-C-Index Test: 0.7050449936722395
-Coeficients:
-admission_type=EMERGENCY      0.692719
-admission_type=URGENT         0.075478
-age_st=(30, 45]               0.051591
-age_st=(45, 60]              -0.105228
-age_st=(60, 75]              -0.059609
-ethnicity_grouped=black      -0.128549
-ethnicity_grouped=hispanic   -0.103253
-ethnicity_grouped=white      -0.181186
-first_hosp_stay               0.081180
-first_icu_stay                0.608783
-gender                       -0.046994
-icd_alzheimer                 0.058116
-icd_cancer                    0.070162
-icd_heart                    -0.251412
-icd_transplant               -0.083384
-insurance=Public             -0.055327
-insurance=Self-Pay            0.569848
-oasis_score                   0.675441
-dtype: float64
-
-
-L1 Ratio: 0.8
-gcv_score: 0.6855943023081159 old_score: 0.6858133480198267
-
-L1 Ratio: 0.7
-gcv_score: 0.6856443698993642 old_score: 0.6858133480198267
-
-L1 Ratio: 0.6
-gcv_score: 0.6853940319431232 old_score: 0.6858133480198267
-
-L1 Ratio: 0.5
-gcv_score: 0.6856944374906123 old_score: 0.6858133480198267
-
-L1 Ratio: 0.3
-gcv_score: 0.6858446402643569 old_score: 0.6858133480198267
-Best Parameters: {'alphas': [0.001]}
-C-Index Validation: 0.6858446402643569
-C-Index Test: 0.7030794204551415
-Coeficients:
-admission_type=EMERGENCY      0.724991
-admission_type=URGENT         0.212379
-age_st=(30, 45]               0.014851
-age_st=(45, 60]              -0.194366
-age_st=(60, 75]              -0.147840
-age_st=(75, 90]              -0.082297
-ethnicity_grouped=black      -0.264935
-ethnicity_grouped=hispanic   -0.272080
-ethnicity_grouped=white      -0.301324
-first_hosp_stay               0.104250
-first_icu_stay                0.612809
-gender                       -0.054568
-icd_alzheimer                 0.162296
-icd_cancer                    0.071492
-icd_heart                    -0.251883
-icd_transplant               -0.102655
-insurance=Public             -0.064475
-insurance=Self-Pay            0.677724
-oasis_score                   0.678059
-dtype: float64
-
-
 L1 Ratio: 0.1
 gcv_score: 0.6844208431382366 old_score: 0.6858446402643569
 
@@ -5121,83 +2741,6 @@ gcv_score: 0.6859854553647424 old_score: 0.6859917138136484
 Tuning hyper-parameters
 
 Alphas: [100, 10, 1, 0.1, 0.01, 0.001, 0.0001, 1e-05, 1e-06, 1e-07]
-
-
-L1 Ratio: 1
-gcv_score: 0.7046799618965676 old_score: 0
-Best Parameters: {'alphas': [0.01]}
-C-Index Validation: 0.7046799618965676
-C-Index Test: 0.7119315606637895
-Coeficients:
-admission_type=EMERGENCY    0.321453
-first_icu_stay              0.348722
-icd_heart                  -0.141746
-oasis_score                 0.621436
-dtype: float64
-
-
-L1 Ratio: 0.9
-gcv_score: 0.7046799618965676 old_score: 0.7046799618965676
-
-L1 Ratio: 0.8
-gcv_score: 0.7063546692068955 old_score: 0.7046799618965676
-Best Parameters: {'alphas': [0.01]}
-C-Index Validation: 0.7063546692068955
-C-Index Test: 0.7168021206403344
-Coeficients:
-admission_type=EMERGENCY    0.368185
-first_icu_stay              0.382072
-icd_cancer                  0.008842
-icd_heart                  -0.162545
-oasis_score                 0.626234
-dtype: float64
-
-
-L1 Ratio: 0.7
-gcv_score: 0.7063546692068955 old_score: 0.7063546692068955
-
-L1 Ratio: 0.6
-gcv_score: 0.7065083120794027 old_score: 0.7063546692068955
-Best Parameters: {'alphas': [0.01]}
-C-Index Validation: 0.7065083120794027
-C-Index Test: 0.7169137474463687
-Coeficients:
-admission_type=EMERGENCY    0.410542
-first_icu_stay              0.412031
-icd_cancer                  0.030640
-icd_heart                  -0.179418
-oasis_score                 0.631588
-dtype: float64
-
-
-L1 Ratio: 0.5
-gcv_score: 0.7075438650401008 old_score: 0.7065083120794027
-Best Parameters: {'alphas': [0.0001]}
-C-Index Validation: 0.7075438650401008
-C-Index Test: 0.7025676855190445
-Coeficients:
-admission_type=EMERGENCY      0.788154
-admission_type=URGENT         0.350411
-age_st=(30, 45]              -0.157715
-age_st=(45, 60]              -0.395431
-age_st=(60, 75]              -0.354383
-age_st=(75, 90]              -0.291821
-ethnicity_grouped=black      -0.401112
-ethnicity_grouped=hispanic   -0.438476
-ethnicity_grouped=white      -0.410062
-first_hosp_stay               0.116506
-first_icu_stay                0.631920
-gender                       -0.058002
-icd_alzheimer                 0.237595
-icd_cancer                    0.080841
-icd_diabetes                  0.015512
-icd_heart                    -0.251160
-icd_transplant               -0.103985
-insurance=Public             -0.059742
-insurance=Self-Pay            1.010178
-oasis_score                   0.682918
-dtype: float64
-
 
 L1 Ratio: 0.3
 gcv_score: 0.7073717850228928 old_score: 0.7075438650401008
@@ -5312,36 +2855,6 @@ gcv_score: 0.7262458518875684 old_score: 0.7269123861928127
 Tuning hyper-parameters
 
 Alphas: [100, 10, 1, 0.1, 0.01, 0.001, 0.0001, 1e-05, 1e-06, 1e-07]
-
-
-L1 Ratio: 1
-gcv_score: 0.7151766450916937 old_score: 0
-Best Parameters: {'alphas': [1e-05]}
-C-Index Validation: 0.7151766450916937
-C-Index Test: 0.7020754516514716
-Coeficients:
-admission_type=EMERGENCY      0.796705
-admission_type=URGENT         0.367991
-age_st=(30, 45]              -0.471019
-age_st=(45, 60]              -0.707132
-age_st=(60, 75]              -0.665155
-age_st=(75, 90]              -0.603129
-ethnicity_grouped=black      -0.422031
-ethnicity_grouped=hispanic   -0.465580
-ethnicity_grouped=white      -0.423475
-first_hosp_stay               0.120341
-first_icu_stay                0.635741
-gender                       -0.059320
-icd_alzheimer                 0.249377
-icd_cancer                    0.084274
-icd_diabetes                  0.020439
-icd_heart                    -0.250069
-icd_transplant               -0.104858
-insurance=Public             -0.058793
-insurance=Self-Pay            0.952973
-oasis_score                   0.683755
-dtype: float64
-
 
 L1 Ratio: 0.9
 gcv_score: 0.7151766450916937 old_score: 0.7151766450916937
