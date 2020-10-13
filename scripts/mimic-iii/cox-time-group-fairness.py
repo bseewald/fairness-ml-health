@@ -3,6 +3,7 @@ import os
 from time import localtime, strftime
 
 import best_parameters
+import matplotlib.pyplot as plt
 import cohort.get_cohort as sa_cohort
 import numpy as np
 import pandas as pd
@@ -21,17 +22,38 @@ def cohort_samples_fairness(seed, size, cohort):
     train_dataset, valid_dataset, test_dataset = sa_cohort.train_test_split_nn(seed, size, cohort)
 
     # Fairness samples
+
+    # samples size: +-1741 / 1182 (fixed)
     train_dataset_women = train_dataset.loc[train_dataset["gender"] == 1]
     test_dataset_women = test_dataset.loc[test_dataset["gender"] == 1]
 
+    # samples size: +-2110 / 1719 (fixed)
     train_dataset_men = train_dataset.loc[train_dataset["gender"] == 0]
     test_dataset_men = test_dataset.loc[test_dataset["gender"] == 0]
 
+    # samples size: +-351 / 353 (fixed)
     train_dataset_black = train_dataset.loc[train_dataset["ethnicity_grouped"] == "black"]
     test_dataset_black = test_dataset.loc[test_dataset["ethnicity_grouped"] == "black"]
 
-    train_dataset_white = train_dataset.loc[train_dataset["ethnicity_grouped"] == "black"]
-    test_dataset_white = test_dataset.loc[test_dataset["ethnicity_grouped"] == "black"]
+    # samples size: +-3275 / 2375 (fixed)
+    train_dataset_white = train_dataset.loc[train_dataset["ethnicity_grouped"] == "white"]
+    test_dataset_white = test_dataset.loc[test_dataset["ethnicity_grouped"] == "white"]
+
+    # samples size: +-177 / 195 (fixed)
+    train_dataset_women_black = train_dataset.loc[(train_dataset["gender"] == 1) & (train_dataset["ethnicity_grouped"] == "black")]
+    test_dataset_women_black = test_dataset.loc[(test_dataset["gender"] == 1) & (test_dataset["ethnicity_grouped"] == "black")]
+
+    # samples size: +-1471 / 939 (fixed)
+    train_dataset_women_white = train_dataset.loc[(train_dataset["gender"] == 1) & (train_dataset["ethnicity_grouped"] == "white")]
+    test_dataset_women_white = test_dataset.loc[(test_dataset["gender"] == 1) & (test_dataset["ethnicity_grouped"] == "white")]
+
+    # samples size: +-174 / 158 (fixed)
+    train_dataset_men_black = train_dataset.loc[(train_dataset["gender"] == 0) & (train_dataset["ethnicity_grouped"] == "black")]
+    test_dataset_men_black = test_dataset.loc[(test_dataset["gender"] == 0) & (test_dataset["ethnicity_grouped"] == "black")]
+
+    # samples size: +-1804 / 1436 (fixed)
+    train_dataset_men_white = train_dataset.loc[(train_dataset["gender"] == 0) & (train_dataset["ethnicity_grouped"] == "white")]
+    test_dataset_men_white = test_dataset.loc[(test_dataset["gender"] == 0) & (test_dataset["ethnicity_grouped"] == "white")]
 
     # Feature transforms
     labtrans = CoxTime.label_transform()
@@ -42,13 +64,23 @@ def cohort_samples_fairness(seed, size, cohort):
     x_train_black, x_test_black = preprocess_input_features(train_dataset_black, test_dataset_black)
     x_train_white, x_test_white = preprocess_input_features(train_dataset_white, test_dataset_white)
 
+    x_train_women_black, x_test_women_black = preprocess_input_features(train_dataset_women_black, test_dataset_women_black)
+    x_train_women_white, x_test_women_white = preprocess_input_features(train_dataset_women_white, test_dataset_women_white)
+    x_train_men_black, x_test_men_black = preprocess_input_features(train_dataset_men_black, test_dataset_men_black)
+    x_train_men_white, x_test_men_white = preprocess_input_features(train_dataset_men_white, test_dataset_men_white)
+
     # preprocess target
     train_women, test_women = cox_time_preprocess_target_features(x_train_women, train_dataset_women, x_test_women, test_dataset_women, labtrans)
     train_men, test_men = cox_time_preprocess_target_features(x_train_men, train_dataset_men, x_test_men, test_dataset_men, labtrans)
     train_black, test_black = cox_time_preprocess_target_features(x_train_black, train_dataset_black, x_test_black, test_dataset_black, labtrans)
     train_white, test_white = cox_time_preprocess_target_features(x_train_white, train_dataset_white, x_test_white, test_dataset_white, labtrans)
 
-    return test_women, test_men, test_black, test_white, labtrans
+    train_women_black, test_women_black = cox_time_preprocess_target_features(x_train_women_black, train_dataset_women_black, x_test_women_black, test_dataset_women_black, labtrans)
+    train_women_white, test_women_white = cox_time_preprocess_target_features(x_train_women_white, train_dataset_women_white, x_test_women_white, test_dataset_women_white, labtrans)
+    train_men_black, test_men_black = cox_time_preprocess_target_features(x_train_men_black, train_dataset_men_black, x_test_men_black, test_dataset_men_black, labtrans)
+    train_men_white, test_men_white = cox_time_preprocess_target_features(x_train_men_white, train_dataset_men_white, x_test_men_white, test_dataset_men_white, labtrans)
+
+    return test_women, test_men, test_black, test_white, test_women_black, test_women_white, test_men_black, test_men_white, labtrans
 
 
 def preprocess_input_features(train_dataset, test_dataset):
@@ -131,51 +163,64 @@ def evaluate(sample, surv):
     return cindex, bscore, nbll
 
 
+def survival_curve_plot(surv1, surv2, label1, label2, group_name):
+    plt.ylabel('S(t | x)')
+    plt.xlabel('Time')
+    plt.grid(True)
+
+    df_surv_median1 = surv1.median(axis=1)
+    df_surv_std1 = surv1.std(axis=1)
+    df_surv_median2 = surv2.median(axis=1)
+    df_surv_std2 = surv2.std(axis=1)
+
+    ax = df_surv_median1.plot(label=label1, color='turquoise', linestyle='--')
+    ax.fill_between(df_surv_median1.index, df_surv_median1 - df_surv_std1, df_surv_median1 + df_surv_std1, alpha=0.5, facecolor='turquoise')
+    ax.plot(df_surv_median2, label=label2, color='slateblue', linestyle='-.')
+    ax.fill_between(df_surv_median2.index, df_surv_median2 - df_surv_std2, df_surv_median2 + df_surv_std2, alpha=0.5, facecolor='slateblue')
+    plt.legend(loc="upper right")
+
+    fig_time = strftime("%d%m%Y%H%M%S", localtime())
+    fig_path = "img/cox-time/group-fairness/cox-time-group-fairness-"
+    ax.get_figure().savefig(fig_path + group_name + "-" + fig_time + ".png", format="png", bbox_inches="tight", dpi=600)
+    plt.close()
+
+
 def main(seed, file, index):
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
-    # Apply fairness
+    # Group fairness
     cohort = sa_cohort.cox_neural_network()
-    test_women, test_men, test_black, test_white, labtrans = cohort_samples_fairness(seed=seed, size=settings.size,
-                                                                                     cohort=cohort)
-    # Open file
-    _file = open("files/cox-time/cox-time-group-fairness.txt", "a")
+    test_women, test_men, test_black, test_white, test_women_black, test_women_white, test_men_black, test_men_white, labtrans = cohort_samples_fairness(seed=seed, size=settings.size, cohort=cohort)
 
-    time_string = strftime("%d/%m/%Y, %H:%M:%S", localtime())
-    _file.write("########## Init: " + time_string + "\n\n")
-
+    # Reload model
     best = best_parameters.cox_time[index]
     model = cox_time_reload_model(file, weight_decay=best['weight_decay'], shrink=best['shrink'], device=device)
 
-    # Predict survival
+    # Predict survival curve from first group
     surv_women = model.predict_surv_df(test_women[0])
     surv_men = model.predict_surv_df(test_men[0])
     surv_black = model.predict_surv_df(test_black[0])
     surv_white = model.predict_surv_df(test_white[0])
 
-    # Evaluate
-    cindex_women, bscore_women, bll_women = evaluate(test_women, surv_women)
-    cindex_men, bscore_men, bll_men = evaluate(test_men, surv_men)
-    cindex_black, bscore_black, bll_black = evaluate(test_black, surv_black)
-    cindex_white, bscore_white, bll_white = evaluate(test_white, surv_white)
+    # Plotting survival curve from first group
+    survival_curve_plot(surv_women, surv_men, "women", "men", "women-men")
+    survival_curve_plot(surv_black, surv_white, "black", "white", "black-white")
 
-    # Scores with fairness
-    _file.write("Test \n"
-                "C-Index Women: " + str(cindex_women) + "\n"
-                "C-Index Men: " + str(cindex_men) + "\n"
-                "C-Index Black: " + str(cindex_black) + "\n"
-                "C-Index White: " + str(cindex_white) + "\n")
+    # Predict survival curve from second group
+    surv_women_black = model.predict_surv_df(test_women_black[0])
+    surv_women_white = model.predict_surv_df(test_women_white[0])
+    surv_men_black = model.predict_surv_df(test_men_black[0])
+    surv_men_white = model.predict_surv_df(test_men_white[0])
 
-    time_string = strftime("%d/%m/%Y, %H:%M:%S", localtime())
-    _file.write("\n########## Final: " + time_string + "\n")
-
-    # Close file
-    _file.close()
+    # Plotting survival curve from second group
+    survival_curve_plot(surv_women_black, surv_women_white,  "black-women", "white-women", "black-white-women")
+    survival_curve_plot(surv_men_black, surv_men_white,  "black-men", "white-men", "black-white-men")
 
 
 if __name__ == "__main__":
-    i = 0
+    # second best seed --> 224796801 (n.27)
     files = sorted(glob.glob(settings.PATH + "*.pt"), key=os.path.getmtime)
+    i = 0
     for seed in settings.seed:
         main(seed, files[i], i)
         i+=1
