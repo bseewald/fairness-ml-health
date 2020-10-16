@@ -1,10 +1,8 @@
-import glob
-import os
 from time import localtime, strftime
 
 import best_parameters
-import matplotlib.pyplot as plt
 import cohort.get_cohort as sa_cohort
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import settings
@@ -13,77 +11,64 @@ import torchtuples as tt
 from pycox import utils
 from pycox.evaluation import EvalSurv
 from pycox.models import CoxTime
+from pycox.models.cox_time import MixedInputMLPCoxTime
 from pycox.preprocessing.feature_transforms import OrderedCategoricalLong
 from sklearn_pandas import DataFrameMapper
 
 
-def cohort_samples_fairness(seed, size, cohort):
+def cohort_samples_group_fairness(seed, size, cohort):
+    # Feature transforms
+    labtrans = CoxTime.label_transform()
+
     # Train / valid / test split
     train_dataset, valid_dataset, test_dataset = sa_cohort.train_test_split_nn(seed, size, cohort)
 
     # Fairness samples
 
-    # samples size: +-1741 / 1182 (fixed)
-    train_dataset_women = train_dataset.loc[train_dataset["gender"] == 1]
+    # sample size: 1182
     test_dataset_women = test_dataset.loc[test_dataset["gender"] == 1]
-
-    # samples size: +-2110 / 1719 (fixed)
-    train_dataset_men = train_dataset.loc[train_dataset["gender"] == 0]
+    # sample size: 1719
     test_dataset_men = test_dataset.loc[test_dataset["gender"] == 0]
-
-    # samples size: +-351 / 353 (fixed)
-    train_dataset_black = train_dataset.loc[train_dataset["ethnicity_grouped"] == "black"]
+    # sample size: 353
     test_dataset_black = test_dataset.loc[test_dataset["ethnicity_grouped"] == "black"]
-
-    # samples size: +-3275 / 2375 (fixed)
-    train_dataset_white = train_dataset.loc[train_dataset["ethnicity_grouped"] == "white"]
+    # sample size: 2375
     test_dataset_white = test_dataset.loc[test_dataset["ethnicity_grouped"] == "white"]
-
-    # samples size: +-177 / 195 (fixed)
-    train_dataset_women_black = train_dataset.loc[(train_dataset["gender"] == 1) & (train_dataset["ethnicity_grouped"] == "black")]
+    # sample size: 195
     test_dataset_women_black = test_dataset.loc[(test_dataset["gender"] == 1) & (test_dataset["ethnicity_grouped"] == "black")]
-
-    # samples size: +-1471 / 939 (fixed)
-    train_dataset_women_white = train_dataset.loc[(train_dataset["gender"] == 1) & (train_dataset["ethnicity_grouped"] == "white")]
+    # sample size: 939
     test_dataset_women_white = test_dataset.loc[(test_dataset["gender"] == 1) & (test_dataset["ethnicity_grouped"] == "white")]
-
-    # samples size: +-174 / 158 (fixed)
-    train_dataset_men_black = train_dataset.loc[(train_dataset["gender"] == 0) & (train_dataset["ethnicity_grouped"] == "black")]
+    # sample size: 158
     test_dataset_men_black = test_dataset.loc[(test_dataset["gender"] == 0) & (test_dataset["ethnicity_grouped"] == "black")]
-
-    # samples size: +-1804 / 1436 (fixed)
-    train_dataset_men_white = train_dataset.loc[(train_dataset["gender"] == 0) & (train_dataset["ethnicity_grouped"] == "white")]
+    # sample size: 1436
     test_dataset_men_white = test_dataset.loc[(test_dataset["gender"] == 0) & (test_dataset["ethnicity_grouped"] == "white")]
 
-    # Feature transforms
-    labtrans = CoxTime.label_transform()
+    # Preprocess input
+    x_train, x_val, x_test_women = preprocess_input_features(train_dataset, valid_dataset, test_dataset_women)
+    x_train, x_val, x_test_men = preprocess_input_features(train_dataset, valid_dataset, test_dataset_men)
+    x_train, x_val, x_test_black = preprocess_input_features(train_dataset, valid_dataset, test_dataset_black)
+    x_train, x_val, x_test_white = preprocess_input_features(train_dataset, valid_dataset, test_dataset_white)
 
-    # preprocess input
-    x_train_women, x_test_women = preprocess_input_features(train_dataset_women, test_dataset_women)
-    x_train_men, x_test_men = preprocess_input_features(train_dataset_men, test_dataset_men)
-    x_train_black, x_test_black = preprocess_input_features(train_dataset_black, test_dataset_black)
-    x_train_white, x_test_white = preprocess_input_features(train_dataset_white, test_dataset_white)
+    x_train, x_val, x_test_women_black = preprocess_input_features(train_dataset, valid_dataset, test_dataset_women_black)
+    x_train, x_val, x_test_women_white = preprocess_input_features(train_dataset, valid_dataset, test_dataset_women_white)
+    x_train, x_val, x_test_men_black = preprocess_input_features(train_dataset, valid_dataset, test_dataset_men_black)
+    x_train, x_val, x_test_men_white = preprocess_input_features(train_dataset, valid_dataset, test_dataset_men_white)
 
-    x_train_women_black, x_test_women_black = preprocess_input_features(train_dataset_women_black, test_dataset_women_black)
-    x_train_women_white, x_test_women_white = preprocess_input_features(train_dataset_women_white, test_dataset_women_white)
-    x_train_men_black, x_test_men_black = preprocess_input_features(train_dataset_men_black, test_dataset_men_black)
-    x_train_men_white, x_test_men_white = preprocess_input_features(train_dataset_men_white, test_dataset_men_white)
+    # Preprocess target
+    train, val, test_women = cox_time_preprocess_target_features(x_train, train_dataset, x_val, valid_dataset, x_test_women, test_dataset_women, labtrans)
+    train, val, test_men = cox_time_preprocess_target_features(x_train, train_dataset, x_val, valid_dataset, x_test_men, test_dataset_men, labtrans)
+    train, val, test_black = cox_time_preprocess_target_features(x_train, train_dataset, x_val, valid_dataset, x_test_black, test_dataset_black, labtrans)
+    train, val, test_white = cox_time_preprocess_target_features(x_train, train_dataset, x_val, valid_dataset, x_test_white, test_dataset_white, labtrans)
 
-    # preprocess target
-    train_women, test_women = cox_time_preprocess_target_features(x_train_women, train_dataset_women, x_test_women, test_dataset_women, labtrans)
-    train_men, test_men = cox_time_preprocess_target_features(x_train_men, train_dataset_men, x_test_men, test_dataset_men, labtrans)
-    train_black, test_black = cox_time_preprocess_target_features(x_train_black, train_dataset_black, x_test_black, test_dataset_black, labtrans)
-    train_white, test_white = cox_time_preprocess_target_features(x_train_white, train_dataset_white, x_test_white, test_dataset_white, labtrans)
+    train, val, test_women_black = cox_time_preprocess_target_features(x_train, train_dataset, x_val, valid_dataset, x_test_women_black, test_dataset_women_black, labtrans)
+    train, val, test_women_white = cox_time_preprocess_target_features(x_train, train_dataset, x_val, valid_dataset, x_test_women_white, test_dataset_women_white, labtrans)
+    train, val, test_men_black = cox_time_preprocess_target_features(x_train, train_dataset, x_val, valid_dataset, x_test_men_black, test_dataset_men_black, labtrans)
+    train, val, test_men_white = cox_time_preprocess_target_features(x_train, train_dataset, x_val, valid_dataset, x_test_men_white, test_dataset_men_white, labtrans)
 
-    train_women_black, test_women_black = cox_time_preprocess_target_features(x_train_women_black, train_dataset_women_black, x_test_women_black, test_dataset_women_black, labtrans)
-    train_women_white, test_women_white = cox_time_preprocess_target_features(x_train_women_white, train_dataset_women_white, x_test_women_white, test_dataset_women_white, labtrans)
-    train_men_black, test_men_black = cox_time_preprocess_target_features(x_train_men_black, train_dataset_men_black, x_test_men_black, test_dataset_men_black, labtrans)
-    train_men_white, test_men_white = cox_time_preprocess_target_features(x_train_men_white, train_dataset_men_white, x_test_men_white, test_dataset_men_white, labtrans)
-
-    return test_women, test_men, test_black, test_white, test_women_black, test_women_white, test_men_black, test_men_white, labtrans
+    test_datasets = [test_women, test_men, test_black, test_white, test_women_black, test_women_white, test_men_black, test_men_white]
+    return train, val, test_datasets, labtrans
 
 
-def preprocess_input_features(train_dataset, test_dataset):
+def preprocess_input_features(train_dataset, valid_dataset, test_dataset):
     cols_categorical = ['insurance', 'ethnicity_grouped', 'age_st', 'oasis_score', 'admission_type']
     categorical = [(col, OrderedCategoricalLong()) for col in cols_categorical]
     x_mapper_long = DataFrameMapper(categorical)
@@ -100,28 +85,84 @@ def preprocess_input_features(train_dataset, test_dataset):
                                         x_mapper_long.transform(df))
 
     x_train = x_fit_transform(train_dataset)
+    x_val = x_transform(valid_dataset)
     x_test = x_transform(test_dataset)
 
-    return x_train, x_test
+    return x_train, x_val, x_test
 
 
-def cox_time_preprocess_target_features(x_train, train_dataset, x_test, test_dataset, labtrans):
+def cox_time_preprocess_target_features(x_train, train_dataset, x_val, valid_dataset, x_test, test_dataset, labtrans):
     get_target = lambda df: (df['los_hospital'].values, df['hospital_expire_flag'].values)
 
     y_train = labtrans.fit_transform(*get_target(train_dataset))
     train = tt.tuplefy(x_train, y_train)
 
+    y_val = labtrans.transform(*get_target(valid_dataset))
+    val = tt.tuplefy(x_val, y_val)
+
     y_test = labtrans.transform(*get_target(test_dataset))
     test = tt.tuplefy(x_test, y_test)
 
-    return train, test
+    return train, val, test
 
 
-def cox_time_reload_model(net, weight_decay, shrink, device):
-    # Load model
+# def cox_time_reload_model(net, weight_decay, shrink, device):
+#     # Load model
+#     optimizer = tt.optim.AdamWR(decoupled_weight_decay=weight_decay)
+#     model = CoxTime(net, device=device, optimizer=optimizer, shrink=shrink)
+#     return model
+
+
+def cox_time_make_net(train, dropout, num_nodes):
+
+    num_embeddings = train[0][1].max(0) + 1
+    embedding_dims = num_embeddings // 2
+
+    in_features = train[0][0].shape[1]
+    batch_norm = True
+    net = MixedInputMLPCoxTime(in_features, num_embeddings, embedding_dims,
+                               num_nodes, batch_norm, dropout)
+
+    return net
+
+
+def cox_time_fit_and_predict(survival_analysis_model, train, val,
+                             lr, batch, dropout, epoch, weight_decay,
+                             num_nodes, shrink, device, labtrans):
+
+    net = cox_time_make_net(train, dropout, num_nodes)
+
     optimizer = tt.optim.AdamWR(decoupled_weight_decay=weight_decay)
-    model = CoxTime(net, device=device, optimizer=optimizer, shrink=shrink)
+    model = survival_analysis_model(net, device=device, optimizer=optimizer, shrink=shrink, labtrans=labtrans)
+    model.optimizer.set_lr(lr)
+
+    callbacks = [tt.callbacks.EarlyStopping()]
+    log = model.fit(train[0], train[1], batch, epoch, callbacks, val_data=val.repeat(10).cat())
+
+    _ = model.compute_baseline_hazards()
     return model
+
+
+def cox_time_survival_function(model, test_datasets_list):
+    # Predict survival curve from first group
+    surv_women = model.predict_surv_df(test_datasets_list[0][0])
+    surv_men = model.predict_surv_df(test_datasets_list[1][0])
+    surv_black = model.predict_surv_df(test_datasets_list[2][0])
+    surv_white = model.predict_surv_df(test_datasets_list[3][0])
+
+    # Plotting survival curve for first group
+    survival_curve_plot(surv_women, surv_men, "women", "men", "women-men")
+    survival_curve_plot(surv_black, surv_white, "black", "white", "black-white")
+
+    # Predict survival curve from second group
+    surv_women_black = model.predict_surv_df(test_datasets_list[4][0])
+    surv_women_white = model.predict_surv_df(test_datasets_list[5][0])
+    surv_men_black = model.predict_surv_df(test_datasets_list[6][0])
+    surv_men_white = model.predict_surv_df(test_datasets_list[7][0])
+
+    # Plotting survival curve for second group
+    survival_curve_plot(surv_women_black, surv_women_white,  "black-women", "white-women", "black-white-women")
+    survival_curve_plot(surv_men_black, surv_men_white,  "black-men", "white-men", "black-white-men")
 
 
 def add_km_censor_modified(ev, durations, events):
@@ -168,59 +209,50 @@ def survival_curve_plot(surv1, surv2, label1, label2, group_name):
     plt.xlabel('Time')
     plt.grid(True)
 
+    # Median and standard deviation
     df_surv_median1 = surv1.median(axis=1)
     df_surv_std1 = surv1.std(axis=1)
     df_surv_median2 = surv2.median(axis=1)
     df_surv_std2 = surv2.std(axis=1)
 
+    # Plot curves
     ax = df_surv_median1.plot(label=label1, color='turquoise', linestyle='--')
     ax.fill_between(df_surv_median1.index, df_surv_median1 - df_surv_std1, df_surv_median1 + df_surv_std1, alpha=0.5, facecolor='turquoise')
+
     ax.plot(df_surv_median2, label=label2, color='slateblue', linestyle='-.')
     ax.fill_between(df_surv_median2.index, df_surv_median2 - df_surv_std2, df_surv_median2 + df_surv_std2, alpha=0.5, facecolor='slateblue')
+
     plt.legend(loc="upper right")
 
+    # Save image
     fig_time = strftime("%d%m%Y%H%M%S", localtime())
     fig_path = "img/cox-time/group-fairness/cox-time-group-fairness-"
     ax.get_figure().savefig(fig_path + group_name + "-" + fig_time + ".png", format="png", bbox_inches="tight", dpi=600)
     plt.close()
 
 
-def main(seed, file, index):
+def main(seed, index):
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
     # Group fairness
     cohort = sa_cohort.cox_neural_network()
-    test_women, test_men, test_black, test_white, test_women_black, test_women_white, test_men_black, test_men_white, labtrans = cohort_samples_fairness(seed=seed, size=settings.size, cohort=cohort)
+    train, val, test_datasets_list, labtrans = cohort_samples_group_fairness(seed=seed, size=settings.size, cohort=cohort)
 
-    # Reload model
+    # Neural network
     best = best_parameters.cox_time[index]
-    model = cox_time_reload_model(file, weight_decay=best['weight_decay'], shrink=best['shrink'], device=device)
+    model = cox_time_fit_and_predict(CoxTime, train, val,
+                                     lr=best['lr'], batch=best['batch'], dropout=best['dropout'],
+                                     epoch=best['epoch'], weight_decay=best['weight_decay'],
+                                     num_nodes=best['num_nodes'], shrink=best['shrink'],
+                                     device=device, labtrans=labtrans)
 
-    # Predict survival curve from first group
-    surv_women = model.predict_surv_df(test_women[0])
-    surv_men = model.predict_surv_df(test_men[0])
-    surv_black = model.predict_surv_df(test_black[0])
-    surv_white = model.predict_surv_df(test_white[0])
-
-    # Plotting survival curve from first group
-    survival_curve_plot(surv_women, surv_men, "women", "men", "women-men")
-    survival_curve_plot(surv_black, surv_white, "black", "white", "black-white")
-
-    # Predict survival curve from second group
-    surv_women_black = model.predict_surv_df(test_women_black[0])
-    surv_women_white = model.predict_surv_df(test_women_white[0])
-    surv_men_black = model.predict_surv_df(test_men_black[0])
-    surv_men_white = model.predict_surv_df(test_men_white[0])
-
-    # Plotting survival curve from second group
-    survival_curve_plot(surv_women_black, surv_women_white,  "black-women", "white-women", "black-white-women")
-    survival_curve_plot(surv_men_black, surv_men_white,  "black-men", "white-men", "black-white-men")
+    # Plot survival function
+    cox_time_survival_function(model, test_datasets_list)
 
 
 if __name__ == "__main__":
+    # files = sorted(glob.glob(settings.PATH + "*.pt"), key=os.path.getmtime)
+    # main(224796801, files[27], 27)
+
     # second best seed --> 224796801 (n.27)
-    files = sorted(glob.glob(settings.PATH + "*.pt"), key=os.path.getmtime)
-    i = 0
-    for seed in settings.seed:
-        main(seed, files[i], i)
-        i+=1
+    main(224796801, 27)
