@@ -22,16 +22,13 @@ def train_test_split(seed, size, cohort_x, cohort_y):
     # Cohort
     # ------
     # Total: 9101 admissions with 6379 distinct pacients
-    # 4823 pacients with 1 admission -> 52%
-    # 1556 pacients with +1 admission -> 48%
     #
-    # New cohort
-    # ----------
-    # Total: 4814 + 2901 = 7715 admissions
+    # Used: 4814 (1 admission) + 2901 (2 or 3 admissions) = 7715 admissions
     # patients with 2 admissions -> 2014
     # patients with 3 admissions -> 891
-    # 4814/7715 -> 62,5% train
-    # 2901/7715 -> 37,5% test
+    # 4814/7715 -> 62,5% train / 1476 censored (31%) and 3338 not censored (69%)
+    # 2901/7715 -> 37,5% test / 473 censored (16%) and 2428 not censored (84%)
+    #
     ########################################################
 
     cohort = get_cohort()
