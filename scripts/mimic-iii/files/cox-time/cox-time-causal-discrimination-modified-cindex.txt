@@ -1,0 +1,73 @@
+########## Init: 01/11/2020, 19:04:29
+
+Test 
+Modified c-index women/men: 0.4528894094210235
+
+########## Final: 01/11/2020, 19:05:27
+
+########## Init: 01/11/2020, 19:15:17
+
+Test 
+Modified c-index women/men: 0.4457308763730099
+
+########## Final: 01/11/2020, 19:15:56
+
+########## Init: 01/11/2020, 19:40:18
+
+Test 
+Modified c-index women/men: 0.44459798926220045
+
+########## Final: 01/11/2020, 19:40:59
+
+########## Init: 01/11/2020, 19:54:07
+
+Test 
+Modified c-index women/men: 0.4980899632769444
+Modified c-index black/white: 0.41621525254049013
+Modified c-index black women/white women: 0.3973328228688106
+Modified c-index black men/white men: 0.45907527316875757
+
+########## Final: 01/11/2020, 19:56:13
+
+########## Init: 01/11/2020, 20:00:19
+
+Test 
+Modified c-index women/men: 0.4888736256218565
+Modified c-index black/white: 0.4077263813272261
+Modified c-index black women/white women: 0.3776161306789178
+Modified c-index black men/white men: 0.46074463779846214
+Modified c-index men/women: 0.3594087328051
+Modified c-index white/black: 0.4026007276647352
+Modified c-index white women/black women: 0.3811019956944202
+Modified c-index white men/black men: 0.43049954293703285
+
+########## Final: 01/11/2020, 20:02:22
+
+########## Init: 01/11/2020, 20:03:49
+
+Test 
+Modified c-index women/men: 0.44270437119292466
+Modified c-index men/women: 0.3637491381356603
+Modified c-index black/white: 0.39615189456794525
+Modified c-index white/black: 0.3754345775501954
+Modified c-index black women/white women: 0.36357835630423685
+Modified c-index white women/black women: 0.3630651073485774
+Modified c-index black men/white men: 0.44531566167543507
+Modified c-index white men/black men: 0.398290046781739
+
+########## Final: 01/11/2020, 20:06:01
+
+########## Init: 01/11/2020, 20:30:12
+
+Test 
+PS: Sensitive variable not changed!
+Modified c-index women/men: 0.43042321816559853
+Modified c-index men/women: 0.4140368030201987
+Modified c-index black/white: 0.428530287030815
+Modified c-index white/black: 0.37528634954857837
+Modified c-index black women/white women: 0.40505359877488517
+Modified c-index white women/black women: 0.37260720311863615
+Modified c-index black men/white men: 0.46969850263051394
+Modified c-index white men/black men: 0.3871054471151261
+
+########## Final: 01/11/2020, 20:32:27

@@ -44,17 +44,14 @@ def cohort_samples_fairness(seed, size, cohort):
     # Causal discrimination
     test_dataset_women["gender"] = 0
     test_dataset_men["gender"] = 1
+
     test_dataset_black["ethnicity_grouped"] = "white"
     test_dataset_white["ethnicity_grouped"] = "black"
 
-    # test_dataset_women_black["gender"] = 0
     test_dataset_women_black["ethnicity_grouped"] = "white"
-    # test_dataset_women_white["gender"] = 0
     test_dataset_women_white["ethnicity_grouped"] = "black"
-    #
-    # test_dataset_men_black["gender"] = 1
+
     test_dataset_men_black["ethnicity_grouped"] = "white"
-    # test_dataset_men_white["gender"] = 1
     test_dataset_men_white["ethnicity_grouped"] = "black"
 
     # Preprocess input
@@ -200,7 +197,7 @@ def evaluate(sample, surv):
 def c_index(model, test_datasets_list):
 
     # Open file
-    _file = open("files/cox-time/cox-time-causal-discrimination.txt", "a")
+    _file = open("files/cox-time/cox-time-causal-discrimination-cindex.txt", "a")
 
     time_string = strftime("%d/%m/%Y, %H:%M:%S", localtime())
     _file.write("########## Init: " + time_string + "\n\n")
@@ -247,8 +244,66 @@ def c_index(model, test_datasets_list):
     _file.close()
 
 
-def modified_c_index():
-    return
+def evaluate_modified_cindex(sample_g1, sample_g2, surv_g1, surv_g2):
+    durations_g1 = sample_g1[1][0]
+    events_g1 = sample_g1[1][1]
+
+    durations_g2 = sample_g2[1][0]
+    events_g2 = sample_g2[1][1]
+
+    ev_g1 = EvalSurv(surv_g1, durations_g1, events_g1)
+
+    # c-index
+    cindex_modified = ev_g1.concordance_td_modified(durations_g2, events_g2, surv_g2)
+    return cindex_modified
+
+
+def modified_c_index(model, test_datasets_list):
+
+    # Open file
+    _file = open("files/cox-time/cox-time-causal-discrimination-modified-cindex.txt", "a")
+
+    time_string = strftime("%d/%m/%Y, %H:%M:%S", localtime())
+    _file.write("########## Init: " + time_string + "\n\n")
+
+    # Predict survival
+    surv_women = model.predict_surv_df(test_datasets_list[0][0])
+    surv_men = model.predict_surv_df(test_datasets_list[1][0])
+    surv_black = model.predict_surv_df(test_datasets_list[2][0])
+    surv_white = model.predict_surv_df(test_datasets_list[3][0])
+
+    surv_women_black = model.predict_surv_df(test_datasets_list[4][0])
+    surv_women_white = model.predict_surv_df(test_datasets_list[5][0])
+    surv_men_black = model.predict_surv_df(test_datasets_list[6][0])
+    surv_men_white = model.predict_surv_df(test_datasets_list[7][0])
+
+    # Evaluate
+    cindex_modified_women_men = evaluate_modified_cindex(test_datasets_list[0], test_datasets_list[1], surv_women, surv_men)
+    cindex_modified_black_white = evaluate_modified_cindex(test_datasets_list[2], test_datasets_list[3], surv_black, surv_white)
+    cindex_modified_women_black_white = evaluate_modified_cindex(test_datasets_list[4], test_datasets_list[5], surv_women_black, surv_women_white)
+    cindex_modified_men_black_white = evaluate_modified_cindex(test_datasets_list[6], test_datasets_list[7], surv_men_black, surv_men_white)
+
+    cindex_modified_men_women = evaluate_modified_cindex(test_datasets_list[1], test_datasets_list[0], surv_men, surv_women)
+    cindex_modified_white_black = evaluate_modified_cindex(test_datasets_list[3], test_datasets_list[2], surv_white, surv_black)
+    cindex_modified_women_white_black = evaluate_modified_cindex(test_datasets_list[5], test_datasets_list[4], surv_women_white, surv_women_black)
+    cindex_modified_men_white_black = evaluate_modified_cindex(test_datasets_list[7], test_datasets_list[6], surv_men_white, surv_men_black)
+
+    # Scores with fairness
+    _file.write("Test \n"
+                "Modified c-index women/men: " + str(cindex_modified_women_men) + "\n"
+                "Modified c-index men/women: " + str(cindex_modified_men_women) + "\n"
+                "Modified c-index black/white: " + str(cindex_modified_black_white) + "\n"
+                "Modified c-index white/black: " + str(cindex_modified_white_black) + "\n"
+                "Modified c-index black women/white women: " + str(cindex_modified_women_black_white) + "\n"
+                "Modified c-index white women/black women: " + str(cindex_modified_women_white_black) + "\n"
+                "Modified c-index black men/white men: " + str(cindex_modified_men_black_white) + "\n"
+                "Modified c-index white men/black men: " + str(cindex_modified_men_white_black) + "\n")
+
+    time_string = strftime("%d/%m/%Y, %H:%M:%S", localtime())
+    _file.write("\n########## Final: " + time_string + "\n")
+
+    # Close file
+    _file.close()
 
 
 def main(seed, index):
@@ -266,8 +321,9 @@ def main(seed, index):
                                      device=device, labtrans=labtrans)
     # Calculate and save c-index
     c_index(model, test_datasets_list)
+
     # Modified c-index
-    # modified_c_index()
+    modified_c_index(model, test_datasets_list)
 
 
 if __name__ == "__main__":
