@@ -1,0 +1,44 @@
+########## Init: 18/10/2020, 20:28:17
+
+PS: Sensitive variable not changed!
+Test
+C-Index Women: 0.6961792858463195
+C-Index Men: 0.6893077616702504
+C-Index Black: 0.6443044906900328
+C-Index White: 0.6993525328284667
+C-Index Women Black: 0.5961266610121572
+C-Index Women White : 0.7087515805227982
+C-Index Men Black: 0.7114243323442137
+C-Index Men White: 0.6917590204045482
+
+########## Final: 18/10/2020, 20:30:13
+
+########## Init: 18/10/2020, 20:36:01
+
+PS: Sensitive variable changed!
+Test
+C-Index Women: 0.6994342064021475
+C-Index Men: 0.6916294806285789
+C-Index Black: 0.6558963125228185
+C-Index White: 0.6933097081644376
+C-Index Women Black: 0.6277919140514561
+C-Index Women White : 0.6918109565711041
+C-Index Men Black: 0.7158753709198813
+C-Index Men White: 0.6997055013673151
+
+########## Final: 18/10/2020, 20:38:34
+
+########## Init: 01/11/2020, 13:56:39
+
+PS: Sensitive variable changed!
+Test 
+C-Index Women: 0.6917067838973856
+C-Index Men: 0.6977237520519757
+C-Index Black: 0.6928623585250091
+C-Index White: 0.7081755625136532
+C-Index Women Black: 0.6823579304495335
+C-Index Women White : 0.7268276004438367
+C-Index Men Black: 0.7183481701285855
+C-Index Men White: 0.6923568747716529
+
+########## Final: 01/11/2020, 13:58:43

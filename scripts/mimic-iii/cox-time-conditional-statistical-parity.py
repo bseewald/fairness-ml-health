@@ -1,10 +1,8 @@
-import glob
-import os
 from time import localtime, strftime
 
 import best_parameters
-import matplotlib.pyplot as plt
 import cohort.get_cohort as sa_cohort
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import settings
@@ -12,8 +10,8 @@ import torch
 import torchtuples as tt
 from pycox import utils
 from pycox.evaluation import EvalSurv
-from pycox.models.cox_time import MixedInputMLPCoxTime
 from pycox.models import CoxTime
+from pycox.models.cox_time import MixedInputMLPCoxTime
 from pycox.preprocessing.feature_transforms import OrderedCategoricalLong
 from sklearn_pandas import DataFrameMapper
 
