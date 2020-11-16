@@ -378,6 +378,30 @@ def save_files(path_file, values, path_img):
     plt.close()
 
 
+def save_txt(path_file, values):
+    # numpy array
+    np.savetxt(path_file, values, fmt='%.4f')
+
+
+def save_hist(values, values_modified):
+    save_files("files/cox-time/cindex/cindex_women.txt", values[0], "img/cox-time/hist/hist-cindex-women.png")
+    save_files("files/cox-time/cindex/cindex_men.txt", values[1], "img/cox-time/hist/hist-cindex-men.png")
+    save_files("files/cox-time/cindex/cindex_white.txt", values[3], "img/cox-time/hist/hist-cindex-white.png")
+    save_files("files/cox-time/cindex/cindex_black.txt", values[2], "img/cox-time/hist/hist-cindex-black.png")
+    save_files("files/cox-time/cindex/cindex_women_black.txt", values[4], "img/cox-time/hist/hist-cindex-women-black.png")
+    save_files("files/cox-time/cindex/cindex_women_white.txt", values[5], "img/cox-time/hist/hist-cindex-women-white.png")
+    save_files("files/cox-time/cindex/cindex_men_black.txt", values[6], "img/cox-time/hist/hist-cindex-men-black.png")
+    save_files("files/cox-time/cindex/cindex_men_white.txt", values[7], "img/cox-time/hist/hist-cindex-men-white.png")
+    save_files("files/cox-time/cindex/modified_cindex_women_men.txt", values_modified[0], "img/cox-time/hist/hist-modified-cindex-women-men.png")
+    save_files("files/cox-time/cindex/modified_cindex_black_white.txt", values_modified[1], "img/cox-time/hist/hist-modified-cindex-black-white.png")
+    save_files("files/cox-time/cindex/modified_cindex_women_black_white.txt", values_modified[2], "img/cox-time/hist/hist-modified-cindex-women-black-white.png")
+    save_files("files/cox-time/cindex/modified_cindex_men_black_white.txt", values_modified[3], "img/cox-time/hist/hist-modified-cindex-men-black-white.png")
+    save_files("files/cox-time/cindex/modified_cindex_men_women.txt", values_modified[4], "img/cox-time/hist/hist-modified-cindex-men-women.png")
+    save_files("files/cox-time/cindex/modified_cindex_white_black.txt", values_modified[5], "img/cox-time/hist/hist-modified-cindex-white-black.png")
+    save_files("files/cox-time/cindex/modified_cindex_women_white_black.txt", values_modified[6], "img/cox-time/hist/hist-modified-cindex-women-white-black.png")
+    save_files("files/cox-time/cindex/modified_cindex_men_white_black.txt", values_modified[7], "img/cox-time/hist/hist-modified-cindex-men-white-black.png")
+
+
 def main(seed, index):
     print(strftime("%d/%m/%Y, %H:%M:%S", localtime()))
 
@@ -395,38 +419,27 @@ def main(seed, index):
                                      num_nodes=best['num_nodes'], shrink=best['shrink'],
                                      device=device, labtrans=labtrans)
 
-    # Calculate and save c-index
-    # c_index(model, test_datasets_list)
-
-    # Modified c-index
-    # modified_c_index(model, test_datasets_list)
-
     # bootstrap test dataset
     n = 1
-    values, values_modified = (np.zeros((8, n)), np.zeros((8, n)))
+    values = np.zeros((8, n))
+    values_modified = []
     for i in range(n):
         test_datasets_list = cohort_samples_fairness(train_dataset, valid_dataset, test_dataset, labtrans)
         cindex_list, modified_cindex_list = bootstrap_cindex(model, test_datasets_list)
         for j in range(len(cindex_list)):
             values[j][i] = cindex_list[j]
-            values_modified[j][i] = modified_cindex_list[j]
+            values_modified.append(modified_cindex_list[j])
 
-    save_files("files/cox-time/cindex/cindex_women.txt", values[0], "img/cox-time/hist/hist-cindex-women.png")
-    save_files("files/cox-time/cindex/cindex_men.txt", values[1], "img/cox-time/hist/hist-cindex-men.png")
-    save_files("files/cox-time/cindex/cindex_white.txt", values[3], "img/cox-time/hist/hist-cindex-white.png")
-    save_files("files/cox-time/cindex/cindex_black.txt", values[2], "img/cox-time/hist/hist-cindex-black.png")
-    save_files("files/cox-time/cindex/cindex_women_black.txt", values[4], "img/cox-time/hist/hist-cindex-women-black.png")
-    save_files("files/cox-time/cindex/cindex_women_white.txt", values[5], "img/cox-time/hist/hist-cindex-women-white.png")
-    save_files("files/cox-time/cindex/cindex_men_black.txt", values[6], "img/cox-time/hist/hist-cindex-men-black.png")
-    save_files("files/cox-time/cindex/cindex_men_white.txt", values[7], "img/cox-time/hist/hist-cindex-men-white.png")
-    save_files("files/cox-time/cindex/modified_cindex_women_men.txt", values_modified[0], "img/cox-time/hist/hist-modified-cindex-women-men.png")
-    save_files("files/cox-time/cindex/modified_cindex_black_white.txt", values_modified[1],"img/cox-time/hist/hist-modified-cindex-black-white.png")
-    save_files("files/cox-time/cindex/modified_cindex_women_black_white.txt", values_modified[2],"img/cox-time/hist/hist-modified-cindex-women-black-white.png")
-    save_files("files/cox-time/cindex/modified_cindex_men_black_white.txt", values_modified[3],"img/cox-time/hist/hist-modified-cindex-men-black-white.png")
-    save_files("files/cox-time/cindex/modified_cindex_men_women.txt", values_modified[4], "img/cox-time/hist/hist-modified-cindex-men-women.png")
-    save_files("files/cox-time/cindex/modified_cindex_white_black.txt", values_modified[5],"img/cox-time/hist/hist-modified-cindex-white-black.png")
-    save_files("files/cox-time/cindex/modified_cindex_women_white_black.txt", values_modified[6],"img/cox-time/hist/hist-modified-cindex-women-white-black.png")
-    save_files("files/cox-time/cindex/modified_cindex_men_white_black.txt", values_modified[7],"img/cox-time/hist/hist-modified-cindex-men-white-black.png")
+    # save_hist(values, values_modified)
+
+    save_txt("files/cox-time/cindex/modified_cindex_women_men_v2.txt", values_modified[0])
+    save_txt("files/cox-time/cindex/modified_cindex_black_white_v2.txt", values_modified[1])
+    save_txt("files/cox-time/cindex/modified_cindex_women_black_white_v2.txt", values_modified[2])
+    save_txt("files/cox-time/cindex/modified_cindex_men_black_white_v2.txt", values_modified[3])
+    save_txt("files/cox-time/cindex/modified_cindex_men_women_v2.txt", values_modified[4])
+    save_txt("files/cox-time/cindex/modified_cindex_white_black_v2.txt", values_modified[5])
+    save_txt("files/cox-time/cindex/modified_cindex_women_white_black_v2.txt", values_modified[6])
+    save_txt("files/cox-time/cindex/modified_cindex_men_white_black_v2.txt", values_modified[7])
 
     print(strftime("%d/%m/%Y, %H:%M:%S", localtime()))
 
