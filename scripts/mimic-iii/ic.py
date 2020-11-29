@@ -16,6 +16,7 @@ def calc_confidence_interval(path):
 
 
 def main():
+    # cindex confidence interval
     ic_women = calc_confidence_interval("files/cox-time/cindex/cindex_women.txt")
     ic_men = calc_confidence_interval("files/cox-time/cindex/cindex_men.txt")
     ic_white = calc_confidence_interval("files/cox-time/cindex/cindex_white.txt")
@@ -25,7 +26,10 @@ def main():
     ic_men_black = calc_confidence_interval("files/cox-time/cindex/cindex_men_black.txt")
     ic_men_white = calc_confidence_interval("files/cox-time/cindex/cindex_men_white.txt")
 
-    print(ic_women, ic_men, ic_white, ic_black, ic_women_black, ic_women_white, ic_men_black, ic_men_white)
+    print(ic_women, ic_men)
+    print(ic_white, ic_black)
+    print(ic_women_black, ic_women_white)
+    print(ic_men_black, ic_men_white)
 
 
 if __name__ == "__main__":
