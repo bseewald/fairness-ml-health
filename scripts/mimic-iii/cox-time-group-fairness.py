@@ -8,6 +8,7 @@ import pandas as pd
 import settings
 import torch
 import torchtuples as tt
+from scipy import stats
 from pycox import utils
 from pycox.evaluation import EvalSurv
 from pycox.models import CoxTime
@@ -106,13 +107,6 @@ def cox_time_preprocess_target_features(x_train, train_dataset, x_val, valid_dat
     return train, val, test
 
 
-# def cox_time_reload_model(net, weight_decay, shrink, device):
-#     # Load model
-#     optimizer = tt.optim.AdamWR(decoupled_weight_decay=weight_decay)
-#     model = CoxTime(net, device=device, optimizer=optimizer, shrink=shrink)
-#     return model
-
-
 def cox_time_make_net(train, dropout, num_nodes):
 
     num_embeddings = train[0][1].max(0) + 1
@@ -204,16 +198,21 @@ def evaluate(sample, surv):
     return cindex, bscore, nbll
 
 
-def survival_curve_plot(surv1, surv2, label1, label2, group_name):
-    plt.ylabel('S(t | x)')
-    plt.xlabel('Time')
-    plt.grid(True)
-
+def survival_curve_median_calc(surv1, surv2):
     # Median and standard deviation
     df_surv_median1 = surv1.median(axis=1)
     df_surv_std1 = surv1.std(axis=1)
     df_surv_median2 = surv2.median(axis=1)
     df_surv_std2 = surv2.std(axis=1)
+
+    return df_surv_median1, df_surv_std1, df_surv_median2, df_surv_std2
+
+
+def survival_curve_plot(surv1, surv2, label1, label2, group_name):
+    df_surv_median1, df_surv_std1, df_surv_median2, df_surv_std2 = survival_curve_median_calc(surv1, surv2)
+
+    # Compute stats
+    test = compute_stats(df_surv_median1, df_surv_median2)
 
     # Plot curves
     ax = df_surv_median1.plot(label=label1, color='turquoise', linestyle='--')
@@ -222,13 +221,21 @@ def survival_curve_plot(surv1, surv2, label1, label2, group_name):
     ax.plot(df_surv_median2, label=label2, color='slateblue', linestyle='-.')
     ax.fill_between(df_surv_median2.index, df_surv_median2 - df_surv_std2, df_surv_median2 + df_surv_std2, alpha=0.5, facecolor='slateblue')
 
+    plt.text(0.5, 0.7, str(test), fontsize=4, transform=plt.gcf().transFigure)
     plt.legend(loc="upper right")
+    plt.ylabel('S(t | x)')
+    plt.xlabel('Time')
 
     # Save image
     fig_time = strftime("%d%m%Y%H%M%S", localtime())
-    fig_path = "img/cox-time/group-fairness/cox-time-group-fairness-"
+    fig_path = "img/cox-time/fairness/group-fairness/cox-time-group-fairness-"
     ax.get_figure().savefig(fig_path + group_name + "-" + fig_time + ".png", format="png", bbox_inches="tight", dpi=600)
     plt.close()
+
+
+def compute_stats(rvs1, rvs2):
+    test_stat = stats.ks_2samp(rvs1, rvs2)
+    return test_stat
 
 
 def main(seed, index):
@@ -251,8 +258,5 @@ def main(seed, index):
 
 
 if __name__ == "__main__":
-    # files = sorted(glob.glob(settings.PATH + "*.pt"), key=os.path.getmtime)
-    # main(224796801, files[27], 27)
-
     # second best seed --> 224796801 (n.27)
     main(224796801, 27)
