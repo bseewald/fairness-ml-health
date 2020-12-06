@@ -22,7 +22,7 @@ def cohort_samples(seed, size, cohort):
     # Train / valid / test split
     train_dataset, valid_dataset, test_dataset = sa_cohort.train_test_split_nn(seed, size, cohort)
     # Preprocess input
-    x_train, x_val , x_test = preprocess_input_features(train_dataset, valid_dataset, test_dataset)
+    x_train, x_val, x_test = preprocess_input_features(train_dataset, valid_dataset, test_dataset)
     # Preprocess target
     train, val, test = cox_time_preprocess_target_features(x_train, train_dataset, x_val, valid_dataset, x_test, test_dataset, labtrans)
 
@@ -64,17 +64,17 @@ def cohort_samples_fairness(train_dataset, valid_dataset, test_dataset, labtrans
     test_dataset_men_white = df_men_white.sample(frac=1, replace=True)
 
     # Causal discrimination
-    test_dataset_women["gender"] = 0
-    test_dataset_men["gender"] = 1
-
-    test_dataset_black["ethnicity_grouped"] = "white"
-    test_dataset_white["ethnicity_grouped"] = "black"
-
-    test_dataset_women_black["ethnicity_grouped"] = "white"
-    test_dataset_women_white["ethnicity_grouped"] = "black"
-
-    test_dataset_men_black["ethnicity_grouped"] = "white"
-    test_dataset_men_white["ethnicity_grouped"] = "black"
+    # test_dataset_women["gender"] = 0
+    # test_dataset_men["gender"] = 1
+    #
+    # test_dataset_black["ethnicity_grouped"] = "white"
+    # test_dataset_white["ethnicity_grouped"] = "black"
+    #
+    # test_dataset_women_black["ethnicity_grouped"] = "white"
+    # test_dataset_women_white["ethnicity_grouped"] = "black"
+    #
+    # test_dataset_men_black["ethnicity_grouped"] = "white"
+    # test_dataset_men_white["ethnicity_grouped"] = "black"
 
     # Preprocess input
     x_train, x_val, x_test_women = preprocess_input_features(train_dataset, valid_dataset, test_dataset_women)
@@ -169,7 +169,7 @@ def cox_time_fit_and_predict(survival_analysis_model, train, val,
     model.optimizer.set_lr(lr)
 
     callbacks = [tt.callbacks.EarlyStopping()]
-    log = model.fit(train[0], train[1], batch, epoch, callbacks, val_data=val.repeat(10).cat())
+    model.fit(train[0], train[1], batch, epoch, callbacks, val_data=val.repeat(10).cat())
 
     _ = model.compute_baseline_hazards()
     return model
@@ -219,7 +219,6 @@ def evaluate_cindex(sample, surv):
     events = sample[1][1]
 
     ev = EvalSurv(surv, durations, events)
-    # c-index
     cindex = ev.concordance_td()
     return cindex
 
@@ -289,10 +288,13 @@ def evaluate_modified_cindex(sample_g1, sample_g2, surv_g1, surv_g2):
     cindex_g2 = ev_g2.concordance_td()
 
     # modified c-index
-    cindex_modified_g1 = ev_g1.concordance_td_modified(durations_g2, events_g2, surv_g2)
-    cindex_modified_g2 = ev_g2.concordance_td_modified(durations_g1, events_g1, surv_g1)
+    cindex_modified_g1 = ev_g1.concordance_td_modified_for_groups(durations_g2, events_g2, surv_g2)
+    cindex_modified_g2 = ev_g2.concordance_td_modified_for_groups(durations_g1, events_g1, surv_g1)
 
-    return cindex_g1, cindex_g2, cindex_modified_g1, cindex_modified_g2
+    cindex_modified_g1_time_event = ev_g1.concordance_td_modified_for_groups_time_event(durations_g2, events_g2, surv_g2)
+    cindex_modified_g2_time_event = ev_g2.concordance_td_modified_for_groups_time_event(durations_g1, events_g1, surv_g1)
+
+    return cindex_g1, cindex_g2, cindex_modified_g1, cindex_modified_g2, cindex_modified_g1_time_event, cindex_modified_g2_time_event
 
 
 def modified_c_index(model, test_datasets_list):
@@ -354,16 +356,21 @@ def bootstrap_cindex(model, test_datasets_list):
     surv_men_black = model.predict_surv_df(test_datasets_list[6][0])
     surv_men_white = model.predict_surv_df(test_datasets_list[7][0])
 
-    cindex_women, cindex_men, cindex_modified_women_men, cindex_modified_men_women = evaluate_modified_cindex(test_datasets_list[0], test_datasets_list[1], surv_women, surv_men)
-    cindex_black, cindex_white, cindex_modified_black_white, cindex_modified_white_black = evaluate_modified_cindex(test_datasets_list[2], test_datasets_list[3], surv_black, surv_white)
-    cindex_women_black, cindex_women_white, cindex_modified_women_black_white, cindex_modified_women_white_black = evaluate_modified_cindex(test_datasets_list[4], test_datasets_list[5], surv_women_black, surv_women_white)
-    cindex_men_black, cindex_men_white, cindex_modified_men_black_white, cindex_modified_men_white_black = evaluate_modified_cindex(test_datasets_list[6], test_datasets_list[7], surv_men_black, surv_men_white)
+    cindex_women, cindex_men, cindex_modified_women_men, cindex_modified_men_women, cindex_modified_women_men_time_event, cindex_modified_men_women_time_event = evaluate_modified_cindex(test_datasets_list[0], test_datasets_list[1], surv_women, surv_men)
+    cindex_black, cindex_white, cindex_modified_black_white, cindex_modified_white_black, cindex_modified_black_white_time_event, cindex_modified_white_black_time_event = evaluate_modified_cindex(test_datasets_list[2], test_datasets_list[3], surv_black, surv_white)
+    cindex_women_black, cindex_women_white, cindex_modified_women_black_white, cindex_modified_women_white_black, cindex_modified_women_black_white_time_event, cindex_modified_women_white_black_time_event = evaluate_modified_cindex(test_datasets_list[4], test_datasets_list[5], surv_women_black, surv_women_white)
+    cindex_men_black, cindex_men_white, cindex_modified_men_black_white, cindex_modified_men_white_black, cindex_modified_men_black_white_time_event, cindex_modified_men_white_black_time_event = evaluate_modified_cindex(test_datasets_list[6], test_datasets_list[7], surv_men_black, surv_men_white)
 
     cindex_list = [cindex_women, cindex_men, cindex_black, cindex_white, cindex_women_black, cindex_women_white, cindex_men_black, cindex_men_white]
+
     modified_cindex_list = [cindex_modified_women_men, cindex_modified_black_white, cindex_modified_women_black_white, cindex_modified_men_black_white,
                             cindex_modified_men_women, cindex_modified_white_black, cindex_modified_women_white_black, cindex_modified_men_white_black]
 
-    return cindex_list, modified_cindex_list
+    modified_cindex_time_event_list = [cindex_modified_women_men_time_event, cindex_modified_black_white_time_event, cindex_modified_women_black_white_time_event,
+                                       cindex_modified_men_black_white_time_event, cindex_modified_men_women_time_event, cindex_modified_white_black_time_event,
+                                       cindex_modified_women_white_black_time_event, cindex_modified_men_white_black_time_event]
+
+    return cindex_list, modified_cindex_list, modified_cindex_time_event_list
 
 
 def save_files(path_file, values, path_img):
@@ -379,7 +386,6 @@ def save_files(path_file, values, path_img):
 
 
 def save_txt(path_file, values):
-    # numpy array
     np.savetxt(path_file, values, fmt='%.4f')
 
 
@@ -418,35 +424,41 @@ def main(seed, index):
                                      epoch=best['epoch'], weight_decay=best['weight_decay'],
                                      num_nodes=best['num_nodes'], shrink=best['shrink'],
                                      device=device, labtrans=labtrans)
-
     # bootstrap test dataset
     n = 1
     values = np.zeros((8, n))
     values_modified = []
+    values_modified_time_event = []
     for i in range(n):
         test_datasets_list = cohort_samples_fairness(train_dataset, valid_dataset, test_dataset, labtrans)
-        cindex_list, modified_cindex_list = bootstrap_cindex(model, test_datasets_list)
+        cindex_list, modified_cindex_list, modified_cindex_time_event_list = bootstrap_cindex(model, test_datasets_list)
         for j in range(len(cindex_list)):
             values[j][i] = cindex_list[j]
             values_modified.append(modified_cindex_list[j])
+            values_modified_time_event.append(modified_cindex_time_event_list[j])
+    print(values_modified, values_modified_time_event)
 
-    # save_hist(values, values_modified)
+    save_txt("files/cox-time/cindex/modified/women_men.txt", values_modified[0])
+    save_txt("files/cox-time/cindex/modified/black_white.txt", values_modified[1])
+    save_txt("files/cox-time/cindex/modified/women_black_white.txt", values_modified[2])
+    save_txt("files/cox-time/cindex/modified/men_black_white.txt", values_modified[3])
+    save_txt("files/cox-time/cindex/modified/men_women.txt", values_modified[4])
+    save_txt("files/cox-time/cindex/modified/white_black.txt", values_modified[5])
+    save_txt("files/cox-time/cindex/modified/women_white_black.txt", values_modified[6])
+    save_txt("files/cox-time/cindex/modified/men_white_black.txt", values_modified[7])
 
-    save_txt("files/cox-time/cindex/modified_cindex_women_men_v2.txt", values_modified[0])
-    save_txt("files/cox-time/cindex/modified_cindex_black_white_v2.txt", values_modified[1])
-    save_txt("files/cox-time/cindex/modified_cindex_women_black_white_v2.txt", values_modified[2])
-    save_txt("files/cox-time/cindex/modified_cindex_men_black_white_v2.txt", values_modified[3])
-    save_txt("files/cox-time/cindex/modified_cindex_men_women_v2.txt", values_modified[4])
-    save_txt("files/cox-time/cindex/modified_cindex_white_black_v2.txt", values_modified[5])
-    save_txt("files/cox-time/cindex/modified_cindex_women_white_black_v2.txt", values_modified[6])
-    save_txt("files/cox-time/cindex/modified_cindex_men_white_black_v2.txt", values_modified[7])
+    save_txt("files/cox-time/cindex/modified/women_men_time_event.txt", values_modified_time_event[0])
+    save_txt("files/cox-time/cindex/modified/black_white_time_event.txt", values_modified_time_event[1])
+    save_txt("files/cox-time/cindex/modified/women_black_white_time_event.txt", values_modified_time_event[2])
+    save_txt("files/cox-time/cindex/modified/men_black_white_time_event.txt", values_modified_time_event[3])
+    save_txt("files/cox-time/cindex/modified/men_women_time_event.txt", values_modified_time_event[4])
+    save_txt("files/cox-time/cindex/modified/white_black_time_event.txt", values_modified_time_event[5])
+    save_txt("files/cox-time/cindex/modified/women_white_black_time_event.txt", values_modified_time_event[6])
+    save_txt("files/cox-time/cindex/modified/men_white_black_time_event.txt", values_modified_time_event[7])
 
     print(strftime("%d/%m/%Y, %H:%M:%S", localtime()))
 
 
 if __name__ == "__main__":
-    # files = sorted(glob.glob(settings.PATH + "*.pt"), key=os.path.getmtime)
-    # main(224796801, files[27], 27)
-
-    # second best seed --> 224796801 (n.27)
+    # second best seed
     main(224796801, 27)
