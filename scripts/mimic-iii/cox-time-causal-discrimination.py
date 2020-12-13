@@ -386,7 +386,10 @@ def save_files(path_file, values, path_img):
 
 
 def save_txt(path_file, values):
-    np.savetxt(path_file, values, fmt='%.4f')
+    _file = open(path_file, "a")
+    _file.write(str(values))
+    _file.close()
+    # np.savetxt(path_file, values, fmt='%.4f')
 
 
 def save_hist(values, values_modified):
@@ -436,7 +439,6 @@ def main(seed, index):
             values[j][i] = cindex_list[j]
             values_modified.append(modified_cindex_list[j])
             values_modified_time_event.append(modified_cindex_time_event_list[j])
-    print(values_modified, values_modified_time_event)
 
     save_txt("files/cox-time/cindex/modified/women_men.txt", values_modified[0])
     save_txt("files/cox-time/cindex/modified/black_white.txt", values_modified[1])
