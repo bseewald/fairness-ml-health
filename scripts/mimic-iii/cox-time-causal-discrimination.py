@@ -387,9 +387,8 @@ def save_files(path_file, values, path_img):
 
 def save_txt(path_file, values):
     _file = open(path_file, "a")
-    _file.write(str(values))
+    _file.write("\n" + str(values))
     _file.close()
-    # np.savetxt(path_file, values, fmt='%.4f')
 
 
 def save_hist(values, values_modified):
