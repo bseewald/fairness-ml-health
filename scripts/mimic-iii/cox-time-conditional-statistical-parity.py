@@ -447,12 +447,18 @@ def survival_curve_plot(surv1, surv2, label1, label2, group_name):
     # Compute stats
     test = compute_stats(df_surv_median1, df_surv_median2)
 
+    # 95% Confidence interval
+    ci1_left = surv1.quantile(0.025, axis=1)
+    ci1_right = surv1.quantile(0.975, axis=1)
+    ci2_left = surv2.quantile(0.025, axis=1)
+    ci2_right = surv2.quantile(0.975, axis=1)
+
     # Plot curves
     ax = df_surv_median1.plot(label=label1, color='turquoise', linestyle='--')
-    ax.fill_between(df_surv_median1.index, df_surv_median1 - df_surv_std1, df_surv_median1 + df_surv_std1, alpha=0.5, facecolor='turquoise')
+    ax.fill_between(df_surv_median1.index, ci1_left, ci1_right, alpha=0.2, facecolor='turquoise')
 
     ax.plot(df_surv_median2, label=label2, color='slateblue', linestyle='-.')
-    ax.fill_between(df_surv_median2.index, df_surv_median2 - df_surv_std2, df_surv_median2 + df_surv_std2, alpha=0.5, facecolor='slateblue')
+    ax.fill_between(df_surv_median2.index, ci2_left, ci2_right, alpha=0.2, facecolor='slateblue')
 
     plt.text(0.5, 0.7, str(test), fontsize=4, transform=plt.gcf().transFigure)
     plt.legend(loc="upper right")
@@ -589,8 +595,4 @@ def main(seed, index):
 
 
 if __name__ == "__main__":
-    # files = sorted(glob.glob(settings.PATH + "*.pt"), key=os.path.getmtime)
-    # main(224796801, files[27], 27)
-
-    # second best seed --> 224796801 (n.27)
     main(224796801, 27)
