@@ -16,6 +16,8 @@
 # Sigma                            {0.1, 0.25, 0.5, 1, 2.5, 5, 10, 100}
 # Num Durations                    {50, 100, 200, 400}
 
+cox_time_rossi = [{'batch': 1024, 'dropout': 0.3, 'lr': 0.001, 'num_nodes': [256, 256], 'shrink': 0.001, 'weight_decay': 0, 'epoch': 512}]
+
 deep_hit = [{'alpha': 0.01356347844552741, 'batch': 64, 'dropout': 0.5, 'lr': 0.0001, 'num_durations': 100, 'num_nodes': [512, 512, 512, 512], 'sigma': 0.25, 'weight_decay': 0.01, 'epoch': 512},
             {'alpha': 0.03183218156802276, 'batch': 512, 'dropout': 0.5, 'lr': 0.001, 'num_durations': 50, 'num_nodes': [256, 256], 'sigma': 0.1, 'weight_decay': 0.4, 'epoch': 512},
             {'alpha': 0.010522216929185924, 'batch': 512, 'dropout': 0.4, 'lr': 0.01, 'num_durations': 400, 'num_nodes': [64, 64], 'sigma': 2.5, 'weight_decay': 0.4, 'epoch': 512},
