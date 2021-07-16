@@ -4,6 +4,7 @@ import best_parameters
 import cohort.get_cohort as sa_cohort
 import numpy as np
 import pandas as pd
+import matplotlib.pyplot as plt
 import settings
 import torch
 import torchtuples as tt
@@ -15,51 +16,71 @@ from pycox.preprocessing.feature_transforms import OrderedCategoricalLong
 from sklearn_pandas import DataFrameMapper
 
 
-def cohort_samples_fairness(seed, size, cohort):
+def cohort_samples(seed, size, cohort):
     # Feature transforms
     labtrans = CoxTime.label_transform()
-
     # Train / valid / test split
     train_dataset, valid_dataset, test_dataset = sa_cohort.train_test_split_nn(seed, size, cohort)
+    # Preprocess input
+    x_train, x_val, x_test = preprocess_input_features(train_dataset, valid_dataset, test_dataset)
+    # Preprocess target
+    train, val, test = cox_time_preprocess_target_features(x_train, train_dataset, x_val, valid_dataset, x_test, test_dataset, labtrans)
 
-    # Fairness samples
+    return train, val, train_dataset, valid_dataset, test_dataset, labtrans
+
+
+def cohort_samples_fairness(train_dataset, valid_dataset, test_dataset, labtrans):
 
     # Sample size: 1182
-    test_dataset_women = test_dataset.loc[test_dataset["gender"] == 1]
+    df_women = test_dataset.loc[test_dataset["gender"] == 1]
+    test_dataset_women = df_women.sample(frac=1, replace=True)
+
     # Sample size: 1719
-    test_dataset_men = test_dataset.loc[test_dataset["gender"] == 0]
+    df_men = test_dataset.loc[test_dataset["gender"] == 0]
+    test_dataset_men = df_men.sample(frac=1, replace=True)
+
     # Sample size: 353
-    test_dataset_black = test_dataset.loc[test_dataset["ethnicity_grouped"] == "black"]
+    df_black = test_dataset.loc[test_dataset["ethnicity_grouped"] == "black"]
+    test_dataset_black = df_black.sample(frac=1, replace=True)
+
     # Sample size: 2375
-    test_dataset_white = test_dataset.loc[test_dataset["ethnicity_grouped"] == "white"]
+    df_white = test_dataset.loc[test_dataset["ethnicity_grouped"] == "white"]
+    test_dataset_white = df_white.sample(frac=1, replace=True)
+
     # Sample size: 195
-    test_dataset_women_black = test_dataset.loc[(test_dataset["gender"] == 1) & (test_dataset["ethnicity_grouped"] == "black")]
+    df_women_black = test_dataset.loc[(test_dataset["gender"] == 1) & (test_dataset["ethnicity_grouped"] == "black")]
+    test_dataset_women_black = df_women_black.sample(frac=1, replace=True)
+
     # Sample size: 939
-    test_dataset_women_white = test_dataset.loc[(test_dataset["gender"] == 1) & (test_dataset["ethnicity_grouped"] == "white")]
+    df_women_white = test_dataset.loc[(test_dataset["gender"] == 1) & (test_dataset["ethnicity_grouped"] == "white")]
+    test_dataset_women_white = df_women_white.sample(frac=1, replace=True)
+
     # Sample size: 158
-    test_dataset_men_black = test_dataset.loc[(test_dataset["gender"] == 0) & (test_dataset["ethnicity_grouped"] == "black")]
+    df_men_black = test_dataset.loc[(test_dataset["gender"] == 0) & (test_dataset["ethnicity_grouped"] == "black")]
+    test_dataset_men_black = df_men_black.sample(frac=1, replace=True)
+
     # Sample size: 1436
-    test_dataset_men_white = test_dataset.loc[(test_dataset["gender"] == 0) & (test_dataset["ethnicity_grouped"] == "white")]
+    df_men_white = test_dataset.loc[(test_dataset["gender"] == 0) & (test_dataset["ethnicity_grouped"] == "white")]
+    test_dataset_men_white = df_men_white.sample(frac=1, replace=True)
 
     # Causal discrimination
-    test_dataset_women["gender"] = 0
-    test_dataset_men["gender"] = 1
-
-    test_dataset_black["ethnicity_grouped"] = "white"
-    test_dataset_white["ethnicity_grouped"] = "black"
-
-    test_dataset_women_black["ethnicity_grouped"] = "white"
-    test_dataset_women_white["ethnicity_grouped"] = "black"
-
-    test_dataset_men_black["ethnicity_grouped"] = "white"
-    test_dataset_men_white["ethnicity_grouped"] = "black"
+    # test_dataset_women["gender"] = 0
+    # test_dataset_men["gender"] = 1
+    #
+    # test_dataset_black["ethnicity_grouped"] = "white"
+    # test_dataset_white["ethnicity_grouped"] = "black"
+    #
+    # test_dataset_women_black["ethnicity_grouped"] = "white"
+    # test_dataset_women_white["ethnicity_grouped"] = "black"
+    #
+    # test_dataset_men_black["ethnicity_grouped"] = "white"
+    # test_dataset_men_white["ethnicity_grouped"] = "black"
 
     # Preprocess input
     x_train, x_val, x_test_women = preprocess_input_features(train_dataset, valid_dataset, test_dataset_women)
     x_train, x_val, x_test_men = preprocess_input_features(train_dataset, valid_dataset, test_dataset_men)
     x_train, x_val, x_test_black = preprocess_input_features(train_dataset, valid_dataset, test_dataset_black)
     x_train, x_val, x_test_white = preprocess_input_features(train_dataset, valid_dataset, test_dataset_white)
-
     x_train, x_val, x_test_women_black = preprocess_input_features(train_dataset, valid_dataset, test_dataset_women_black)
     x_train, x_val, x_test_women_white = preprocess_input_features(train_dataset, valid_dataset, test_dataset_women_white)
     x_train, x_val, x_test_men_black = preprocess_input_features(train_dataset, valid_dataset, test_dataset_men_black)
@@ -70,14 +91,13 @@ def cohort_samples_fairness(seed, size, cohort):
     train, val, test_men = cox_time_preprocess_target_features(x_train, train_dataset, x_val, valid_dataset, x_test_men, test_dataset_men, labtrans)
     train, val, test_black = cox_time_preprocess_target_features(x_train, train_dataset, x_val, valid_dataset, x_test_black, test_dataset_black, labtrans)
     train, val, test_white = cox_time_preprocess_target_features(x_train, train_dataset, x_val, valid_dataset, x_test_white, test_dataset_white, labtrans)
-
     train, val, test_women_black = cox_time_preprocess_target_features(x_train, train_dataset, x_val, valid_dataset, x_test_women_black, test_dataset_women_black, labtrans)
     train, val, test_women_white = cox_time_preprocess_target_features(x_train, train_dataset, x_val, valid_dataset, x_test_women_white, test_dataset_women_white, labtrans)
     train, val, test_men_black = cox_time_preprocess_target_features(x_train, train_dataset, x_val, valid_dataset, x_test_men_black, test_dataset_men_black, labtrans)
     train, val, test_men_white = cox_time_preprocess_target_features(x_train, train_dataset, x_val, valid_dataset, x_test_men_white, test_dataset_men_white, labtrans)
 
     test_datasets = [test_women, test_men, test_black, test_white, test_women_black, test_women_white, test_men_black, test_men_white]
-    return train, val, test_datasets, labtrans
+    return test_datasets
 
 
 def preprocess_input_features(train_dataset, valid_dataset, test_dataset):
@@ -149,7 +169,7 @@ def cox_time_fit_and_predict(survival_analysis_model, train, val,
     model.optimizer.set_lr(lr)
 
     callbacks = [tt.callbacks.EarlyStopping()]
-    log = model.fit(train[0], train[1], batch, epoch, callbacks, val_data=val.repeat(10).cat())
+    model.fit(train[0], train[1], batch, epoch, callbacks, val_data=val.repeat(10).cat())
 
     _ = model.compute_baseline_hazards()
     return model
@@ -192,6 +212,15 @@ def evaluate(sample, surv):
     nbll = ev.integrated_nbll(time_grid)
 
     return cindex, bscore, nbll
+
+
+def evaluate_cindex(sample, surv):
+    durations = sample[1][0]
+    events = sample[1][1]
+
+    ev = EvalSurv(surv, durations, events)
+    cindex = ev.concordance_td()
+    return cindex
 
 
 def c_index(model, test_datasets_list):
@@ -252,10 +281,20 @@ def evaluate_modified_cindex(sample_g1, sample_g2, surv_g1, surv_g2):
     events_g2 = sample_g2[1][1]
 
     ev_g1 = EvalSurv(surv_g1, durations_g1, events_g1)
+    ev_g2 = EvalSurv(surv_g2, durations_g2, events_g2)
 
     # c-index
-    cindex_modified = ev_g1.concordance_td_modified(durations_g2, events_g2, surv_g2)
-    return cindex_modified
+    cindex_g1 = ev_g1.concordance_td()
+    cindex_g2 = ev_g2.concordance_td()
+
+    # modified c-index
+    cindex_modified_g1 = ev_g1.concordance_td_modified_for_groups(durations_g2, events_g2, surv_g2)
+    cindex_modified_g2 = ev_g2.concordance_td_modified_for_groups(durations_g1, events_g1, surv_g1)
+
+    cindex_modified_g1_time_event = ev_g1.concordance_td_modified_for_groups_time_event(durations_g2, events_g2, surv_g2)
+    cindex_modified_g2_time_event = ev_g2.concordance_td_modified_for_groups_time_event(durations_g1, events_g1, surv_g1)
+
+    return cindex_g1, cindex_g2, cindex_modified_g1, cindex_modified_g2, cindex_modified_g1_time_event, cindex_modified_g2_time_event
 
 
 def modified_c_index(model, test_datasets_list):
@@ -306,29 +345,121 @@ def modified_c_index(model, test_datasets_list):
     _file.close()
 
 
+def bootstrap_cindex(model, test_datasets_list):
+    # Predict survival
+    surv_women = model.predict_surv_df(test_datasets_list[0][0])
+    surv_men = model.predict_surv_df(test_datasets_list[1][0])
+    surv_black = model.predict_surv_df(test_datasets_list[2][0])
+    surv_white = model.predict_surv_df(test_datasets_list[3][0])
+    surv_women_black = model.predict_surv_df(test_datasets_list[4][0])
+    surv_women_white = model.predict_surv_df(test_datasets_list[5][0])
+    surv_men_black = model.predict_surv_df(test_datasets_list[6][0])
+    surv_men_white = model.predict_surv_df(test_datasets_list[7][0])
+
+    cindex_women, cindex_men, cindex_modified_women_men, cindex_modified_men_women, cindex_modified_women_men_time_event, cindex_modified_men_women_time_event = evaluate_modified_cindex(test_datasets_list[0], test_datasets_list[1], surv_women, surv_men)
+    cindex_black, cindex_white, cindex_modified_black_white, cindex_modified_white_black, cindex_modified_black_white_time_event, cindex_modified_white_black_time_event = evaluate_modified_cindex(test_datasets_list[2], test_datasets_list[3], surv_black, surv_white)
+    cindex_women_black, cindex_women_white, cindex_modified_women_black_white, cindex_modified_women_white_black, cindex_modified_women_black_white_time_event, cindex_modified_women_white_black_time_event = evaluate_modified_cindex(test_datasets_list[4], test_datasets_list[5], surv_women_black, surv_women_white)
+    cindex_men_black, cindex_men_white, cindex_modified_men_black_white, cindex_modified_men_white_black, cindex_modified_men_black_white_time_event, cindex_modified_men_white_black_time_event = evaluate_modified_cindex(test_datasets_list[6], test_datasets_list[7], surv_men_black, surv_men_white)
+
+    cindex_list = [cindex_women, cindex_men, cindex_black, cindex_white, cindex_women_black, cindex_women_white, cindex_men_black, cindex_men_white]
+
+    modified_cindex_list = [cindex_modified_women_men, cindex_modified_black_white, cindex_modified_women_black_white, cindex_modified_men_black_white,
+                            cindex_modified_men_women, cindex_modified_white_black, cindex_modified_women_white_black, cindex_modified_men_white_black]
+
+    modified_cindex_time_event_list = [cindex_modified_women_men_time_event, cindex_modified_black_white_time_event, cindex_modified_women_black_white_time_event,
+                                       cindex_modified_men_black_white_time_event, cindex_modified_men_women_time_event, cindex_modified_white_black_time_event,
+                                       cindex_modified_women_white_black_time_event, cindex_modified_men_white_black_time_event]
+
+    return cindex_list, modified_cindex_list, modified_cindex_time_event_list
+
+
+def save_files(path_file, values, path_img):
+    # numpy array
+    np.savetxt(path_file, values, fmt='%.4f')
+
+    # histogram
+    plt.hist(values, bins=10, edgecolor='k')
+    plt.xlabel('Amostra')
+    plt.ylabel('P(amostra)')
+    plt.savefig(path_img, format="png", bbox_inches="tight")
+    plt.close()
+
+
+def save_txt(path_file, values):
+    _file = open(path_file, "a")
+    _file.write("\n" + str(values))
+    _file.close()
+
+
+def save_hist(values, values_modified):
+    save_files("files/cox-time/cindex/cindex_women.txt", values[0], "img/cox-time/hist/hist-cindex-women.png")
+    save_files("files/cox-time/cindex/cindex_men.txt", values[1], "img/cox-time/hist/hist-cindex-men.png")
+    save_files("files/cox-time/cindex/cindex_white.txt", values[3], "img/cox-time/hist/hist-cindex-white.png")
+    save_files("files/cox-time/cindex/cindex_black.txt", values[2], "img/cox-time/hist/hist-cindex-black.png")
+    save_files("files/cox-time/cindex/cindex_women_black.txt", values[4], "img/cox-time/hist/hist-cindex-women-black.png")
+    save_files("files/cox-time/cindex/cindex_women_white.txt", values[5], "img/cox-time/hist/hist-cindex-women-white.png")
+    save_files("files/cox-time/cindex/cindex_men_black.txt", values[6], "img/cox-time/hist/hist-cindex-men-black.png")
+    save_files("files/cox-time/cindex/cindex_men_white.txt", values[7], "img/cox-time/hist/hist-cindex-men-white.png")
+    save_files("files/cox-time/cindex/modified_cindex_women_men.txt", values_modified[0], "img/cox-time/hist/hist-modified-cindex-women-men.png")
+    save_files("files/cox-time/cindex/modified_cindex_black_white.txt", values_modified[1], "img/cox-time/hist/hist-modified-cindex-black-white.png")
+    save_files("files/cox-time/cindex/modified_cindex_women_black_white.txt", values_modified[2], "img/cox-time/hist/hist-modified-cindex-women-black-white.png")
+    save_files("files/cox-time/cindex/modified_cindex_men_black_white.txt", values_modified[3], "img/cox-time/hist/hist-modified-cindex-men-black-white.png")
+    save_files("files/cox-time/cindex/modified_cindex_men_women.txt", values_modified[4], "img/cox-time/hist/hist-modified-cindex-men-women.png")
+    save_files("files/cox-time/cindex/modified_cindex_white_black.txt", values_modified[5], "img/cox-time/hist/hist-modified-cindex-white-black.png")
+    save_files("files/cox-time/cindex/modified_cindex_women_white_black.txt", values_modified[6], "img/cox-time/hist/hist-modified-cindex-women-white-black.png")
+    save_files("files/cox-time/cindex/modified_cindex_men_white_black.txt", values_modified[7], "img/cox-time/hist/hist-modified-cindex-men-white-black.png")
+
+
 def main(seed, index):
+    print(strftime("%d/%m/%Y, %H:%M:%S", localtime()))
+
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-
-    # Apply fairness
     cohort = sa_cohort.cox_neural_network()
-    train, val, test_datasets_list, labtrans = cohort_samples_fairness(seed=seed, size=settings.size, cohort=cohort)
 
+    # samples
+    train, val, train_dataset, valid_dataset, test_dataset, labtrans = cohort_samples(seed=seed, size=settings.size, cohort=cohort)
+
+    # train model
     best = best_parameters.cox_time[index]
     model = cox_time_fit_and_predict(CoxTime, train, val,
                                      lr=best['lr'], batch=best['batch'], dropout=best['dropout'],
                                      epoch=best['epoch'], weight_decay=best['weight_decay'],
                                      num_nodes=best['num_nodes'], shrink=best['shrink'],
                                      device=device, labtrans=labtrans)
-    # Calculate and save c-index
-    c_index(model, test_datasets_list)
+    # bootstrap test dataset
+    n = 1
+    values = np.zeros((8, n))
+    values_modified = []
+    values_modified_time_event = []
+    for i in range(n):
+        test_datasets_list = cohort_samples_fairness(train_dataset, valid_dataset, test_dataset, labtrans)
+        cindex_list, modified_cindex_list, modified_cindex_time_event_list = bootstrap_cindex(model, test_datasets_list)
+        for j in range(len(cindex_list)):
+            values[j][i] = cindex_list[j]
+            values_modified.append(modified_cindex_list[j])
+            values_modified_time_event.append(modified_cindex_time_event_list[j])
 
-    # Modified c-index
-    modified_c_index(model, test_datasets_list)
+    save_txt("files/cox-time/cindex/modified/women_men.txt", values_modified[0])
+    save_txt("files/cox-time/cindex/modified/black_white.txt", values_modified[1])
+    save_txt("files/cox-time/cindex/modified/women_black_white.txt", values_modified[2])
+    save_txt("files/cox-time/cindex/modified/men_black_white.txt", values_modified[3])
+    save_txt("files/cox-time/cindex/modified/men_women.txt", values_modified[4])
+    save_txt("files/cox-time/cindex/modified/white_black.txt", values_modified[5])
+    save_txt("files/cox-time/cindex/modified/women_white_black.txt", values_modified[6])
+    save_txt("files/cox-time/cindex/modified/men_white_black.txt", values_modified[7])
+
+    save_txt("files/cox-time/cindex/modified/women_men_time_event.txt", values_modified_time_event[0])
+    save_txt("files/cox-time/cindex/modified/black_white_time_event.txt", values_modified_time_event[1])
+    save_txt("files/cox-time/cindex/modified/women_black_white_time_event.txt", values_modified_time_event[2])
+    save_txt("files/cox-time/cindex/modified/men_black_white_time_event.txt", values_modified_time_event[3])
+    save_txt("files/cox-time/cindex/modified/men_women_time_event.txt", values_modified_time_event[4])
+    save_txt("files/cox-time/cindex/modified/white_black_time_event.txt", values_modified_time_event[5])
+    save_txt("files/cox-time/cindex/modified/women_white_black_time_event.txt", values_modified_time_event[6])
+    save_txt("files/cox-time/cindex/modified/men_white_black_time_event.txt", values_modified_time_event[7])
+
+    print(strftime("%d/%m/%Y, %H:%M:%S", localtime()))
 
 
 if __name__ == "__main__":
-    # files = sorted(glob.glob(settings.PATH + "*.pt"), key=os.path.getmtime)
-    # main(224796801, files[27], 27)
-
-    # second best seed --> 224796801 (n.27)
+    # second best seed
     main(224796801, 27)

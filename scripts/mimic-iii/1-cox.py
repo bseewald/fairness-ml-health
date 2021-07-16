@@ -10,7 +10,6 @@ from time import localtime, strftime
 
 import cohort.get_cohort as cohort
 import settings
-import numpy as np
 from lifelines import CoxPHFitter
 from lifelines.utils import concordance_index
 from lifelines.utils.sklearn_adapter import sklearn_adapter

@@ -8,6 +8,7 @@ import pandas as pd
 import settings
 import torch
 import torchtuples as tt
+from scipy import stats
 from pycox import utils
 from pycox.evaluation import EvalSurv
 from pycox.models import CoxTime
@@ -430,31 +431,50 @@ def evaluate(sample, surv):
     return cindex, bscore, nbll
 
 
-def survival_curve_plot(surv1, surv2, label1, label2, group_name):
-    plt.ylabel('S(t | x)')
-    plt.xlabel('Time')
-    plt.grid(True)
-
+def survival_curve_median_calc(surv1, surv2):
     # Median and standard deviation
     df_surv_median1 = surv1.median(axis=1)
     df_surv_std1 = surv1.std(axis=1)
     df_surv_median2 = surv2.median(axis=1)
     df_surv_std2 = surv2.std(axis=1)
 
+    return df_surv_median1, df_surv_std1, df_surv_median2, df_surv_std2
+
+
+def survival_curve_plot(surv1, surv2, label1, label2, group_name):
+    df_surv_median1, df_surv_std1, df_surv_median2, df_surv_std2 = survival_curve_median_calc(surv1, surv2)
+
+    # Compute stats
+    test = compute_stats(df_surv_median1, df_surv_median2)
+
+    # 95% Confidence interval
+    ci1_left = surv1.quantile(0.025, axis=1)
+    ci1_right = surv1.quantile(0.975, axis=1)
+    ci2_left = surv2.quantile(0.025, axis=1)
+    ci2_right = surv2.quantile(0.975, axis=1)
+
     # Plot curves
     ax = df_surv_median1.plot(label=label1, color='turquoise', linestyle='--')
-    ax.fill_between(df_surv_median1.index, df_surv_median1 - df_surv_std1, df_surv_median1 + df_surv_std1, alpha=0.5, facecolor='turquoise')
+    ax.fill_between(df_surv_median1.index, ci1_left, ci1_right, alpha=0.2, facecolor='turquoise')
 
     ax.plot(df_surv_median2, label=label2, color='slateblue', linestyle='-.')
-    ax.fill_between(df_surv_median2.index, df_surv_median2 - df_surv_std2, df_surv_median2 + df_surv_std2, alpha=0.5, facecolor='slateblue')
+    ax.fill_between(df_surv_median2.index, ci2_left, ci2_right, alpha=0.2, facecolor='slateblue')
 
+    plt.text(0.5, 0.7, str(test), fontsize=4, transform=plt.gcf().transFigure)
     plt.legend(loc="upper right")
+    plt.ylabel('S(t | x)')
+    plt.xlabel('Time')
 
     # Save image
     fig_time = strftime("%d%m%Y%H%M%S", localtime())
-    fig_path = "img/cox-time/conditional-statistical-parity/cox-time-conditional-statistical-parity-"
+    fig_path = "img/cox-time/fairness/conditional-statistical-parity/cox-time-conditional-statistical-parity-"
     ax.get_figure().savefig(fig_path + group_name + "-" + fig_time + ".png", format="png", bbox_inches="tight", dpi=600)
     plt.close()
+
+
+def compute_stats(rvs1, rvs2):
+    test_stat = stats.ks_2samp(rvs1, rvs2)
+    return test_stat
 
 
 def cox_time_survival_function(model, test_datasets_list_gender, test_datasets_list_race, test_datasets_list_gender_race):
@@ -575,8 +595,4 @@ def main(seed, index):
 
 
 if __name__ == "__main__":
-    # files = sorted(glob.glob(settings.PATH + "*.pt"), key=os.path.getmtime)
-    # main(224796801, files[27], 27)
-
-    # second best seed --> 224796801 (n.27)
     main(224796801, 27)
