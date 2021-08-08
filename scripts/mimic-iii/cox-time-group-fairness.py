@@ -15,6 +15,8 @@ from pycox.models import CoxTime
 from pycox.models.cox_time import MixedInputMLPCoxTime
 from pycox.preprocessing.feature_transforms import OrderedCategoricalLong
 from sklearn_pandas import DataFrameMapper
+from lifelines import KaplanMeierFitter
+from lifelines.statistics import logrank_test
 
 
 def cohort_samples_group_fairness(seed, size, cohort):
@@ -244,6 +246,74 @@ def compute_stats(rvs1, rvs2):
     return test_stat
 
 
+def cohort_samples(dataset):
+
+    # Sample size: 1182
+    dataset_women = dataset.loc[dataset["gender"] == 1]
+    # Sample size: 1719
+    dataset_men = dataset.loc[dataset["gender"] == 0]
+    # Sample size: 353
+    dataset_black = dataset.loc[dataset["ethnicity_grouped"] == "black"]
+    # Sample size: 2375
+    dataset_white = dataset.loc[dataset["ethnicity_grouped"] == "white"]
+    # Sample size: 195
+    dataset_women_black = dataset.loc[(dataset["gender"] == 1) & (dataset["ethnicity_grouped"] == "black")]
+    # Sample size: 939
+    dataset_women_white = dataset.loc[(dataset["gender"] == 1) & (dataset["ethnicity_grouped"] == "white")]
+    # Sample size: 158
+    dataset_men_black = dataset.loc[(dataset["gender"] == 0) & (dataset["ethnicity_grouped"] == "black")]
+    # Sample size: 1436
+    dataset_men_white = dataset.loc[(dataset["gender"] == 0) & (dataset["ethnicity_grouped"] == "white")]
+
+    dataset_list = [dataset_women, dataset_men, dataset_black, dataset_white, dataset_women_black, dataset_women_white, dataset_men_black, dataset_men_white]
+    return dataset_list
+
+
+def logrank_stats(dataset_list):
+    results1 = logrank_test(dataset_list[0].los_hospital, dataset_list[1].los_hospital,
+                            event_observed_A=dataset_list[0].hospital_expire_flag, event_observed_B=dataset_list[1].hospital_expire_flag)
+
+    results2 = logrank_test(dataset_list[2].los_hospital, dataset_list[3].los_hospital,
+                            event_observed_A=dataset_list[2].hospital_expire_flag, event_observed_B=dataset_list[3].hospital_expire_flag)
+
+    results3 = logrank_test(dataset_list[4].los_hospital, dataset_list[5].los_hospital,
+                            event_observed_A=dataset_list[4].hospital_expire_flag, event_observed_B=dataset_list[5].hospital_expire_flag)
+
+    results4 = logrank_test(dataset_list[6].los_hospital, dataset_list[7].los_hospital,
+                            event_observed_A=dataset_list[6].hospital_expire_flag, event_observed_B=dataset_list[7].hospital_expire_flag)
+
+    print("stats: " + str(results1.test_statistic) + " p-value: " + str(results1.p_value))
+    print("stats: " + str(results2.test_statistic) + " p-value: " + str(results2.p_value))
+    print("stats: " + str(results3.test_statistic) + " p-value: " + str(results3.p_value))
+    print("stats: " + str(results4.test_statistic) + " p-value: " + str(results4.p_value))
+
+
+def km(dataset_list_a, dataset_list_b, group_name, label_a, label_b):
+
+    kmf = KaplanMeierFitter()
+
+    kmf.fit(dataset_list_a['los_hospital'], dataset_list_a['hospital_expire_flag'], label=label_a)
+    ax = kmf.plot_survival_function()
+    kmf.fit(dataset_list_b['los_hospital'], dataset_list_b['hospital_expire_flag'], label=label_b)
+    ax = kmf.plot_survival_function(ax=ax)
+
+    ax.set_ylabel('S(t|z)')
+    ax.set_xlabel('Tempo')
+
+    # Save image
+    fig_time = strftime("%d%m%Y%H%M%S", localtime())
+    fig_path = "img/cox-time/fairness/group-fairness/kaplan-meier-group-fairness-"
+    ax.get_figure().savefig(fig_path + group_name + "-" + fig_time + ".png", format="png", bbox_inches="tight", dpi=600)
+    plt.close()
+
+
+def survival_plot(dataset_list):
+    km(dataset_list[0], dataset_list[1], "women-men", "Mulheres", "Homens")
+    km(dataset_list[2], dataset_list[3], "black-white", "Negros", "Brancos")
+    km(dataset_list[4], dataset_list[5], "black-white-women", "Mulheres negras", "Mulheres brancas")
+    km(dataset_list[6], dataset_list[7], "black-white-men", "Homens negros", "Homens brancos")
+
+
 def main(seed, index):
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
@@ -251,16 +321,20 @@ def main(seed, index):
     cohort = sa_cohort.cox_neural_network()
     train, val, test_datasets_list, labtrans = cohort_samples_group_fairness(seed=seed, size=settings.size, cohort=cohort)
 
-    # Neural network
-    best = best_parameters.cox_time[index]
-    model = cox_time_fit_and_predict(CoxTime, train, val,
-                                     lr=best['lr'], batch=best['batch'], dropout=best['dropout'],
-                                     epoch=best['epoch'], weight_decay=best['weight_decay'],
-                                     num_nodes=best['num_nodes'], shrink=best['shrink'],
-                                     device=device, labtrans=labtrans)
+    dataset_list = cohort_samples(cohort)
+    logrank_stats(dataset_list)
+    survival_plot(dataset_list)
 
-    # Plot survival function
-    cox_time_survival_function(model, test_datasets_list)
+    # Neural network
+    # best = best_parameters.cox_time[index]
+    # model = cox_time_fit_and_predict(CoxTime, train, val,
+    #                                  lr=best['lr'], batch=best['batch'], dropout=best['dropout'],
+    #                                  epoch=best['epoch'], weight_decay=best['weight_decay'],
+    #                                  num_nodes=best['num_nodes'], shrink=best['shrink'],
+    #                                  device=device, labtrans=labtrans)
+    #
+    # # Plot survival function
+    # cox_time_survival_function(model, test_datasets_list)
 
 
 if __name__ == "__main__":

@@ -15,6 +15,8 @@ from pycox.models import CoxTime
 from pycox.models.cox_time import MixedInputMLPCoxTime
 from pycox.preprocessing.feature_transforms import OrderedCategoricalLong
 from sklearn_pandas import DataFrameMapper
+from lifelines import KaplanMeierFitter
+from lifelines.statistics import logrank_test
 
 OASIS_SCORE = 3
 
@@ -567,6 +569,158 @@ def cox_time_survival_function(model, test_datasets_list_gender, test_datasets_l
     survival_curve_plot(surv_men_black_transp, surv_men_white_transp, "black men | transplant", "white men | transplant", "black-men-white-men-transplant")
 
 
+def cohort_samples_gender(dataset):
+
+    dataset_women_oasis = dataset.loc[(dataset["gender"] == 1) & (dataset["oasis_score"] == OASIS_SCORE)]
+    dataset_women_alz = dataset.loc[(dataset["gender"] == 1) & (dataset["icd_alzheimer"] == 1)]
+    dataset_women_cancer = dataset.loc[(dataset["gender"] == 1) & (dataset["icd_cancer"] == 1)]
+    dataset_women_diab = dataset.loc[(dataset["gender"] == 1) & (dataset["icd_diabetes"] == 1)]
+    dataset_women_heart = dataset.loc[(dataset["gender"] == 1) & (dataset["icd_heart"] == 1)]
+    dataset_women_transp = dataset.loc[(dataset["gender"] == 1) & (dataset["icd_transplant"] == 1)]
+
+    dataset_men_oasis = dataset.loc[(dataset["gender"] == 0) & (dataset["oasis_score"] == 3)]
+    dataset_men_alz = dataset.loc[(dataset["gender"] == 0) & (dataset["icd_alzheimer"] == 1)]
+    dataset_men_cancer = dataset.loc[(dataset["gender"] == 0) & (dataset["icd_cancer"] == 1)]
+    dataset_men_diab = dataset.loc[(dataset["gender"] == 0) & (dataset["icd_diabetes"] == 1)]
+    dataset_men_heart = dataset.loc[(dataset["gender"] == 0) & (dataset["icd_heart"] == 1)]
+    dataset_men_transp = dataset.loc[(dataset["gender"] == 0) & (dataset["icd_transplant"] == 1)]
+
+    dataset_list = [dataset_women_oasis, dataset_men_oasis, dataset_women_alz, dataset_men_alz, dataset_women_cancer, dataset_men_cancer,
+                    dataset_women_diab, dataset_men_diab, dataset_women_heart, dataset_men_heart, dataset_women_transp, dataset_men_transp]
+    return dataset_list
+
+
+def cohort_samples_race(dataset):
+
+    dataset_black_oasis = dataset.loc[(dataset["ethnicity_grouped"] == "black") & (dataset["oasis_score"] == OASIS_SCORE)]
+    dataset_black_alz = dataset.loc[(dataset["ethnicity_grouped"] == "black") & (dataset["icd_alzheimer"] == 1)]
+    dataset_black_cancer = dataset.loc[(dataset["ethnicity_grouped"] == "black") & (dataset["icd_cancer"] == 1)]
+    dataset_black_diab = dataset.loc[(dataset["ethnicity_grouped"] == "black") & (dataset["icd_diabetes"] == 1)]
+    dataset_black_heart = dataset.loc[(dataset["ethnicity_grouped"] == "black") & (dataset["icd_heart"] == 1)]
+    dataset_black_transp = dataset.loc[(dataset["ethnicity_grouped"] == "black") & (dataset["icd_transplant"] == 1)]
+
+    dataset_white_oasis = dataset.loc[(dataset["ethnicity_grouped"] == "white") & (dataset["oasis_score"] == 3)]
+    dataset_white_alz = dataset.loc[(dataset["ethnicity_grouped"] == "white") & (dataset["icd_alzheimer"] == 1)]
+    dataset_white_cancer = dataset.loc[(dataset["ethnicity_grouped"] == "white") & (dataset["icd_cancer"] == 1)]
+    dataset_white_diab = dataset.loc[(dataset["ethnicity_grouped"] == "white") & (dataset["icd_diabetes"] == 1)]
+    dataset_white_heart = dataset.loc[(dataset["ethnicity_grouped"] == "white") & (dataset["icd_heart"] == 1)]
+    dataset_white_transp = dataset.loc[(dataset["ethnicity_grouped"] == "white") & (dataset["icd_transplant"] == 1)]
+
+    dataset_list = [dataset_black_oasis, dataset_white_oasis, dataset_black_alz, dataset_white_alz, dataset_black_cancer, dataset_white_cancer,
+                    dataset_black_diab, dataset_white_diab, dataset_black_heart, dataset_white_heart, dataset_black_transp, dataset_white_transp]
+    return dataset_list
+
+
+def cohort_samples_gender_race(dataset):
+
+    dataset_women_black_oasis = dataset.loc[(dataset["gender"] == 1) & (dataset["ethnicity_grouped"] == "black") & (dataset["oasis_score"] == OASIS_SCORE)]
+    dataset_women_black_alz = dataset.loc[(dataset["gender"] == 1) & (dataset["ethnicity_grouped"] == "black") & (dataset["icd_alzheimer"] == 1)]
+    dataset_women_black_cancer = dataset.loc[(dataset["gender"] == 1) & (dataset["ethnicity_grouped"] == "black") & (dataset["icd_cancer"] == 1)]
+    dataset_women_black_diab = dataset.loc[(dataset["gender"] == 1) & (dataset["ethnicity_grouped"] == "black") & (dataset["icd_diabetes"] == 1)]
+    dataset_women_black_heart = dataset.loc[(dataset["gender"] == 1) & (dataset["ethnicity_grouped"] == "black") & (dataset["icd_heart"] == 1)]
+    dataset_women_black_transp = dataset.loc[(dataset["gender"] == 1) & (dataset["ethnicity_grouped"] == "black") & (dataset["icd_transplant"] == 1)]
+
+    dataset_women_white_oasis = dataset.loc[(dataset["gender"] == 1) & (dataset["ethnicity_grouped"] == "white") & (dataset["oasis_score"] == OASIS_SCORE)]
+    dataset_women_white_alz = dataset.loc[(dataset["gender"] == 1) & (dataset["ethnicity_grouped"] == "white") & (dataset["icd_alzheimer"] == 1)]
+    dataset_women_white_cancer = dataset.loc[(dataset["gender"] == 1) & (dataset["ethnicity_grouped"] == "white") & (dataset["icd_cancer"] == 1)]
+    dataset_women_white_diab = dataset.loc[(dataset["gender"] == 1) & (dataset["ethnicity_grouped"] == "white") & (dataset["icd_diabetes"] == 1)]
+    dataset_women_white_heart = dataset.loc[(dataset["gender"] == 1) & (dataset["ethnicity_grouped"] == "white") & (dataset["icd_heart"] == 1)]
+    dataset_women_white_transp = dataset.loc[(dataset["gender"] == 1) & (dataset["ethnicity_grouped"] == "white") & (dataset["icd_transplant"] == 1)]
+
+    dataset_men_black_oasis = dataset.loc[(dataset["gender"] == 0) & (dataset["ethnicity_grouped"] == "black") & (dataset["oasis_score"] == OASIS_SCORE)]
+    dataset_men_black_alz = dataset.loc[(dataset["gender"] == 0) & (dataset["ethnicity_grouped"] == "black") & (dataset["icd_alzheimer"] == 1)]
+    dataset_men_black_cancer = dataset.loc[(dataset["gender"] == 0) & (dataset["ethnicity_grouped"] == "black") & (dataset["icd_cancer"] == 1)]
+    dataset_men_black_diab = dataset.loc[(dataset["gender"] == 0) & (dataset["ethnicity_grouped"] == "black") & (dataset["icd_diabetes"] == 1)]
+    dataset_men_black_heart = dataset.loc[(dataset["gender"] == 0) & (dataset["ethnicity_grouped"] == "black") & (dataset["icd_heart"] == 1)]
+    dataset_men_black_transp = dataset.loc[(dataset["gender"] == 0) & (dataset["ethnicity_grouped"] == "black") & (dataset["icd_transplant"] == 1)]
+
+    dataset_men_white_oasis = dataset.loc[(dataset["gender"] == 0) & (dataset["ethnicity_grouped"] == "white") & (dataset["oasis_score"] == 3)]
+    dataset_men_white_alz = dataset.loc[(dataset["gender"] == 0) & (dataset["ethnicity_grouped"] == "white") & (dataset["icd_alzheimer"] == 1)]
+    dataset_men_white_cancer = dataset.loc[(dataset["gender"] == 0) & (dataset["ethnicity_grouped"] == "white") & (dataset["icd_cancer"] == 1)]
+    dataset_men_white_diab = dataset.loc[(dataset["gender"] == 0) & (dataset["ethnicity_grouped"] == "white") & (dataset["icd_diabetes"] == 1)]
+    dataset_men_white_heart = dataset.loc[(dataset["gender"] == 0) & (dataset["ethnicity_grouped"] == "white") & (dataset["icd_heart"] == 1)]
+    dataset_men_white_transp = dataset.loc[(dataset["gender"] == 0) & (dataset["ethnicity_grouped"] == "white") & (dataset["icd_transplant"] == 1)]
+
+    dataset_list_women = [dataset_women_black_oasis, dataset_women_white_oasis, dataset_women_black_alz, dataset_women_white_alz, dataset_women_black_cancer, dataset_women_white_cancer, \
+                          dataset_women_black_diab, dataset_women_white_diab, dataset_women_black_heart, dataset_women_white_heart, dataset_women_black_transp, dataset_women_white_transp]
+    dataset_list_men = [dataset_men_black_oasis, dataset_men_white_oasis, dataset_men_black_alz, dataset_men_white_alz, dataset_men_black_cancer, dataset_men_white_cancer, \
+                        dataset_men_black_diab, dataset_men_white_diab, dataset_men_black_heart, dataset_men_white_heart, dataset_men_black_transp, dataset_men_white_transp]
+    return dataset_list_women, dataset_list_men
+
+
+def logrank_stats(dataset_list):
+    results1 = logrank_test(dataset_list[0].los_hospital, dataset_list[1].los_hospital,
+                            event_observed_A=dataset_list[0].hospital_expire_flag, event_observed_B=dataset_list[1].hospital_expire_flag)
+
+    results2 = logrank_test(dataset_list[2].los_hospital, dataset_list[3].los_hospital,
+                            event_observed_A=dataset_list[2].hospital_expire_flag, event_observed_B=dataset_list[3].hospital_expire_flag)
+
+    results3 = logrank_test(dataset_list[4].los_hospital, dataset_list[5].los_hospital,
+                            event_observed_A=dataset_list[4].hospital_expire_flag, event_observed_B=dataset_list[5].hospital_expire_flag)
+
+    results4 = logrank_test(dataset_list[6].los_hospital, dataset_list[7].los_hospital,
+                            event_observed_A=dataset_list[6].hospital_expire_flag, event_observed_B=dataset_list[7].hospital_expire_flag)
+
+    results5 = logrank_test(dataset_list[8].los_hospital, dataset_list[9].los_hospital,
+                            event_observed_A=dataset_list[8].hospital_expire_flag, event_observed_B=dataset_list[9].hospital_expire_flag)
+
+    results6 = logrank_test(dataset_list[10].los_hospital, dataset_list[11].los_hospital,
+                            event_observed_A=dataset_list[10].hospital_expire_flag, event_observed_B=dataset_list[11].hospital_expire_flag)
+
+    print("stats: " + str(results1.test_statistic) + " p-value: " + str(results1.p_value))
+    print("stats: " + str(results2.test_statistic) + " p-value: " + str(results2.p_value))
+    print("stats: " + str(results3.test_statistic) + " p-value: " + str(results3.p_value))
+    print("stats: " + str(results4.test_statistic) + " p-value: " + str(results4.p_value))
+    print("stats: " + str(results5.test_statistic) + " p-value: " + str(results5.p_value))
+    print("stats: " + str(results6.test_statistic) + " p-value: " + str(results6.p_value))
+
+
+def km(dataset_list_a, dataset_list_b, group_name, label_a, label_b):
+
+    kmf = KaplanMeierFitter()
+
+    kmf.fit(dataset_list_a['los_hospital'], dataset_list_a['hospital_expire_flag'], label=label_a)
+    ax = kmf.plot_survival_function()
+    kmf.fit(dataset_list_b['los_hospital'], dataset_list_b['hospital_expire_flag'], label=label_b)
+    ax = kmf.plot_survival_function(ax=ax)
+
+    ax.set_ylabel('S(t|w, z)')
+    ax.set_xlabel('Tempo')
+
+    # Save image
+    fig_time = strftime("%d%m%Y%H%M%S", localtime())
+    fig_path = "img/cox-time/fairness/conditional-statistical-parity/cox-time-conditional-statistical-parity-"
+    ax.get_figure().savefig(fig_path + group_name + ".png", format="png", bbox_inches="tight", dpi=600)
+    plt.close()
+
+
+def survival_plot_gender(dataset_list):
+    km(dataset_list[0], dataset_list[1], "women-men-oasis", "Mulheres | Oasis", "Homens | Oasis")
+    km(dataset_list[2], dataset_list[3], "women-men-alzheimer", "Mulheres | Alzheimer", "Homens | Alzheimer")
+    km(dataset_list[4], dataset_list[5], "women-men-cancer", "Mulheres | Cancer", "Homens | Cancer")
+    km(dataset_list[6], dataset_list[7], "women-men-diabetes", "Mulheres | Diabetes", "Homens | Diabetes")
+    km(dataset_list[8], dataset_list[9], "women-men-heart", "Mulheres | Coracao", "Homens | Coracao")
+    km(dataset_list[10], dataset_list[11], "women-men-transp", "Mulheres | Transplantes", "Homens | Transplantes")
+
+
+def survival_plot_race(dataset_list):
+    km(dataset_list[0], dataset_list[1], "black-white-oasis", "Negros | Oasis", "Brancos | Oasis")
+    km(dataset_list[2], dataset_list[3], "black-white-alz", "Negros | Alzheimer", "Brancos | Alzheimer")
+    km(dataset_list[4], dataset_list[5], "black-white-cancer", "Negros | Cancer", "Brancos | Cancer")
+    km(dataset_list[6], dataset_list[7], "black-white-diabetes", "Negros | Diabetes", "Brancos | Diabetes")
+    km(dataset_list[8], dataset_list[9], "black-white-heart", "Negros | Coracao", "Brancos | Coracao")
+    km(dataset_list[10], dataset_list[11], "black-white-transp", "Negros | Transplantes", "Brancos | Transplantes")
+
+
+def survival_plot_gender_race(dataset_list, label, gender_race_label_a, gender_race_label_b):
+    km(dataset_list[0], dataset_list[1], "black-white-oasis-"+label, gender_race_label_a+" | Oasis", gender_race_label_b+" | Oasis")
+    km(dataset_list[2], dataset_list[3], "black-white-alz-"+label, gender_race_label_a+" | Alzheimer", gender_race_label_b+" | Alzheimer")
+    km(dataset_list[4], dataset_list[5], "black-white-cancer-"+label, gender_race_label_a+" | Cancer", gender_race_label_b+" | Cancer")
+    km(dataset_list[6], dataset_list[7], "black-white-diabetes-"+label, gender_race_label_a+" | Diabetes", gender_race_label_b+" | Diabetes")
+    km(dataset_list[8], dataset_list[9], "black-white-heart-"+label, gender_race_label_a+" | Coracao", gender_race_label_b+" | Coracao")
+    km(dataset_list[10], dataset_list[11], "black-white-transp-"+label, gender_race_label_a+" | Transplantes", gender_race_label_b+" | Transplantes")
+
+
 def main(seed, index):
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
@@ -574,24 +728,40 @@ def main(seed, index):
     cohort = sa_cohort.cox_neural_network()
 
     # First group
-    train, val, test_datasets_list_gender, labtrans = cohort_samples_fairness_gender(seed=seed, size=settings.size, cohort=cohort)
+    # train, val, test_datasets_list_gender, labtrans = cohort_samples_fairness_gender(seed=seed, size=settings.size, cohort=cohort)
+
+    dataset_list = cohort_samples_gender(cohort)
+    logrank_stats(dataset_list)
+    survival_plot_gender(dataset_list)
 
     # Second group
-    train, val, test_datasets_list_race, labtrans = cohort_samples_fairness_race(seed=seed, size=settings.size, cohort=cohort)
+    # train, val, test_datasets_list_race, labtrans = cohort_samples_fairness_race(seed=seed, size=settings.size, cohort=cohort)
+
+    dataset_list = cohort_samples_race(cohort)
+    logrank_stats(dataset_list)
+    survival_plot_race(dataset_list)
 
     # Third group
-    train, val, test_datasets_list_gender_race, labtrans = cohort_samples_fairness_gender_race(seed=seed, size=settings.size, cohort=cohort)
+    # train, val, test_datasets_list_gender_race, labtrans = cohort_samples_fairness_gender_race(seed=seed, size=settings.size, cohort=cohort)
 
-    # Neural network
-    best = best_parameters.cox_time[index]
-    model = cox_time_fit_and_predict(CoxTime, train, val,
-                                     lr=best['lr'], batch=best['batch'], dropout=best['dropout'],
-                                     epoch=best['epoch'], weight_decay=best['weight_decay'],
-                                     num_nodes=best['num_nodes'], shrink=best['shrink'],
-                                     device=device, labtrans=labtrans)
+    dataset_list_w, dataset_list_m = cohort_samples_gender_race(cohort)
 
-    # Plot survival function
-    cox_time_survival_function(model, test_datasets_list_gender, test_datasets_list_race, test_datasets_list_gender_race)
+    logrank_stats(dataset_list_w)
+    survival_plot_gender_race(dataset_list_w, "women", "Mulheres negras", "Mulheres brancas")
+
+    logrank_stats(dataset_list_m)
+    survival_plot_gender_race(dataset_list_m, "men", "Homens negros", "Homens brancos")
+
+    # # Neural network
+    # best = best_parameters.cox_time[index]
+    # model = cox_time_fit_and_predict(CoxTime, train, val,
+    #                                  lr=best['lr'], batch=best['batch'], dropout=best['dropout'],
+    #                                  epoch=best['epoch'], weight_decay=best['weight_decay'],
+    #                                  num_nodes=best['num_nodes'], shrink=best['shrink'],
+    #                                  device=device, labtrans=labtrans)
+    #
+    # # Plot survival function
+    # cox_time_survival_function(model, test_datasets_list_gender, test_datasets_list_race, test_datasets_list_gender_race)
 
 
 if __name__ == "__main__":
