@@ -290,21 +290,22 @@ def logrank_stats(dataset_list):
 
 def km(dataset_list_a, dataset_list_b, group_name, label_a, label_b):
 
-    kmf = KaplanMeierFitter()
+    with plt.style.context('ggplot'):
+        kmf = KaplanMeierFitter()
 
-    kmf.fit(dataset_list_a['los_hospital'], dataset_list_a['hospital_expire_flag'], label=label_a)
-    ax = kmf.plot_survival_function()
-    kmf.fit(dataset_list_b['los_hospital'], dataset_list_b['hospital_expire_flag'], label=label_b)
-    ax = kmf.plot_survival_function(ax=ax)
+        kmf.fit(dataset_list_a['los_hospital'], dataset_list_a['hospital_expire_flag'], label=label_a)
+        ax = kmf.plot_survival_function()
+        kmf.fit(dataset_list_b['los_hospital'], dataset_list_b['hospital_expire_flag'], label=label_b)
+        ax = kmf.plot_survival_function(ax=ax)
 
-    ax.set_ylabel('S(t|z)')
-    ax.set_xlabel('Tempo')
+        ax.set_ylabel('S(t|z)')
+        ax.set_xlabel('Tempo')
 
-    # Save image
-    fig_time = strftime("%d%m%Y%H%M%S", localtime())
-    fig_path = "img/cox-time/fairness/group-fairness/kaplan-meier-group-fairness-"
-    ax.get_figure().savefig(fig_path + group_name + "-" + fig_time + ".png", format="png", bbox_inches="tight", dpi=600)
-    plt.close()
+        # Save image
+        fig_time = strftime("%d%m%Y%H%M%S", localtime())
+        fig_path = "img/cox-time/fairness/group-fairness/kaplan-meier-group-fairness-"
+        ax.get_figure().savefig(fig_path + group_name + ".png", format="png", bbox_inches="tight", dpi=600)
+        plt.close()
 
 
 def survival_plot(dataset_list):
@@ -319,11 +320,11 @@ def main(seed, index):
 
     # Group fairness
     cohort = sa_cohort.cox_neural_network()
-    train, val, test_datasets_list, labtrans = cohort_samples_group_fairness(seed=seed, size=settings.size, cohort=cohort)
+    # train, val, test_datasets_list, labtrans = cohort_samples_group_fairness(seed=seed, size=settings.size, cohort=cohort)
 
-    dataset_list = cohort_samples(cohort)
-    logrank_stats(dataset_list)
-    survival_plot(dataset_list)
+    # dataset_list = cohort_samples(cohort)
+    # logrank_stats(dataset_list)
+    # survival_plot(dataset_list)
 
     # Neural network
     # best = best_parameters.cox_time[index]

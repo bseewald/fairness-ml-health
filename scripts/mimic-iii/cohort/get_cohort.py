@@ -21,7 +21,7 @@ def train_test_split(seed, size, cohort_x, cohort_y):
     ########################################################
     # Cohort
     # ------
-    # Total: 9101 admissions with 6379 distinct pacients
+    # Total: 9101 admissions with 6379 distinct patients
     #
     # Used: 4814 (1 admission) + 2901 (2 or 3 admissions) = 7715 admissions
     # patients with 2 admissions -> 2014
@@ -77,6 +77,7 @@ def train_test_split(seed, size, cohort_x, cohort_y):
 def train_test_split_nn(seed, size, sa_cohort):
     cohort = get_cohort()
     cohort = cohort.loc[cohort['los_hospital'] > 0]
+
     cohort_train = cohort.groupby("subject_id").filter(lambda x: len(x) < 2)
     cohort_test = cohort.groupby("subject_id").filter(lambda x: 1 < len(x) < 4)
 
@@ -164,6 +165,11 @@ def cox():
 def cox_neural_network():
     # Get data
     cohort = get_cohort()
+
+    cohort = cohort.loc[cohort['los_hospital'] > 0]
+    print(cohort.groupby("subject_id").size())
+    cohort_rest = cohort.groupby("subject_id").filter(lambda x: len(x) > 3)
+    print(cohort_rest.groupby("subject_id").size())
 
     # Binning
     cohort['age_st'] = pd.cut(cohort['age'], np.arange(15, 91, 15))
